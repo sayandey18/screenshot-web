@@ -16,88 +16,88 @@ import {
   UserX,
   Users,
   ShieldCheck,
-} from 'lucide-react'
-import { type SidebarData } from '../types'
+} from "lucide-react";
+import { type SidebarData } from "../types";
 
 export const sidebarData: SidebarData = {
   user: {
-    name: 'satnaing',
-    email: 'satnaingdev@gmail.com',
-    avatar: '/avatars/shadcn.jpg',
+    name: "satnaing",
+    email: "satnaingdev@gmail.com",
+    avatar: "/avatars/shadcn.jpg",
   },
   navGroups: [
     {
-      title: 'General',
+      title: "General",
       items: [
         {
-          title: 'Dashboard',
-          url: '/dashboard',
+          title: "Dashboard",
+          url: "/dashboard",
           icon: LayoutDashboard,
         },
         {
-          title: 'Tasks',
-          url: '/tasks',
+          title: "Tasks",
+          url: "/tasks",
           icon: ListTodo,
         },
         {
-          title: 'Users',
-          url: '/users',
+          title: "Users",
+          url: "/users",
           icon: Users,
         },
       ],
     },
     {
-      title: 'Pages',
+      title: "Pages",
       items: [
         {
-          title: 'Auth',
+          title: "Auth",
           icon: ShieldCheck,
           items: [
             {
-              title: 'Sign In',
-              url: '/sign-in',
+              title: "Sign In",
+              url: "/sign-in",
             },
             {
-              title: 'Sign Up',
-              url: '/sign-up',
+              title: "Sign Up",
+              url: "/sign-up",
             },
             {
-              title: 'Forgot Password',
-              url: '/forgot-password',
+              title: "Forgot Password",
+              url: "/forgot-password",
             },
             {
-              title: 'Two-factor',
-              url: '/two-factor',
+              title: "Two-factor",
+              url: "/two-factor",
             },
           ],
         },
         {
-          title: 'Errors',
+          title: "Errors",
           icon: Bug,
           items: [
             {
-              title: 'Unauthorized',
-              url: '/errors/unauthorized',
+              title: "Unauthorized",
+              url: "/errors/unauthorized",
               icon: Lock,
             },
             {
-              title: 'Forbidden',
-              url: '/errors/forbidden',
+              title: "Forbidden",
+              url: "/errors/forbidden",
               icon: UserX,
             },
             {
-              title: 'Not Found',
-              url: '/errors/not-found',
+              title: "Not Found",
+              url: "/errors/not-found",
               icon: FileX,
             },
             {
-              title: 'Internal Server Error',
-              url: '/errors/internal-server-error',
+              title: "Internal Server Error",
+              url: "/errors/internal-server-error",
               icon: ServerOff,
             },
             {
-              title: 'Maintenance Error',
-              url: '/errors/maintenance-error',
+              title: "Maintenance Error",
+              url: "/errors/maintenance-error",
               icon: Construction,
             },
           ],
@@ -105,45 +105,45 @@ export const sidebarData: SidebarData = {
       ],
     },
     {
-      title: 'Other',
+      title: "Other",
       items: [
         {
-          title: 'Settings',
+          title: "Settings",
           icon: Settings,
           items: [
             {
-              title: 'Profile',
-              url: '/settings',
+              title: "Profile",
+              url: "/settings",
               icon: UserCog,
             },
             {
-              title: 'Account',
-              url: '/settings/account',
+              title: "Account",
+              url: "/settings/account",
               icon: Wrench,
             },
             {
-              title: 'Appearance',
-              url: '/settings/appearance',
+              title: "Appearance",
+              url: "/settings/appearance",
               icon: Palette,
             },
             {
-              title: 'Notifications',
-              url: '/settings/notifications',
+              title: "Notifications",
+              url: "/settings/notifications",
               icon: Bell,
             },
             {
-              title: 'Display',
-              url: '/settings/display',
+              title: "Display",
+              url: "/settings/display",
               icon: Monitor,
             },
           ],
         },
         {
-          title: 'Help Center',
-          url: '/help-center',
+          title: "Help Center",
+          url: "/help-center",
           icon: HelpCircle,
         },
       ],
     },
   ],
-}
+};

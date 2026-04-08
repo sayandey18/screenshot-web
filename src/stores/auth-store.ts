@@ -1,13 +1,13 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
 interface AuthState {
   auth: {
-    reset: () => void
-  }
+    reset: () => void;
+  };
 }
 
 export const useAuthStore = create<AuthState>()((set) => ({
   auth: {
     reset: () => set((state) => ({ ...state })),
   },
-}))
+}));

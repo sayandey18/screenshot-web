@@ -61,8 +61,8 @@
 }
 
 @theme inline {
-  --font-inter: 'Geist', 'sans-serif';
-  --font-manrope: 'Geist Mono', 'sans-serif';
+  --font-inter: "Geist", "sans-serif";
+  --font-manrope: "Geist Mono", "sans-serif";
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
