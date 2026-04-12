@@ -61,14 +61,6 @@ export const sidebarData: SidebarData = {
               title: "Sign Up",
               url: "/sign-up",
             },
-            {
-              title: "Forgot Password",
-              url: "/forgot-password",
-            },
-            {
-              title: "Two-factor",
-              url: "/two-factor",
-            },
           ],
         },
         {

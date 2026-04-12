@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
 import { Route as errors500RouteImport } from './routes/(errors)/500'
@@ -35,6 +36,10 @@ import { Route as authSignIn2faRouteImport } from './routes/(auth)/sign-in/2fa'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authRouteRoute = authRouteRouteImport.update({
+  id: '/(auth)',
   getParentRoute: () => rootRouteImport,
 } as any)
 const publicIndexRoute = publicIndexRouteImport.update({
@@ -102,19 +107,19 @@ const AuthenticatedDashboardIndexRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const authSignUpIndexRoute = authSignUpIndexRouteImport.update({
-  id: '/(auth)/sign-up/',
+  id: '/sign-up/',
   path: '/sign-up/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => authRouteRoute,
 } as any)
 const authSignInIndexRoute = authSignInIndexRouteImport.update({
-  id: '/(auth)/sign-in/',
+  id: '/sign-in/',
   path: '/sign-in/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => authRouteRoute,
 } as any)
 const authForgotIndexRoute = authForgotIndexRouteImport.update({
-  id: '/(auth)/forgot/',
+  id: '/forgot/',
   path: '/forgot/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => authRouteRoute,
 } as any)
 const AuthenticatedSettingsNotificationsRoute =
   AuthenticatedSettingsNotificationsRouteImport.update({
@@ -147,14 +152,14 @@ const AuthenticatedErrorsErrorRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const authSignUpVerifyRoute = authSignUpVerifyRouteImport.update({
-  id: '/(auth)/sign-up/verify',
+  id: '/sign-up/verify',
   path: '/sign-up/verify',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => authRouteRoute,
 } as any)
 const authSignIn2faRoute = authSignIn2faRouteImport.update({
-  id: '/(auth)/sign-in/2fa',
+  id: '/sign-in/2fa',
   path: '/sign-in/2fa',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => authRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -206,6 +211,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/(auth)': typeof authRouteRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/(errors)/401': typeof errors401Route
@@ -280,6 +286,7 @@ export interface FileRouteTypes {
     | '/users'
   id:
     | '__root__'
+    | '/(auth)'
     | '/_authenticated'
     | '/_authenticated/settings'
     | '/(errors)/401'
@@ -306,6 +313,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  authRouteRoute: typeof authRouteRouteWithChildren
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   errors401Route: typeof errors401Route
   errors403Route: typeof errors403Route
@@ -313,11 +321,6 @@ export interface RootRouteChildren {
   errors500Route: typeof errors500Route
   errors503Route: typeof errors503Route
   publicIndexRoute: typeof publicIndexRoute
-  authSignIn2faRoute: typeof authSignIn2faRoute
-  authSignUpVerifyRoute: typeof authSignUpVerifyRoute
-  authForgotIndexRoute: typeof authForgotIndexRoute
-  authSignInIndexRoute: typeof authSignInIndexRoute
-  authSignUpIndexRoute: typeof authSignUpIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -327,6 +330,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)': {
+      id: '/(auth)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(public)/': {
@@ -418,21 +428,21 @@ declare module '@tanstack/react-router' {
       path: '/sign-up'
       fullPath: '/sign-up/'
       preLoaderRoute: typeof authSignUpIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof authRouteRoute
     }
     '/(auth)/sign-in/': {
       id: '/(auth)/sign-in/'
       path: '/sign-in'
       fullPath: '/sign-in/'
       preLoaderRoute: typeof authSignInIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof authRouteRoute
     }
     '/(auth)/forgot/': {
       id: '/(auth)/forgot/'
       path: '/forgot'
       fullPath: '/forgot/'
       preLoaderRoute: typeof authForgotIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof authRouteRoute
     }
     '/_authenticated/settings/notifications': {
       id: '/_authenticated/settings/notifications'
@@ -474,17 +484,37 @@ declare module '@tanstack/react-router' {
       path: '/sign-up/verify'
       fullPath: '/sign-up/verify'
       preLoaderRoute: typeof authSignUpVerifyRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof authRouteRoute
     }
     '/(auth)/sign-in/2fa': {
       id: '/(auth)/sign-in/2fa'
       path: '/sign-in/2fa'
       fullPath: '/sign-in/2fa'
       preLoaderRoute: typeof authSignIn2faRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof authRouteRoute
     }
   }
 }
+
+interface authRouteRouteChildren {
+  authSignIn2faRoute: typeof authSignIn2faRoute
+  authSignUpVerifyRoute: typeof authSignUpVerifyRoute
+  authForgotIndexRoute: typeof authForgotIndexRoute
+  authSignInIndexRoute: typeof authSignInIndexRoute
+  authSignUpIndexRoute: typeof authSignUpIndexRoute
+}
+
+const authRouteRouteChildren: authRouteRouteChildren = {
+  authSignIn2faRoute: authSignIn2faRoute,
+  authSignUpVerifyRoute: authSignUpVerifyRoute,
+  authForgotIndexRoute: authForgotIndexRoute,
+  authSignInIndexRoute: authSignInIndexRoute,
+  authSignUpIndexRoute: authSignUpIndexRoute,
+}
+
+const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
+  authRouteRouteChildren,
+)
 
 interface AuthenticatedSettingsRouteRouteChildren {
   AuthenticatedSettingsAccountRoute: typeof AuthenticatedSettingsAccountRoute
@@ -531,6 +561,7 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  authRouteRoute: authRouteRouteWithChildren,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   errors401Route: errors401Route,
   errors403Route: errors403Route,
@@ -538,11 +569,6 @@ const rootRouteChildren: RootRouteChildren = {
   errors500Route: errors500Route,
   errors503Route: errors503Route,
   publicIndexRoute: publicIndexRoute,
-  authSignIn2faRoute: authSignIn2faRoute,
-  authSignUpVerifyRoute: authSignUpVerifyRoute,
-  authForgotIndexRoute: authForgotIndexRoute,
-  authSignInIndexRoute: authSignInIndexRoute,
-  authSignUpIndexRoute: authSignUpIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

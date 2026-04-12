@@ -7,12 +7,12 @@ export function handleServerError(error: unknown) {
 
   let errMsg = "Something went wrong!";
 
-  if (error && typeof error === "object" && "status" in error && Number(error.status) === 204) {
-    errMsg = "Content not found.";
-  }
-
   if (error instanceof AxiosError) {
-    errMsg = error.response?.data.title;
+    if (error.response?.status === 204) {
+      errMsg = "Content not found.";
+    } else {
+      errMsg = error.response?.data?.title ?? errMsg;
+    }
   }
 
   toast.error(errMsg);

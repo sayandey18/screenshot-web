@@ -4,6 +4,7 @@ import { AuthLayout } from "@/features/auth/components/auth-layout";
 import { VerifyForm } from "@/features/auth/components/verify-form";
 import { useOtpFlow } from "@/features/auth/hooks/use-otp-flow";
 import { otpContext } from "@/features/auth/utils/otp-context";
+import { useAuthStore } from "@/stores/auth-store";
 
 export const Route = createFileRoute("/(auth)/sign-in/2fa")({
   beforeLoad: () => {
@@ -21,8 +22,13 @@ function SignInTwoFactorComponent() {
     onVerify: async (code) => {
       const { error } = await authClient.twoFactor.verifyOtp({ code });
       if (!error) {
-        const destination = otpContext.handleSuccess("otp:login-2fa", "/");
-        router.navigate({ to: destination, replace: true });
+        try {
+          await useAuthStore.getState().fetchSession();
+          const destination = otpContext.handleSuccess("otp:login-2fa", "/");
+          router.navigate({ to: destination, replace: true });
+        } catch (_e) {
+          return { error: { message: "Failed to initialize session." } };
+        }
       }
       return { error };
     },

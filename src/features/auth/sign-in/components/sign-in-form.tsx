@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/password-input";
+import { useAuthStore } from "@/stores/auth-store";
 import { otpContext } from "../../utils/otp-context";
 
 const formSchema = z.object({
@@ -44,11 +45,10 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
     await authClient.signIn.email(
       { email: data.email, password: data.password },
       {
-        onSuccess(ctx) {
-          setIsLoading(false);
-
+        async onSuccess(ctx) {
           // Intercept unverified users after succeeding passwords and force them to verify
           if (ctx.data.user && !ctx.data.user.emailVerified) {
+            setIsLoading(false);
             toast.error("Please verify your email to continue.");
             // Send OTP implicitly
             authClient.emailOtp.sendVerificationOtp({
@@ -67,12 +67,19 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
           }
 
           if (ctx.data.twoFactorRedirect) {
+            setIsLoading(false);
             // 2FA is enabled for this user — send OTP and show OTP step
             authClient.twoFactor.sendOtp();
             onTwoFactorRequired(data.email);
           } else {
             // No 2FA — session is active, navigate to destination
-            navigate({ to: redirectTo ?? "/", replace: true });
+            try {
+              await useAuthStore.getState().fetchSession();
+              navigate({ to: redirectTo ?? "/", replace: true });
+            } catch (_error) {
+              setIsLoading(false);
+              toast.error("Failed to initialize session. Please try again.");
+            }
           }
         },
         onError(ctx) {
@@ -123,7 +130,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
             <FormItem className="relative">
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <PasswordInput placeholder="********" {...field} />
+                <PasswordInput placeholder="••••••••" {...field} />
               </FormControl>
               <FormMessage />
               <Link

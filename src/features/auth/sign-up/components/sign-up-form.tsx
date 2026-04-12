@@ -108,7 +108,7 @@ export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) 
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <PasswordInput placeholder="********" {...field} />
+                <PasswordInput placeholder="••••••••" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -121,7 +121,7 @@ export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) 
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
-                <PasswordInput placeholder="********" {...field} />
+                <PasswordInput placeholder="••••••••" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

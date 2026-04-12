@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fonts } from "@/config/fonts";
-import { showSubmittedData } from "@/lib/show-submitted-data";
+import { showSubmittedData } from "@/lib/show-data";
 import { cn } from "@/lib/utils";
 import { useFont } from "@/context/font-provider";
 import { useTheme } from "@/context/theme-provider";
@@ -61,14 +61,14 @@ export function AppearanceForm() {
                   >
                     {fonts.map((font) => (
                       <option key={font} value={font}>
-                        {font}
+                        {font.replace("-", " ")}
                       </option>
                     ))}
                   </select>
                 </FormControl>
                 <ChevronDownIcon className="absolute end-3 top-2.5 h-4 w-4 opacity-50" />
               </div>
-              <FormDescription className="font-manrope">Set the font you want to use in the dashboard.</FormDescription>
+              <FormDescription>Set the font you want to use in the dashboard.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

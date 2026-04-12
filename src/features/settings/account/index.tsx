@@ -5,8 +5,7 @@ export function SettingsAccount() {
   return (
     <ContentSection
       title="Account"
-      desc="Update your account settings. Set your preferred language and
-          timezone."
+      desc="Update your account settings. Manage your password, 2FA, and sessions."
     >
       <AccountForm />
     </ContentSection>

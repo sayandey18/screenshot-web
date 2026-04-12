@@ -5,7 +5,7 @@ import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-qu
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useAuthStore } from "@/stores/auth-store";
-import { handleServerError } from "@/lib/handle-server-error";
+import { handleServerError } from "@/lib/handle-error";
 import { DirectionProvider } from "./context/direction-provider";
 import { FontProvider } from "./context/font-provider";
 import { ThemeProvider } from "./context/theme-provider";
@@ -68,8 +68,8 @@ const queryClient = new QueryClient({
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  context: { queryClient },
-  defaultPreload: "intent",
+  context: { queryClient, authStore: useAuthStore },
+  defaultPreload: false,
   defaultPreloadStaleTime: 0,
 });
 

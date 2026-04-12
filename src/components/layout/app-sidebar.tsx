@@ -4,9 +4,17 @@ import { AppTitle } from "./app-title";
 import { sidebarData } from "./data/sidebar-data";
 import { NavGroup } from "./nav-group";
 import { NavUser } from "./nav-user";
+import { useAuthStore } from "@/stores/auth-store";
 
 export function AppSidebar() {
   const { collapsible, variant } = useLayout();
+  const session = useAuthStore((s) => s.session);
+  
+  const user = {
+    name: session?.user?.name || "",
+    email: session?.user?.email || "",
+    avatar: session?.user?.image || "",
+  };
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
       <SidebarHeader>
@@ -18,7 +26,7 @@ export function AppSidebar() {
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={sidebarData.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );

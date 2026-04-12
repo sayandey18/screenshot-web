@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { showSubmittedData } from "@/lib/show-submitted-data";
+import { showSubmittedData } from "@/lib/show-data";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -98,22 +98,22 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: UserAction
     resolver: zodResolver(formSchema),
     defaultValues: isEdit
       ? {
-          ...currentRow,
-          password: "",
-          confirmPassword: "",
-          isEdit,
-        }
+        ...currentRow,
+        password: "",
+        confirmPassword: "",
+        isEdit,
+      }
       : {
-          firstName: "",
-          lastName: "",
-          username: "",
-          email: "",
-          role: "",
-          phoneNumber: "",
-          password: "",
-          confirmPassword: "",
-          isEdit,
-        },
+        firstName: "",
+        lastName: "",
+        username: "",
+        email: "",
+        role: "",
+        phoneNumber: "",
+        password: "",
+        confirmPassword: "",
+        isEdit,
+      },
   });
 
   const onSubmit = (values: UserForm) => {
