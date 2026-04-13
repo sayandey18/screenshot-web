@@ -17,7 +17,9 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   isLoading: false,
   fetchSession: async () => {
     if (get().isLoading) return;
-    set({ isLoading: true });
+    if (!get().session) {
+      set({ isLoading: true });
+    }
     try {
       const { data } = await authClient.getSession();
       set({ session: data, isLoading: false });

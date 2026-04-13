@@ -1,16 +1,20 @@
+import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { showSubmittedData } from "@/lib/show-data";
+import { toast } from "sonner";
+import { api } from "@/lib/api";
+import { authClient } from "@/lib/auth-client";
+import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Camera, Trash2 } from "lucide-react";
+import { Camera, Loader, Trash2 } from "lucide-react";
 
 const profileFormSchema = z.object({
-  image: z.string().optional(),
+  image: z.string().nullable().optional(),
   name: z
     .string("Please enter your name.")
     .min(3, "Name must be at least 3 characters.")
@@ -22,21 +26,82 @@ const profileFormSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  bio: "I own a computer.",
-};
-
 export function ProfileForm() {
+  const [isUploading, setIsUploading] = useState(false);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+
+  const session = useAuthStore((s) => s.session);
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues,
-    mode: "onChange",
+    defaultValues: {
+      name: session?.user?.name || "",
+      image: session?.user?.image || null,
+      email: session?.user?.email || "",
+      company: session?.user?.company || "",
+      bio: session?.user?.bio || "",
+    },
+    // mode: "onChange",
   });
+
+  useEffect(() => {
+    if (session) {
+      form.setValue("image", session?.user?.image || null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.user?.image]);
+
+  async function onSubmit(data: ProfileFormValues) {
+    try {
+      const { error } = await authClient.updateUser({
+        name: data.name,
+        company: data.company,
+        bio: data.bio,
+      });
+      if (error) throw error;
+      await useAuthStore.getState().fetchSession();
+      toast.success("Profile updated successfully.");
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to update profile. Please try again.");
+    }
+  }
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const { data } = await api.post("/profile/avatar", formData);
+      form.setValue("image", data.user?.avatarUrl);
+      await useAuthStore.getState().fetchSession();
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to upload avatar.");
+    } finally {
+      setIsUploading(false);
+      if (avatarInputRef.current) {
+        avatarInputRef.current.value = "";
+      }
+    }
+  }
+
+  const deleteAvatar = async () => {
+    setIsUploading(true);
+    try {
+      await api.delete("/profile/avatar");
+      form.setValue("image", null, { shouldDirty: true });
+      await useAuthStore.getState().fetchSession();
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to remove avatar.");
+    } finally {
+      setIsUploading(false);
+    }
+  }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit((data) => showSubmittedData(data))} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           name="image"
@@ -46,34 +111,29 @@ export function ProfileForm() {
                 <div className="flex items-center gap-6">
                   <div className="relative group">
                     <Avatar className="h-25 w-25">
-                      <AvatarImage src={field.value || ""} />
+                      {field.value && <AvatarImage src={field.value} />}
                       <AvatarFallback className="text-xl">
                         {form.watch("name")?.substring(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                     <FormLabel
                       htmlFor="image"
-                      className="absolute inset-0 flex items-center justify-center rounded-full bg-black/20 opacity-0 transition-opacity cursor-pointer group-hover:opacity-100">
-                      <Camera className="h-6 w-6 text-white" />
+                      className={`absolute inset-0 flex items-center justify-center rounded-full bg-black/20 opacity-0 transition-opacity cursor-pointer group-hover:opacity-100 ${isUploading ? "opacity-100" : ""}`}>
+                      {isUploading ? (
+                        <Loader className="h-6 w-6 text-white animate-spin" />
+                      ) : (
+                        <Camera className="h-6 w-6 text-white" />
+                      )}
                     </FormLabel>
 
                     <Input
+                      ref={avatarInputRef}
                       id="image"
                       type="file"
                       accept="image/*"
                       className="hidden"
-                      onChange={async (e) => {
-                        const file = e.target.files?.[0]
-                        if (!file) return
-
-                        // Optional local preview
-                        const previewUrl = URL.createObjectURL(file)
-                        field.onChange(previewUrl)
-
-                        // TODO: Replace with actual upload logic
-                        // const uploadedUrl = await uploadAvatar(file)
-                        // field.onChange(uploadedUrl)
-                      }}
+                      onChange={handleAvatarUpload}
+                      disabled={isUploading}
                     />
                   </div>
 
@@ -90,7 +150,8 @@ export function ProfileForm() {
                           variant="outline"
                           size="sm"
                           className="mt-2"
-                          asChild
+                          disabled={isUploading}
+                          onClick={() => avatarInputRef.current?.click()}
                         >
                           <span>Change avatar</span>
                         </Button>
@@ -102,7 +163,7 @@ export function ProfileForm() {
                           variant="ghost"
                           size="sm"
                           className="text-destructive hover:text-destructive"
-                          onClick={() => field.onChange("")}
+                          onClick={deleteAvatar}
                         >
                           <Trash2 className="mr-2 h-4 w-4" />
                           Remove
@@ -140,10 +201,10 @@ export function ProfileForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="john@example.com" {...field} />
+                <Input placeholder="john@example.com" disabled {...field} />
               </FormControl>
               <FormDescription>
-                Enter your email address to update your profile.
+                Please contact support to change your email address.
               </FormDescription>
               <FormMessage />
             </FormItem>

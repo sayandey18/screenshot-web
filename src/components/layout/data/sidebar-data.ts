@@ -123,11 +123,6 @@ export const sidebarData: SidebarData = {
               url: "/settings/notifications",
               icon: Bell,
             },
-            {
-              title: "Display",
-              url: "/settings/display",
-              icon: Monitor,
-            },
           ],
         },
         {
