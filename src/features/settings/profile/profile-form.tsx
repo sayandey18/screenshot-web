@@ -2,16 +2,16 @@ import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Camera, Loader, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { useAuthStore } from "@/stores/auth-store";
 import { api } from "@/lib/api";
 import { authClient } from "@/lib/auth-client";
-import { useAuthStore } from "@/stores/auth-store";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Camera, Loader, Trash2 } from "lucide-react";
 
 const profileFormSchema = z.object({
   image: z.string().nullable().optional(),
@@ -84,7 +84,7 @@ export function ProfileForm() {
         avatarInputRef.current.value = "";
       }
     }
-  }
+  };
 
   const deleteAvatar = async () => {
     setIsUploading(true);
@@ -97,7 +97,7 @@ export function ProfileForm() {
     } finally {
       setIsUploading(false);
     }
-  }
+  };
 
   return (
     <Form {...form}>
@@ -109,7 +109,7 @@ export function ProfileForm() {
             <FormItem>
               <FormControl>
                 <div className="flex items-center gap-6">
-                  <div className="relative group">
+                  <div className="group relative">
                     <Avatar className="h-25 w-25">
                       {field.value && <AvatarImage src={field.value} />}
                       <AvatarFallback className="text-xl">
@@ -118,9 +118,10 @@ export function ProfileForm() {
                     </Avatar>
                     <FormLabel
                       htmlFor="image"
-                      className={`absolute inset-0 flex items-center justify-center rounded-full bg-black/20 opacity-0 transition-opacity cursor-pointer group-hover:opacity-100 ${isUploading ? "opacity-100" : ""}`}>
+                      className={`absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-black/20 opacity-0 transition-opacity group-hover:opacity-100 ${isUploading ? "opacity-100" : ""}`}
+                    >
                       {isUploading ? (
-                        <Loader className="h-6 w-6 text-white animate-spin" />
+                        <Loader className="h-6 w-6 animate-spin text-white" />
                       ) : (
                         <Camera className="h-6 w-6 text-white" />
                       )}
@@ -139,9 +140,7 @@ export function ProfileForm() {
 
                   <div className="space-y-1">
                     <FormLabel>Profile picture</FormLabel>
-                    <FormDescription>
-                      Click on the avatar to upload a new profile picture.
-                    </FormDescription>
+                    <FormDescription>Click on the avatar to upload a new profile picture.</FormDescription>
 
                     <div className="flex items-center gap-2">
                       <FormLabel htmlFor="image">
@@ -186,9 +185,7 @@ export function ProfileForm() {
               <FormControl>
                 <Input placeholder="John Doe" {...field} />
               </FormControl>
-              <FormDescription>
-                Name will be displayed on your profile.
-              </FormDescription>
+              <FormDescription>Name will be displayed on your profile.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -203,9 +200,7 @@ export function ProfileForm() {
               <FormControl>
                 <Input placeholder="john@example.com" disabled {...field} />
               </FormControl>
-              <FormDescription>
-                Please contact support to change your email address.
-              </FormDescription>
+              <FormDescription>Please contact support to change your email address.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -219,9 +214,7 @@ export function ProfileForm() {
               <FormControl>
                 <Input placeholder="Company name" {...field} />
               </FormControl>
-              <FormDescription>
-                Enter your company name to update your profile.
-              </FormDescription>
+              <FormDescription>Enter your company name to update your profile.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -235,9 +228,7 @@ export function ProfileForm() {
               <FormControl>
                 <Textarea placeholder="Tell us a little bit about yourself" className="resize-none" {...field} />
               </FormControl>
-              <FormDescription>
-                You can describe yourself in a few words.
-              </FormDescription>
+              <FormDescription>You can describe yourself in a few words.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

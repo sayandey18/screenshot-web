@@ -6,6 +6,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useAuthStore } from "@/stores/auth-store";
 import { handleServerError } from "@/lib/handle-error";
+import { NotFoundError } from "@/features/errors/not-found-error";
 import { DirectionProvider } from "./context/direction-provider";
 import { FontProvider } from "./context/font-provider";
 import { ThemeProvider } from "./context/theme-provider";
@@ -69,6 +70,7 @@ const queryClient = new QueryClient({
 const router = createRouter({
   routeTree,
   context: { queryClient, authStore: useAuthStore },
+  defaultNotFoundComponent: NotFoundError,
   defaultPreload: false,
   defaultPreloadStaleTime: 0,
 });

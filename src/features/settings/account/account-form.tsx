@@ -3,23 +3,25 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { authClient } from "@/lib/auth-client";
 import { useAuthStore } from "@/stores/auth-store";
+import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { PasswordInput } from "@/components/password-input";
 import { ActionDialog } from "./components/action-dialog";
 
-const accountFormSchema = z.object({
-  currentPassword: z.string().min(1, "Current password is required to change password"),
-  newPassword: z.string().min(7, "Password must be at least 7 characters long"),
-  confirmPassword: z.string().min(1, "Please confirm your password"),
-  twoFactorEnabled: z.boolean(),
-}).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+const accountFormSchema = z
+  .object({
+    currentPassword: z.string().min(1, "Current password is required to change password"),
+    newPassword: z.string().min(7, "Password must be at least 7 characters long"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+    twoFactorEnabled: z.boolean(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 type AccountFormValues = z.infer<typeof accountFormSchema>;
 
@@ -143,15 +145,10 @@ export function AccountForm() {
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
                     <FormLabel className="text-base">Two-Factor Authentication</FormLabel>
-                    <FormDescription>
-                      Add an extra layer of security to your account during sign in.
-                    </FormDescription>
+                    <FormDescription>Add an extra layer of security to your account during sign in.</FormDescription>
                   </div>
                   <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={() => setIs2faDialogOpen(true)}
-                    />
+                    <Switch checked={field.value} onCheckedChange={() => setIs2faDialogOpen(true)} />
                   </FormControl>
                 </FormItem>
               )}
@@ -165,9 +162,7 @@ export function AccountForm() {
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 font-normal">
               <div className="space-y-0.5">
                 <FormLabel className="text-base">Log out all devices</FormLabel>
-                <FormDescription>
-                  This will terminate all your sessions except for the current one.
-                </FormDescription>
+                <FormDescription>This will terminate all your sessions except for the current one.</FormDescription>
               </div>
               <FormControl>
                 <Button
@@ -177,7 +172,7 @@ export function AccountForm() {
                   onClick={handleRevokeOtherSessions}
                   disabled={isRevoking}
                 >
-                  {isRevoking ? "Revoking..." : "Log out all"}
+                  {isRevoking ? "Revoking..." : "Log out everywhere"}
                 </Button>
               </FormControl>
             </FormItem>
@@ -185,18 +180,11 @@ export function AccountForm() {
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
                 <FormLabel className="text-base">Delete account</FormLabel>
-                <FormDescription>
-                  This will permanently delete your account and all your data.
-                </FormDescription>
+                <FormDescription>This will permanently delete your account and all your data.</FormDescription>
               </div>
               <FormControl>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => setIsDeleteDialogOpen(true)}
-                >
-                  Delete
+                <Button type="button" variant="destructive" size="sm" onClick={() => setIsDeleteDialogOpen(true)}>
+                  Delete permanently
                 </Button>
               </FormControl>
             </FormItem>
@@ -213,11 +201,7 @@ export function AccountForm() {
           }}
         />
 
-        <ActionDialog
-          open={isDeleteDialogOpen}
-          onOpenChange={setIsDeleteDialogOpen}
-          type="delete-account"
-        />
+        <ActionDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} type="delete-account" />
       </form>
     </Form>
   );

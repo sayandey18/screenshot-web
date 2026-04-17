@@ -1,10 +1,10 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { useAuthStore } from "@/stores/auth-store";
 import { authClient } from "@/lib/auth-client";
 import { AuthLayout } from "@/features/auth/components/auth-layout";
 import { VerifyForm } from "@/features/auth/components/verify-form";
 import { useOtpFlow } from "@/features/auth/hooks/use-otp-flow";
 import { otpContext } from "@/features/auth/utils/otp-context";
-import { useAuthStore } from "@/stores/auth-store";
 
 export const Route = createFileRoute("/(auth)/sign-in/2fa")({
   beforeLoad: () => {

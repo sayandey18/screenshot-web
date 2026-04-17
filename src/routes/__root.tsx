@@ -4,11 +4,11 @@ import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Loader2 } from "lucide-react";
+import { useAuthStore } from "@/stores/auth-store";
 import { Toaster } from "@/components/ui/sonner";
 import { NavigationProgress } from "@/components/navigation-progress";
 import { GeneralError } from "@/features/errors/general-error";
 import { NotFoundError } from "@/features/errors/not-found-error";
-import { useAuthStore } from "@/stores/auth-store";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -38,11 +38,14 @@ function RootComponent() {
     window.addEventListener("focus", onFocus);
     window.addEventListener("visibilitychange", onVisibilityChange);
 
-    const intervalId = setInterval(() => {
-      if (!document.hidden) {
-        void fetchSession();
-      }
-    }, 10 * 60 * 1000); // 10 minutes
+    const intervalId = setInterval(
+      () => {
+        if (!document.hidden) {
+          void fetchSession();
+        }
+      },
+      10 * 60 * 1000
+    ); // 10 minutes
 
     return () => {
       window.removeEventListener("focus", onFocus);

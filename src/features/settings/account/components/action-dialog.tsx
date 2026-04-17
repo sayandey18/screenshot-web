@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { toast } from "sonner";
 import { Download, Copy, Check } from "lucide-react";
+import { toast } from "sonner";
+import { useAuthStore } from "@/stores/auth-store";
 import { authClient } from "@/lib/auth-client";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { PasswordInput } from "@/components/password-input";
-import { useAuthStore } from "@/stores/auth-store";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Checkbox } from "@/components/ui/checkbox";
 
 interface ActionDialogProps {
   open: boolean;
@@ -165,11 +165,7 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
       title={getTitles()}
       desc={getDescriptions()}
       confirmText={
-        type === "delete-account"
-          ? "Delete Account"
-          : step === "backup-codes"
-            ? "Complete Setup"
-            : "Confirm"
+        type === "delete-account" ? "Delete Account" : step === "backup-codes" ? "Complete Setup" : "Confirm"
       }
       destructive={type === "delete-account" || step === "disable"}
       isLoading={isLoading}
@@ -186,9 +182,7 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      {type === "delete-account" ? "Confirm Password" : "Password"}
-                    </FormLabel>
+                    <FormLabel>{type === "delete-account" ? "Confirm Password" : "Password"}</FormLabel>
                     <FormControl>
                       <PasswordInput placeholder="Enter your password" {...field} />
                     </FormControl>
@@ -207,11 +201,11 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
                 <h4 className="text-sm font-medium">Backup Codes</h4>
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" onClick={copyToClipboard} className="h-8">
-                    {copied ? <Check className="h-3 w-3 mr-2" /> : <Copy className="h-3 w-3 mr-2" />}
+                    {copied ? <Check className="mr-2 h-3 w-3" /> : <Copy className="mr-2 h-3 w-3" />}
                     Copy
                   </Button>
                   <Button variant="outline" size="sm" onClick={downloadBackupCodes} className="h-8">
-                    <Download className="h-3 w-3 mr-2" />
+                    <Download className="mr-2 h-3 w-3" />
                     Download
                   </Button>
                 </div>
@@ -219,7 +213,7 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
               <ScrollArea className="h-40 rounded-md border p-3">
                 <div className="grid grid-cols-2 gap-2 font-mono text-xs">
                   {backupCodes.map((code) => (
-                    <div key={code} className="p-1 text-center bg-muted/50 rounded">
+                    <div key={code} className="rounded bg-muted/50 p-1 text-center">
                       {code}
                     </div>
                   ))}
@@ -228,21 +222,16 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
             </div>
 
             <div className="flex items-start space-x-2 rounded-lg border border-primary/20 bg-primary/5 p-3">
-              <Checkbox
-                id="saved-codes"
-                checked={hasSavedCodes}
-                onCheckedChange={(val) => setHasSavedCodes(!!val)}
-              />
+              <Checkbox id="saved-codes" checked={hasSavedCodes} onCheckedChange={(val) => setHasSavedCodes(!!val)} />
               <div className="grid gap-1.5 leading-none">
                 <label
                   htmlFor="saved-codes"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   I have saved my backup codes securely.
                 </label>
                 <p className="text-xs text-muted-foreground">
-                  You understand that you will need these codes to access your account if you lose
-                  access to your email.
+                  You understand that you will need these codes to access your account if you lose access to your email.
                 </p>
               </div>
             </div>

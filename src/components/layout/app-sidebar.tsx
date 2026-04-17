@@ -1,15 +1,15 @@
+import { useAuthStore } from "@/stores/auth-store";
 import { useLayout } from "@/context/layout-provider";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/ui/sidebar";
 import { AppTitle } from "./app-title";
 import { sidebarData } from "./data/sidebar-data";
 import { NavGroup } from "./nav-group";
 import { NavUser } from "./nav-user";
-import { useAuthStore } from "@/stores/auth-store";
 
 export function AppSidebar() {
   const { collapsible, variant } = useLayout();
   const session = useAuthStore((s) => s.session);
-  
+
   const user = {
     name: session?.user?.name || "",
     email: session?.user?.email || "",
