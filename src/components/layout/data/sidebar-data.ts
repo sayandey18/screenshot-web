@@ -1,8 +1,6 @@
 import {
   Construction,
   LayoutDashboard,
-  Code,
-  Key,
   Bug,
   ListTodo,
   FileX,
