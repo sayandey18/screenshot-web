@@ -4,6 +4,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/compone
 import { AppTitle } from "./app-title";
 import { sidebarData } from "./data/sidebar-data";
 import { NavGroup } from "./nav-group";
+import { NavPlan } from "./nav-plan";
 import { NavUser } from "./nav-user";
 
 export function AppSidebar() {
@@ -15,6 +16,13 @@ export function AppSidebar() {
     email: session?.user?.email || "",
     avatar: session?.user?.image || "",
   };
+
+  const plan = {
+    name: "Starter",
+    used: 74,
+    limit: 1000,
+  };
+
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
       <SidebarHeader>
@@ -26,6 +34,7 @@ export function AppSidebar() {
         ))}
       </SidebarContent>
       <SidebarFooter>
+        <NavPlan plan={plan} />
         <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>

@@ -50,7 +50,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           >
             Delete
             <DropdownMenuShortcut>
-              <Trash2 size={16} />
+              <Trash2 className="text-red-500!" size={16} />
             </DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>

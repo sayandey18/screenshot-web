@@ -66,10 +66,11 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
             setCurrentRow(task);
             setOpen("delete");
           }}
+          className="text-red-500!"
         >
           Delete
           <DropdownMenuShortcut>
-            <Trash2 size={16} />
+            <Trash2 className="text-red-500!" size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
