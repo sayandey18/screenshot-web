@@ -1,10 +1,10 @@
-import { UseFormReturn } from "react-hook-form";
+import { type UseFormReturn } from "react-hook-form";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
-import { OtpFormValues } from "../hooks/use-otp-flow";
+import { type OtpFormValues } from "../hooks/use-otp-flow";
 
 interface VerifyFormProps extends React.HTMLAttributes<HTMLFormElement> {
   form: UseFormReturn<OtpFormValues>;
@@ -25,7 +25,6 @@ export function VerifyForm({
   className,
   ...props
 }: VerifyFormProps) {
-  // eslint-disable-next-line react-hooks/incompatible-library
   const code = form.watch("code");
 
   return (

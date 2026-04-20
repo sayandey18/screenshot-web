@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useAuthStore } from "@/stores/auth-store";
 import { authClient } from "@/lib/auth-client";
+import { sleep } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
@@ -66,22 +67,26 @@ export function AccountForm() {
         newPassword: "",
         confirmPassword: "",
       });
-    } catch (error: any) {
-      toast.error(error.message || "Failed to update password.");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to update password.";
+      toast.error(message);
     }
   }
 
   const handleRevokeOtherSessions = async () => {
     setIsRevoking(true);
-    try {
-      const { error } = await authClient.revokeOtherSessions();
-      if (error) throw error;
-      toast.success("Successfully logged out of all other devices.");
-    } catch (error: any) {
-      toast.error(error.message || "Failed to revoke sessions.");
-    } finally {
-      setIsRevoking(false);
-    }
+    toast.promise(
+      sleep(2000).then(() => authClient.revokeOtherSessions()),
+      {
+        loading: "Revoking sessions...",
+        success: "Successfully logged out of all other devices.",
+        error: (err) => {
+          const message = err instanceof Error ? err.message : "Failed to revoke sessions.";
+          return message;
+        },
+      }
+    );
+    setIsRevoking(false);
   };
 
   return (
