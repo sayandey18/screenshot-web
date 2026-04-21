@@ -16,7 +16,7 @@ export const usersColumns: ColumnDef<User>[] = [
         checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
-        className="translate-y-[2px]"
+        className="translate-y-0.5"
       />
     ),
     meta: {
@@ -27,7 +27,7 @@ export const usersColumns: ColumnDef<User>[] = [
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
-        className="translate-y-[2px]"
+        className="translate-y-0.5"
       />
     ),
     enableSorting: false,
