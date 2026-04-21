@@ -7,7 +7,7 @@ import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
 export default defineConfig(
-  { ignores: ["dist", "src/components/ui"] },
+  { ignores: ["dist"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended, ...pluginQuery.configs["flat/recommended"]],
     files: ["**/*.{ts,tsx}"],
@@ -47,6 +47,17 @@ export default defineConfig(
       ],
       // Prevent duplicate imports from the same module
       "no-duplicate-imports": "error",
+    },
+  },
+  {
+    files: ["src/components/ui/**/*.{ts,tsx}"],
+    rules: {
+      "no-console": "off",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/consistent-type-imports": "off",
+      "react-refresh/only-export-components": "off",
+      "no-duplicate-imports": "off",
     },
   }
 );
