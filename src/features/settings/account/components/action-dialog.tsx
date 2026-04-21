@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -51,13 +51,6 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
     setHasSavedCodes(false);
   };
 
-  useEffect(() => {
-    if (!open) {
-      reset();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
-
   const handleAction = async (values: PasswordFormValues) => {
     setIsLoading(true);
     try {
@@ -91,8 +84,9 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
         toast.success("Account successfully deleted.");
         // Redirect is usually handled by auth provider or window location
       }
-    } catch (error: any) {
-      toast.error(error.message || "An error occurred. Please try again.");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "An error occurred. Please try again.";
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
@@ -160,6 +154,7 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
           toast.error("Save backup codes & confirm before closing.");
           return;
         }
+        if (!val) reset();
         onOpenChange(val);
       }}
       title={getTitles()}

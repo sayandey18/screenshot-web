@@ -13,6 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DataTablePagination } from "@/components/data-table";
 import { type ApiKeyItem } from "../data/schema";
 import { getApiKeysColumns } from "./api-keys-columns";
+import { DataTableBulkActions } from "./data-table-bulk-actions";
 
 type ApiKeysTableProps = {
   data: ApiKeyItem[];
@@ -23,6 +24,7 @@ type ApiKeysTableProps = {
   onManage: (row: ApiKeyItem) => void;
   onToggleStatus: (row: ApiKeyItem) => void;
   onDelete: (row: ApiKeyItem) => void;
+  onBulkDelete: (rows: ApiKeyItem[]) => Promise<void>;
 };
 
 export function ApiKeysTable({
@@ -34,6 +36,7 @@ export function ApiKeysTable({
   onManage,
   onToggleStatus,
   onDelete,
+  onBulkDelete,
 }: ApiKeysTableProps) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -153,6 +156,7 @@ export function ApiKeysTable({
       </div>
 
       {total > 10 ? <DataTablePagination table={table} className="mt-auto" /> : null}
+      <DataTableBulkActions table={table} onBulkDelete={onBulkDelete} />
     </div>
   );
 }

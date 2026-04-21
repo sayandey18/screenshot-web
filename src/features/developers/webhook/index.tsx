@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ContentSection } from "../components/content-section";
 
 export function DevelopersWebhook() {
@@ -11,13 +11,10 @@ export function DevelopersWebhook() {
             <CardTitle>Webhook Integrations</CardTitle>
             <Badge>Coming Soon</Badge>
           </div>
-          <CardDescription>Webhook configuration will be available in Phase 2.</CardDescription>
+          <CardDescription>
+            You will be able to register webhook endpoints to inspect delivery activity.
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            You will be able to register webhook endpoints, manage secrets, and inspect delivery activity.
-          </p>
-        </CardContent>
       </Card>
     </ContentSection>
   );

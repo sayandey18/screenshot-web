@@ -30,6 +30,10 @@ type CreateApiKeyValues = {
   expiresIn?: number;
 };
 
+type CreatedApiKeyResult = {
+  key: string;
+};
+
 type ApiClientResponse<T> =
   | {
       data: T;
@@ -125,21 +129,25 @@ export function DevelopersApiKeys() {
   }, [fetchApiKeys]);
 
   const handleCreate = useCallback(
-    async (values: CreateApiKeyValues) => {
+    async (values: CreateApiKeyValues): Promise<CreatedApiKeyResult | null> => {
       setIsCreating(true);
 
       try {
-        const response = (await authClient.apiKey.create(values)) as ApiClientResponse<unknown>;
+        const response = (await authClient.apiKey.create(values)) as ApiClientResponse<CreatedApiKeyResult>;
         if (!hasData(response)) {
           toast.error(response.error.message || "Failed to create API key.");
-          return;
+          return null;
         }
 
+        const createdKey = typeof response.data.key === "string" ? response.data.key : null;
+
         toast.success("API key created successfully.");
-        setOpenCreate(false);
         await fetchApiKeys();
+
+        return createdKey ? { key: createdKey } : null;
       } catch (error) {
         toast.error(getErrorMessage(error, "Failed to create API key."));
+        return null;
       } finally {
         setIsCreating(false);
       }
@@ -228,6 +236,20 @@ export function DevelopersApiKeys() {
 
   const tableData = useMemo(() => apiKeys, [apiKeys]);
 
+  const handleBulkDelete = useCallback(
+    async (rows: ApiKeyItem[]) => {
+      for (const row of rows) {
+        const response = (await authClient.apiKey.delete({ keyId: row.id })) as ApiClientResponse<unknown>;
+        if (!hasData(response)) {
+          throw new Error(response.error.message || "Failed to delete selected API keys.");
+        }
+      }
+
+      await fetchApiKeys();
+    },
+    [fetchApiKeys]
+  );
+
   return (
     <ContentSection title="API Keys" desc="Create, manage, and delete API keys for your integrations.">
       <>
@@ -254,6 +276,7 @@ export function DevelopersApiKeys() {
               setCurrentRow(row);
               setOpenDelete(true);
             }}
+            onBulkDelete={handleBulkDelete}
           />
         </div>
 

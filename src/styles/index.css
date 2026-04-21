@@ -1,6 +1,6 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
-@import './theme.css';
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./theme.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -26,7 +26,7 @@
   @apply after:pointer-events-none after:absolute after:inset-s-0 after:bottom-0 after:hidden after:h-32 after:w-full after:rounded-b-2xl md:after:block;
 
   &::after {
-    content: '';
+    content: "";
     background: linear-gradient(180deg, transparent 10%, var(--background) 70%);
   }
 }
