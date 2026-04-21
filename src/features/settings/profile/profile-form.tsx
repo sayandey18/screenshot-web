@@ -61,8 +61,9 @@ export function ProfileForm() {
       if (error) throw error;
       await useAuthStore.getState().fetchSession();
       toast.success("Profile updated successfully.");
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to update profile. Please try again.");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to update profile. Please try again.";
+      toast.error(message);
     }
   }
 
@@ -76,8 +77,9 @@ export function ProfileForm() {
       const { data } = await api.post("/profile/avatar", formData);
       form.setValue("image", data.user?.avatarUrl);
       await useAuthStore.getState().fetchSession();
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to upload avatar.");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to upload avatar.";
+      toast.error(message);
     } finally {
       setIsUploading(false);
       if (avatarInputRef.current) {
@@ -92,8 +94,9 @@ export function ProfileForm() {
       await api.delete("/profile/avatar");
       form.setValue("image", null, { shouldDirty: true });
       await useAuthStore.getState().fetchSession();
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to remove avatar.");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to remove avatar.";
+      toast.error(message);
     } finally {
       setIsUploading(false);
     }
@@ -112,9 +115,7 @@ export function ProfileForm() {
                   <div className="group relative">
                     <Avatar className="h-25 w-25">
                       {field.value && <AvatarImage src={field.value} />}
-                      <AvatarFallback className="text-xl">
-                        {form.watch("name")?.substring(0, 2).toUpperCase()}
-                      </AvatarFallback>
+                      <AvatarFallback className="text-xl">{field.value?.substring(0, 2).toUpperCase()}</AvatarFallback>
                     </Avatar>
                     <FormLabel
                       htmlFor="image"

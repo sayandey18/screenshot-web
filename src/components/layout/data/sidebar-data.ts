@@ -1,21 +1,4 @@
-import {
-  Construction,
-  LayoutDashboard,
-  Bug,
-  ListTodo,
-  FileX,
-  HelpCircle,
-  Lock,
-  Bell,
-  Palette,
-  ServerOff,
-  Settings,
-  Wrench,
-  UserCog,
-  UserX,
-  Users,
-  ShieldCheck,
-} from "lucide-react";
+import { LayoutDashboard, ListTodo, HelpCircle, Bell, Palette, Settings, Wrench, UserCog, Users } from "lucide-react";
 import { type SidebarData } from "../types";
 
 export const sidebarData: SidebarData = {
