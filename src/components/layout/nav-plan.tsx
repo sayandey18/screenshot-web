@@ -1,6 +1,5 @@
 import { Crown, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
 
 type NavPlanProps = {
@@ -20,7 +19,7 @@ export function NavPlan({ plan }: NavPlanProps) {
       <SidebarMenuItem>
         <div
           className={cn(
-            "flex flex-col gap-2 rounded-md border border-sidebar-border bg-gray-50 p-3 transition-all",
+            "flex flex-col gap-2 rounded-md border border-sidebar-border bg-muted/25 p-3 transition-all",
             isCollapsed && "hidden"
           )}
         >
@@ -50,10 +49,6 @@ export function NavPlan({ plan }: NavPlanProps) {
               />
             </div>
           </div>
-
-          {/* <Button size="sm" className="h-8 w-full text-xs font-bold shadow-none">
-            Upgrade
-          </Button> */}
         </div>
 
         {/* Collapsed view */}

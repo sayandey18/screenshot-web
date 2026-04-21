@@ -49,7 +49,7 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
         return <LongText className="w-48">{name}</LongText>;
       },
       meta: {
-        className: "w-48 md:w-80 ps-0.5",
+        className: "w-42 md:w-65 ps-0.5",
       },
       enableSorting: false,
       enableHiding: false,
@@ -59,7 +59,7 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
       header: ({ column }) => <DataTableColumnHeader column={column} title="Preview" />,
       cell: ({ row }) => {
         const start = row.original.start ? row.original.start : "Not available";
-        return <span className="font-mono text-xs">{start}</span>;
+        return <span className="text-sm">{start}</span>;
       },
       enableSorting: false,
     },
@@ -109,11 +109,20 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
       enableHiding: false,
     },
     {
+      accessorKey: "createdAt",
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Created" />,
+      cell: ({ row }) => {
+        return <span className="text-muted-foreground">{format(row.original.createdAt, "MMM d, yyyy")}</span>;
+      },
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
       accessorKey: "expiresAt",
       header: ({ column }) => <DataTableColumnHeader column={column} title="Expires" />,
       cell: ({ row }) => {
         if (!row.original.expiresAt) return <span className="text-muted-foreground">Never</span>;
-        return <span className="ps-3">{format(row.original.expiresAt, "MMM d, yyyy")}</span>;
+        return <span className="text-muted-foreground">{format(row.original.expiresAt, "MMM d, yyyy")}</span>;
       },
       enableSorting: false,
       enableHiding: false,

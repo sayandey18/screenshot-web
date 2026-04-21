@@ -1,6 +1,6 @@
 import {
-  LayoutDashboard,
-  ListTodo,
+  SquareLibrary,
+  Activity,
   HelpCircle,
   Bell,
   Palette,
@@ -8,7 +8,7 @@ import {
   Wrench,
   UserCog,
   Users,
-  Code2,
+  Terminal,
 } from "lucide-react";
 import { type SidebarData } from "../types";
 
@@ -25,12 +25,12 @@ export const sidebarData: SidebarData = {
         {
           title: "Dashboard",
           url: "/dashboard",
-          icon: LayoutDashboard,
+          icon: SquareLibrary,
         },
         {
           title: "Tasks",
           url: "/tasks",
-          icon: ListTodo,
+          icon: Activity,
         },
         {
           title: "Users",
@@ -40,7 +40,7 @@ export const sidebarData: SidebarData = {
         {
           title: "Developers",
           url: "/developers",
-          icon: Code2,
+          icon: Terminal,
         },
       ],
     },

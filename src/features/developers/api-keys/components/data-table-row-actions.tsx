@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { type Row } from "@tanstack/react-table";
-import { Ban, CheckCircle2, Pencil, Trash2 } from "lucide-react";
+import { Ban, CircleArrowUp, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -42,7 +42,9 @@ export function DataTableRowActions({ row, onManage, onToggleStatus, onDelete }:
           <>
             <DropdownMenuItem onClick={() => onToggleStatus(row.original)}>
               {isDisabled ? "Enable" : "Disable"}
-              <DropdownMenuShortcut>{isDisabled ? <CheckCircle2 size={16} /> : <Ban size={16} />}</DropdownMenuShortcut>
+              <DropdownMenuShortcut>
+                {isDisabled ? <CircleArrowUp size={16} /> : <Ban size={16} />}
+              </DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
           </>
