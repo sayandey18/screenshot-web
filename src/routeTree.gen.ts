@@ -18,10 +18,12 @@ import { Route as errors404RouteImport } from './routes/(errors)/404'
 import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
+import { Route as AuthenticatedDevelopersRouteRouteImport } from './routes/_authenticated/developers/route'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
+import { Route as AuthenticatedDevelopersIndexRouteImport } from './routes/_authenticated/developers/index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
 import { Route as authSignUpIndexRouteImport } from './routes/(auth)/sign-up/index'
 import { Route as authSignInIndexRouteImport } from './routes/(auth)/sign-in/index'
@@ -30,6 +32,7 @@ import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
+import { Route as AuthenticatedDevelopersWebhookRouteImport } from './routes/_authenticated/developers/webhook'
 import { Route as authSignUpVerifyRouteImport } from './routes/(auth)/sign-up/verify'
 import { Route as authSignIn2faRouteImport } from './routes/(auth)/sign-in/2fa'
 
@@ -77,6 +80,12 @@ const AuthenticatedSettingsRouteRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDevelopersRouteRoute =
+  AuthenticatedDevelopersRouteRouteImport.update({
+    id: '/developers',
+    path: '/developers',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
@@ -98,6 +107,12 @@ const AuthenticatedHelpCenterIndexRoute =
     id: '/help-center/',
     path: '/help-center/',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDevelopersIndexRoute =
+  AuthenticatedDevelopersIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDevelopersRouteRoute,
   } as any)
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexRouteImport.update({
@@ -144,6 +159,12 @@ const AuthenticatedErrorsErrorRoute =
     path: '/errors/$error',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDevelopersWebhookRoute =
+  AuthenticatedDevelopersWebhookRouteImport.update({
+    id: '/webhook',
+    path: '/webhook',
+    getParentRoute: () => AuthenticatedDevelopersRouteRoute,
+  } as any)
 const authSignUpVerifyRoute = authSignUpVerifyRouteImport.update({
   id: '/sign-up/verify',
   path: '/sign-up/verify',
@@ -157,6 +178,7 @@ const authSignIn2faRoute = authSignIn2faRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof publicIndexRoute
+  '/developers': typeof AuthenticatedDevelopersRouteRouteWithChildren
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/401': typeof errors401Route
   '/403': typeof errors403Route
@@ -165,6 +187,7 @@ export interface FileRoutesByFullPath {
   '/503': typeof errors503Route
   '/sign-in/2fa': typeof authSignIn2faRoute
   '/sign-up/verify': typeof authSignUpVerifyRoute
+  '/developers/webhook': typeof AuthenticatedDevelopersWebhookRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
@@ -173,6 +196,7 @@ export interface FileRoutesByFullPath {
   '/sign-in/': typeof authSignInIndexRoute
   '/sign-up/': typeof authSignUpIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/developers/': typeof AuthenticatedDevelopersIndexRoute
   '/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/tasks/': typeof AuthenticatedTasksIndexRoute
@@ -187,6 +211,7 @@ export interface FileRoutesByTo {
   '/503': typeof errors503Route
   '/sign-in/2fa': typeof authSignIn2faRoute
   '/sign-up/verify': typeof authSignUpVerifyRoute
+  '/developers/webhook': typeof AuthenticatedDevelopersWebhookRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
@@ -195,6 +220,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof authSignInIndexRoute
   '/sign-up': typeof authSignUpIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/developers': typeof AuthenticatedDevelopersIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
@@ -204,6 +230,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(auth)': typeof authRouteRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_authenticated/developers': typeof AuthenticatedDevelopersRouteRouteWithChildren
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/(errors)/401': typeof errors401Route
   '/(errors)/403': typeof errors403Route
@@ -213,6 +240,7 @@ export interface FileRoutesById {
   '/(public)/': typeof publicIndexRoute
   '/(auth)/sign-in/2fa': typeof authSignIn2faRoute
   '/(auth)/sign-up/verify': typeof authSignUpVerifyRoute
+  '/_authenticated/developers/webhook': typeof AuthenticatedDevelopersWebhookRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
@@ -221,6 +249,7 @@ export interface FileRoutesById {
   '/(auth)/sign-in/': typeof authSignInIndexRoute
   '/(auth)/sign-up/': typeof authSignUpIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/developers/': typeof AuthenticatedDevelopersIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
@@ -230,6 +259,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/developers'
     | '/settings'
     | '/401'
     | '/403'
@@ -238,6 +268,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/sign-in/2fa'
     | '/sign-up/verify'
+    | '/developers/webhook'
     | '/errors/$error'
     | '/settings/account'
     | '/settings/appearance'
@@ -246,6 +277,7 @@ export interface FileRouteTypes {
     | '/sign-in/'
     | '/sign-up/'
     | '/dashboard/'
+    | '/developers/'
     | '/help-center/'
     | '/settings/'
     | '/tasks/'
@@ -260,6 +292,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/sign-in/2fa'
     | '/sign-up/verify'
+    | '/developers/webhook'
     | '/errors/$error'
     | '/settings/account'
     | '/settings/appearance'
@@ -268,6 +301,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/dashboard'
+    | '/developers'
     | '/help-center'
     | '/settings'
     | '/tasks'
@@ -276,6 +310,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/(auth)'
     | '/_authenticated'
+    | '/_authenticated/developers'
     | '/_authenticated/settings'
     | '/(errors)/401'
     | '/(errors)/403'
@@ -285,6 +320,7 @@ export interface FileRouteTypes {
     | '/(public)/'
     | '/(auth)/sign-in/2fa'
     | '/(auth)/sign-up/verify'
+    | '/_authenticated/developers/webhook'
     | '/_authenticated/errors/$error'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
@@ -293,6 +329,7 @@ export interface FileRouteTypes {
     | '/(auth)/sign-in/'
     | '/(auth)/sign-up/'
     | '/_authenticated/dashboard/'
+    | '/_authenticated/developers/'
     | '/_authenticated/help-center/'
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
@@ -375,6 +412,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/developers': {
+      id: '/_authenticated/developers'
+      path: '/developers'
+      fullPath: '/developers'
+      preLoaderRoute: typeof AuthenticatedDevelopersRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/users/': {
       id: '/_authenticated/users/'
       path: '/users'
@@ -402,6 +446,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/help-center/'
       preLoaderRoute: typeof AuthenticatedHelpCenterIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/developers/': {
+      id: '/_authenticated/developers/'
+      path: '/'
+      fullPath: '/developers/'
+      preLoaderRoute: typeof AuthenticatedDevelopersIndexRouteImport
+      parentRoute: typeof AuthenticatedDevelopersRouteRoute
     }
     '/_authenticated/dashboard/': {
       id: '/_authenticated/dashboard/'
@@ -459,6 +510,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedErrorsErrorRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/developers/webhook': {
+      id: '/_authenticated/developers/webhook'
+      path: '/webhook'
+      fullPath: '/developers/webhook'
+      preLoaderRoute: typeof AuthenticatedDevelopersWebhookRouteImport
+      parentRoute: typeof AuthenticatedDevelopersRouteRoute
+    }
     '/(auth)/sign-up/verify': {
       id: '/(auth)/sign-up/verify'
       path: '/sign-up/verify'
@@ -496,6 +554,22 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
   authRouteRouteChildren,
 )
 
+interface AuthenticatedDevelopersRouteRouteChildren {
+  AuthenticatedDevelopersWebhookRoute: typeof AuthenticatedDevelopersWebhookRoute
+  AuthenticatedDevelopersIndexRoute: typeof AuthenticatedDevelopersIndexRoute
+}
+
+const AuthenticatedDevelopersRouteRouteChildren: AuthenticatedDevelopersRouteRouteChildren =
+  {
+    AuthenticatedDevelopersWebhookRoute: AuthenticatedDevelopersWebhookRoute,
+    AuthenticatedDevelopersIndexRoute: AuthenticatedDevelopersIndexRoute,
+  }
+
+const AuthenticatedDevelopersRouteRouteWithChildren =
+  AuthenticatedDevelopersRouteRoute._addFileChildren(
+    AuthenticatedDevelopersRouteRouteChildren,
+  )
+
 interface AuthenticatedSettingsRouteRouteChildren {
   AuthenticatedSettingsAccountRoute: typeof AuthenticatedSettingsAccountRoute
   AuthenticatedSettingsAppearanceRoute: typeof AuthenticatedSettingsAppearanceRoute
@@ -518,6 +592,7 @@ const AuthenticatedSettingsRouteRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDevelopersRouteRoute: typeof AuthenticatedDevelopersRouteRouteWithChildren
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
@@ -527,6 +602,8 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDevelopersRouteRoute:
+    AuthenticatedDevelopersRouteRouteWithChildren,
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
   AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,

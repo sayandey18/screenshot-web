@@ -1,4 +1,15 @@
-import { LayoutDashboard, ListTodo, HelpCircle, Bell, Palette, Settings, Wrench, UserCog, Users } from "lucide-react";
+import {
+  LayoutDashboard,
+  ListTodo,
+  HelpCircle,
+  Bell,
+  Palette,
+  Settings,
+  Wrench,
+  UserCog,
+  Users,
+  Code2,
+} from "lucide-react";
 import { type SidebarData } from "../types";
 
 export const sidebarData: SidebarData = {
@@ -25,6 +36,11 @@ export const sidebarData: SidebarData = {
           title: "Users",
           url: "/users",
           icon: Users,
+        },
+        {
+          title: "Developers",
+          url: "/developers",
+          icon: Code2,
         },
       ],
     },
