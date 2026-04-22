@@ -4,7 +4,7 @@ import { AnalyticsChart } from "./analytics-chart";
 export function Analytics() {
   return (
     <div className="space-y-4">
-      <Card>
+      {/*<Card>
         <CardHeader>
           <CardTitle>Traffic Overview</CardTitle>
           <CardDescription>Weekly clicks and unique visitors</CardDescription>
@@ -12,7 +12,9 @@ export function Analytics() {
         <CardContent className="px-6">
           <AnalyticsChart />
         </CardContent>
-      </Card>
+      </Card>*/}
+
+      <AnalyticsChart />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
