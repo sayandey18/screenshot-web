@@ -17,8 +17,8 @@ export const sidebarData: SidebarData = {
           icon: SquareLibrary,
         },
         {
-          title: "Tasks",
-          url: "/tasks",
+          title: "Usage",
+          url: "/usage",
           icon: Activity,
         },
         {

@@ -19,7 +19,7 @@ type DataTableBulkActionsProps<TData> = {
  * @template TData The type of data in the table.
  * @param {object} props The component props.
  * @param {Table<TData>} props.table The react-table instance.
- * @param {string} props.entityName The name of the entity being acted upon (e.g., "task", "user").
+ * @param {string} props.entityName The name of the entity being acted upon (e.g., "item", "user").
  * @param {React.ReactNode} props.children The action buttons to be rendered inside the toolbar.
  * @returns {React.ReactNode | null} The rendered component or null if no rows are selected.
  */
