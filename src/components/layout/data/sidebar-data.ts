@@ -1,15 +1,4 @@
-import {
-  SquareLibrary,
-  Activity,
-  HelpCircle,
-  Bell,
-  Palette,
-  Settings,
-  Wrench,
-  UserCog,
-  Users,
-  Terminal,
-} from "lucide-react";
+import { SquareLibrary, Activity, HelpCircle, Settings, Users, Orbit, Terminal } from "lucide-react";
 import { type SidebarData } from "../types";
 
 export const sidebarData: SidebarData = {
@@ -20,7 +9,7 @@ export const sidebarData: SidebarData = {
   },
   navGroups: [
     {
-      title: "General",
+      title: "",
       items: [
         {
           title: "Dashboard",
@@ -38,40 +27,19 @@ export const sidebarData: SidebarData = {
           icon: Users,
         },
         {
+          title: "Subscription",
+          url: "/subscription",
+          icon: Orbit,
+        },
+        {
           title: "Developers",
           url: "/developers",
           icon: Terminal,
         },
-      ],
-    },
-    {
-      title: "Other",
-      items: [
         {
           title: "Settings",
+          url: "/settings",
           icon: Settings,
-          items: [
-            {
-              title: "Profile",
-              url: "/settings",
-              icon: UserCog,
-            },
-            {
-              title: "Account",
-              url: "/settings/account",
-              icon: Wrench,
-            },
-            {
-              title: "Appearance",
-              url: "/settings/appearance",
-              icon: Palette,
-            },
-            {
-              title: "Notifications",
-              url: "/settings/notifications",
-              icon: Bell,
-            },
-          ],
         },
         {
           title: "Help Center",

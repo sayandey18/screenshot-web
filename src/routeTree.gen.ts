@@ -17,10 +17,12 @@ import { Route as errors500RouteImport } from './routes/(errors)/500'
 import { Route as errors404RouteImport } from './routes/(errors)/404'
 import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
+import { Route as AuthenticatedSubscriptionRouteRouteImport } from './routes/_authenticated/subscription/route'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedDevelopersRouteRouteImport } from './routes/_authenticated/developers/route'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
+import { Route as AuthenticatedSubscriptionIndexRouteImport } from './routes/_authenticated/subscription/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
 import { Route as AuthenticatedDevelopersIndexRouteImport } from './routes/_authenticated/developers/index'
@@ -28,6 +30,8 @@ import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authe
 import { Route as authSignUpIndexRouteImport } from './routes/(auth)/sign-up/index'
 import { Route as authSignInIndexRouteImport } from './routes/(auth)/sign-in/index'
 import { Route as authForgotIndexRouteImport } from './routes/(auth)/forgot/index'
+import { Route as AuthenticatedSubscriptionInvoicesRouteImport } from './routes/_authenticated/subscription/invoices'
+import { Route as AuthenticatedSubscriptionBillingRouteImport } from './routes/_authenticated/subscription/billing'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings/notifications'
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
@@ -74,6 +78,12 @@ const errors401Route = errors401RouteImport.update({
   path: '/401',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSubscriptionRouteRoute =
+  AuthenticatedSubscriptionRouteRouteImport.update({
+    id: '/subscription',
+    path: '/subscription',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsRouteRoute =
   AuthenticatedSettingsRouteRouteImport.update({
     id: '/settings',
@@ -96,6 +106,12 @@ const AuthenticatedTasksIndexRoute = AuthenticatedTasksIndexRouteImport.update({
   path: '/tasks/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSubscriptionIndexRoute =
+  AuthenticatedSubscriptionIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedSubscriptionRouteRoute,
+  } as any)
 const AuthenticatedSettingsIndexRoute =
   AuthenticatedSettingsIndexRouteImport.update({
     id: '/',
@@ -135,6 +151,18 @@ const authForgotIndexRoute = authForgotIndexRouteImport.update({
   path: '/forgot/',
   getParentRoute: () => authRouteRoute,
 } as any)
+const AuthenticatedSubscriptionInvoicesRoute =
+  AuthenticatedSubscriptionInvoicesRouteImport.update({
+    id: '/invoices',
+    path: '/invoices',
+    getParentRoute: () => AuthenticatedSubscriptionRouteRoute,
+  } as any)
+const AuthenticatedSubscriptionBillingRoute =
+  AuthenticatedSubscriptionBillingRouteImport.update({
+    id: '/billing',
+    path: '/billing',
+    getParentRoute: () => AuthenticatedSubscriptionRouteRoute,
+  } as any)
 const AuthenticatedSettingsNotificationsRoute =
   AuthenticatedSettingsNotificationsRouteImport.update({
     id: '/notifications',
@@ -180,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/': typeof publicIndexRoute
   '/developers': typeof AuthenticatedDevelopersRouteRouteWithChildren
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
+  '/subscription': typeof AuthenticatedSubscriptionRouteRouteWithChildren
   '/401': typeof errors401Route
   '/403': typeof errors403Route
   '/404': typeof errors404Route
@@ -192,6 +221,8 @@ export interface FileRoutesByFullPath {
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/subscription/billing': typeof AuthenticatedSubscriptionBillingRoute
+  '/subscription/invoices': typeof AuthenticatedSubscriptionInvoicesRoute
   '/forgot/': typeof authForgotIndexRoute
   '/sign-in/': typeof authSignInIndexRoute
   '/sign-up/': typeof authSignUpIndexRoute
@@ -199,6 +230,7 @@ export interface FileRoutesByFullPath {
   '/developers/': typeof AuthenticatedDevelopersIndexRoute
   '/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/subscription/': typeof AuthenticatedSubscriptionIndexRoute
   '/tasks/': typeof AuthenticatedTasksIndexRoute
   '/users/': typeof AuthenticatedUsersIndexRoute
 }
@@ -216,6 +248,8 @@ export interface FileRoutesByTo {
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/subscription/billing': typeof AuthenticatedSubscriptionBillingRoute
+  '/subscription/invoices': typeof AuthenticatedSubscriptionInvoicesRoute
   '/forgot': typeof authForgotIndexRoute
   '/sign-in': typeof authSignInIndexRoute
   '/sign-up': typeof authSignUpIndexRoute
@@ -223,6 +257,7 @@ export interface FileRoutesByTo {
   '/developers': typeof AuthenticatedDevelopersIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/subscription': typeof AuthenticatedSubscriptionIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
 }
@@ -232,6 +267,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/_authenticated/developers': typeof AuthenticatedDevelopersRouteRouteWithChildren
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
+  '/_authenticated/subscription': typeof AuthenticatedSubscriptionRouteRouteWithChildren
   '/(errors)/401': typeof errors401Route
   '/(errors)/403': typeof errors403Route
   '/(errors)/404': typeof errors404Route
@@ -245,6 +281,8 @@ export interface FileRoutesById {
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/_authenticated/subscription/billing': typeof AuthenticatedSubscriptionBillingRoute
+  '/_authenticated/subscription/invoices': typeof AuthenticatedSubscriptionInvoicesRoute
   '/(auth)/forgot/': typeof authForgotIndexRoute
   '/(auth)/sign-in/': typeof authSignInIndexRoute
   '/(auth)/sign-up/': typeof authSignUpIndexRoute
@@ -252,6 +290,7 @@ export interface FileRoutesById {
   '/_authenticated/developers/': typeof AuthenticatedDevelopersIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_authenticated/subscription/': typeof AuthenticatedSubscriptionIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
 }
@@ -261,6 +300,7 @@ export interface FileRouteTypes {
     | '/'
     | '/developers'
     | '/settings'
+    | '/subscription'
     | '/401'
     | '/403'
     | '/404'
@@ -273,6 +313,8 @@ export interface FileRouteTypes {
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/notifications'
+    | '/subscription/billing'
+    | '/subscription/invoices'
     | '/forgot/'
     | '/sign-in/'
     | '/sign-up/'
@@ -280,6 +322,7 @@ export interface FileRouteTypes {
     | '/developers/'
     | '/help-center/'
     | '/settings/'
+    | '/subscription/'
     | '/tasks/'
     | '/users/'
   fileRoutesByTo: FileRoutesByTo
@@ -297,6 +340,8 @@ export interface FileRouteTypes {
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/notifications'
+    | '/subscription/billing'
+    | '/subscription/invoices'
     | '/forgot'
     | '/sign-in'
     | '/sign-up'
@@ -304,6 +349,7 @@ export interface FileRouteTypes {
     | '/developers'
     | '/help-center'
     | '/settings'
+    | '/subscription'
     | '/tasks'
     | '/users'
   id:
@@ -312,6 +358,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/_authenticated/developers'
     | '/_authenticated/settings'
+    | '/_authenticated/subscription'
     | '/(errors)/401'
     | '/(errors)/403'
     | '/(errors)/404'
@@ -325,6 +372,8 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
     | '/_authenticated/settings/notifications'
+    | '/_authenticated/subscription/billing'
+    | '/_authenticated/subscription/invoices'
     | '/(auth)/forgot/'
     | '/(auth)/sign-in/'
     | '/(auth)/sign-up/'
@@ -332,6 +381,7 @@ export interface FileRouteTypes {
     | '/_authenticated/developers/'
     | '/_authenticated/help-center/'
     | '/_authenticated/settings/'
+    | '/_authenticated/subscription/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
   fileRoutesById: FileRoutesById
@@ -405,6 +455,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof errors401RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/subscription': {
+      id: '/_authenticated/subscription'
+      path: '/subscription'
+      fullPath: '/subscription'
+      preLoaderRoute: typeof AuthenticatedSubscriptionRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
@@ -432,6 +489,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/tasks/'
       preLoaderRoute: typeof AuthenticatedTasksIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/subscription/': {
+      id: '/_authenticated/subscription/'
+      path: '/'
+      fullPath: '/subscription/'
+      preLoaderRoute: typeof AuthenticatedSubscriptionIndexRouteImport
+      parentRoute: typeof AuthenticatedSubscriptionRouteRoute
     }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
@@ -481,6 +545,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/forgot/'
       preLoaderRoute: typeof authForgotIndexRouteImport
       parentRoute: typeof authRouteRoute
+    }
+    '/_authenticated/subscription/invoices': {
+      id: '/_authenticated/subscription/invoices'
+      path: '/invoices'
+      fullPath: '/subscription/invoices'
+      preLoaderRoute: typeof AuthenticatedSubscriptionInvoicesRouteImport
+      parentRoute: typeof AuthenticatedSubscriptionRouteRoute
+    }
+    '/_authenticated/subscription/billing': {
+      id: '/_authenticated/subscription/billing'
+      path: '/billing'
+      fullPath: '/subscription/billing'
+      preLoaderRoute: typeof AuthenticatedSubscriptionBillingRouteImport
+      parentRoute: typeof AuthenticatedSubscriptionRouteRoute
     }
     '/_authenticated/settings/notifications': {
       id: '/_authenticated/settings/notifications'
@@ -591,9 +669,30 @@ const AuthenticatedSettingsRouteRouteWithChildren =
     AuthenticatedSettingsRouteRouteChildren,
   )
 
+interface AuthenticatedSubscriptionRouteRouteChildren {
+  AuthenticatedSubscriptionBillingRoute: typeof AuthenticatedSubscriptionBillingRoute
+  AuthenticatedSubscriptionInvoicesRoute: typeof AuthenticatedSubscriptionInvoicesRoute
+  AuthenticatedSubscriptionIndexRoute: typeof AuthenticatedSubscriptionIndexRoute
+}
+
+const AuthenticatedSubscriptionRouteRouteChildren: AuthenticatedSubscriptionRouteRouteChildren =
+  {
+    AuthenticatedSubscriptionBillingRoute:
+      AuthenticatedSubscriptionBillingRoute,
+    AuthenticatedSubscriptionInvoicesRoute:
+      AuthenticatedSubscriptionInvoicesRoute,
+    AuthenticatedSubscriptionIndexRoute: AuthenticatedSubscriptionIndexRoute,
+  }
+
+const AuthenticatedSubscriptionRouteRouteWithChildren =
+  AuthenticatedSubscriptionRouteRoute._addFileChildren(
+    AuthenticatedSubscriptionRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDevelopersRouteRoute: typeof AuthenticatedDevelopersRouteRouteWithChildren
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
+  AuthenticatedSubscriptionRouteRoute: typeof AuthenticatedSubscriptionRouteRouteWithChildren
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
@@ -605,6 +704,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDevelopersRouteRoute:
     AuthenticatedDevelopersRouteRouteWithChildren,
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
+  AuthenticatedSubscriptionRouteRoute:
+    AuthenticatedSubscriptionRouteRouteWithChildren,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
   AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
