@@ -19,7 +19,6 @@ type ConfirmDialogProps = {
   cancelBtnText?: string;
   confirmText?: React.ReactNode;
   destructive?: boolean;
-  handleConfirm: () => void;
   isLoading?: boolean;
   className?: string;
   showCancelBtn?: boolean;
