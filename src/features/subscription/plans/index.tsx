@@ -33,7 +33,7 @@ const plans: Plan[] = [
   {
     id: "starter",
     name: "STARTER",
-    price: "Free",
+    price: "$0/month",
     tagline: "Perfect for getting started with essential screenshot workflows.",
     icon: <Sparkles size={16} />,
     rank: 1,
@@ -191,7 +191,7 @@ export function SubscriptionPlans() {
               return (
                 <Card key={plan.id} className={isCurrent ? "border-primary" : ""}>
                   <CardHeader>
-                    <CardAction>{isCurrent ? <Badge>Current</Badge> : null}</CardAction>
+                    {/*<CardAction>{isCurrent ? <Badge>Current</Badge> : null}</CardAction>*/}
                     <CardTitle className="flex items-center gap-2 text-base">
                       {plan.icon}
                       <span>{plan.name}</span>

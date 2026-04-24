@@ -16,7 +16,8 @@ const config = {
     "plugins": [
         "@trivago/prettier-plugin-sort-imports",
         "prettier-plugin-tailwindcss"
-    ],
+  ],
+    "tailwindFunctions": ["cn", "clsx"],
     "tailwindStylesheet": "./src/styles/index.css",
     "importOrder": [
         "^path$",

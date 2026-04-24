@@ -29,7 +29,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: UserDelete
     <ConfirmDialog
       open={open}
       onOpenChange={onOpenChange}
-      handleConfirm={handleDelete}
+      form="users-delete-form"
       disabled={value.trim() !== currentRow.username}
       title={
         <span className="text-destructive">
@@ -37,7 +37,14 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: UserDelete
         </span>
       }
       desc={
-        <div className="space-y-4">
+        <form
+          id="users-delete-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleDelete();
+          }}
+          className="space-y-4"
+        >
           <p className="mb-2">
             Are you sure you want to delete <span className="font-bold">{currentRow.username}</span>?
             <br />
@@ -51,6 +58,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: UserDelete
               value={value}
               onChange={(e) => setValue(e.target.value)}
               placeholder="Enter username to confirm deletion."
+              autoFocus
             />
           </Label>
 
@@ -58,7 +66,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: UserDelete
             <AlertTitle>Warning!</AlertTitle>
             <AlertDescription>Please be careful, this operation can not be rolled back.</AlertDescription>
           </Alert>
-        </div>
+        </form>
       }
       confirmText="Delete"
       destructive

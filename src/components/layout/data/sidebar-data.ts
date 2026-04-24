@@ -1,4 +1,4 @@
-import { SquareLibrary, Activity, HelpCircle, Settings, Users, Orbit, Terminal } from "lucide-react";
+import { SquareLibrary, ListTodo, Activity, HelpCircle, Settings, Users, Orbit, Terminal } from "lucide-react";
 import { type SidebarData } from "../types";
 
 export const sidebarData: SidebarData = {
@@ -20,6 +20,11 @@ export const sidebarData: SidebarData = {
           title: "Usage",
           url: "/usage",
           icon: Activity,
+        },
+        {
+          title: "Tasks",
+          url: "/tasks",
+          icon: ListTodo,
         },
         {
           title: "Users",

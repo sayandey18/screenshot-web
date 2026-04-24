@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 
-type UserMultiDeleteDialogProps<TData> = {
+type TaskMultiDeleteDialogProps<TData> = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   table: Table<TData>;
@@ -18,7 +18,7 @@ type UserMultiDeleteDialogProps<TData> = {
 
 const CONFIRM_WORD = "DELETE";
 
-export function UsersMultiDeleteDialog<TData>({ open, onOpenChange, table }: UserMultiDeleteDialogProps<TData>) {
+export function TasksMultiDeleteDialog<TData>({ open, onOpenChange, table }: TaskMultiDeleteDialogProps<TData>) {
   const [value, setValue] = useState("");
 
   const selectedRows = table.getFilteredSelectedRowModel().rows;
@@ -32,11 +32,11 @@ export function UsersMultiDeleteDialog<TData>({ open, onOpenChange, table }: Use
     onOpenChange(false);
 
     toast.promise(sleep(2000), {
-      loading: "Deleting users...",
+      loading: "Deleting tasks...",
       success: () => {
         setValue("");
         table.resetRowSelection();
-        return `Deleted ${selectedRows.length} ${selectedRows.length > 1 ? "users" : "user"}`;
+        return `Deleted ${selectedRows.length} ${selectedRows.length > 1 ? "tasks" : "task"}`;
       },
       error: "Error",
     });
@@ -46,17 +46,17 @@ export function UsersMultiDeleteDialog<TData>({ open, onOpenChange, table }: Use
     <ConfirmDialog
       open={open}
       onOpenChange={onOpenChange}
-      form="users-multi-delete-form"
+      form="tasks-multi-delete-form"
       disabled={value.trim() !== CONFIRM_WORD}
       title={
         <span className="text-destructive">
           <AlertTriangle className="me-1 inline-block stroke-destructive" size={18} /> Delete {selectedRows.length}{" "}
-          {selectedRows.length > 1 ? "users" : "user"}
+          {selectedRows.length > 1 ? "tasks" : "task"}
         </span>
       }
       desc={
         <form
-          id="users-multi-delete-form"
+          id="tasks-multi-delete-form"
           onSubmit={(e) => {
             e.preventDefault();
             handleDelete();
@@ -64,7 +64,7 @@ export function UsersMultiDeleteDialog<TData>({ open, onOpenChange, table }: Use
           className="space-y-4"
         >
           <p className="mb-2">
-            Are you sure you want to delete the selected users? <br />
+            Are you sure you want to delete the selected tasks? <br />
             This action cannot be undone.
           </p>
 
