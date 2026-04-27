@@ -46,12 +46,16 @@ export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true);
 
-    const { error: signUpError } = await authClient.signUp.email({
+    const signUpPayload: Parameters<typeof authClient.signUp.email>[0] = {
       name: data.name,
       email: data.email,
       password: data.password,
+      company: "",
+      bio: "",
       callbackURL: `${window.location.origin}/`,
-    });
+    };
+
+    const { error: signUpError } = await authClient.signUp.email(signUpPayload);
 
     if (signUpError) {
       const msg = signUpError.message || "";

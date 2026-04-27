@@ -1,13 +1,14 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { Loader2, LogIn } from "lucide-react";
 import { toast } from "sonner";
 import { IconFacebook, IconGithub } from "@/assets/brand-icons";
-import { useAuthStore } from "@/stores/auth-store";
 import { authClient } from "@/lib/auth-client";
+import { sessionQueryOptions } from "@/hooks/api/use-session";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -30,6 +31,7 @@ interface SignInFormProps extends React.HTMLAttributes<HTMLFormElement> {
 export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...props }: SignInFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,35 +48,30 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
       { email: data.email, password: data.password },
       {
         async onSuccess(ctx) {
-          // Intercept unverified users after succeeding passwords and force them to verify
           if (ctx.data.user && !ctx.data.user.emailVerified) {
             setIsLoading(false);
             toast.error("Please verify your email to continue.");
-            // Send OTP implicitly
             authClient.emailOtp.sendVerificationOtp({
               email: data.email,
               type: "email-verification",
             });
-            // Configure route guard state
             otpContext.set("otp:signup", {
               intent: "sign_up_verify",
               email: data.email,
               redirect: redirectTo ?? "/",
             });
-            // Go to verification route, which was explicitly mapped earlier!
             navigate({ to: "/sign-up/verify" });
             return;
           }
 
           if (ctx.data.twoFactorRedirect) {
             setIsLoading(false);
-            // 2FA is enabled for this user — send OTP and show OTP step
             authClient.twoFactor.sendOtp();
             onTwoFactorRequired(data.email);
           } else {
-            // No 2FA — session is active, navigate to destination
             try {
-              await useAuthStore.getState().fetchSession();
+              await queryClient.invalidateQueries({ queryKey: sessionQueryOptions().queryKey });
+              await queryClient.ensureQueryData(sessionQueryOptions());
               navigate({ to: redirectTo ?? "/", replace: true });
             } catch (_error) {
               setIsLoading(false);
@@ -85,7 +82,6 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
         onError(ctx) {
           setIsLoading(false);
 
-          // Intercept unverified users blocked by the auth system itself (if requireEmailVerification is strict)
           if (ctx.error.code === "EMAIL_NOT_VERIFIED" || ctx.error.status === 403) {
             toast.error("Please verify your email to continue.");
             authClient.emailOtp.sendVerificationOtp({

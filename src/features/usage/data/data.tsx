@@ -1,8 +1,4 @@
-import {
-  CheckCircle2,
-  CircleDashed,
-  CircleX,
-} from "lucide-react";
+import { CheckCircle2, CircleDashed, CircleX } from "lucide-react";
 
 export const statuses = [
   {
@@ -34,5 +30,28 @@ export const browsers = [
   {
     label: "WebKit",
     value: "webkit" as const,
+  },
+];
+
+export const ranges = [
+  {
+    label: "All",
+    value: "all" as const,
+  },
+  {
+    label: "Today",
+    value: "today" as const,
+  },
+  {
+    label: "Last 7 days",
+    value: "7d" as const,
+  },
+  {
+    label: "Last 14 days",
+    value: "14d" as const,
+  },
+  {
+    label: "Last 30 days",
+    value: "30d" as const,
   },
 ];

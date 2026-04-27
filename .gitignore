@@ -29,6 +29,7 @@ dist-ssr
 # Agents
 .agents
 skills-lock.json
+OVERVIEW.md
 
 # CodeRabbit
 .coderabbit.yaml

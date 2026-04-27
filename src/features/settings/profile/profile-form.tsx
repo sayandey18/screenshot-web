@@ -1,12 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useEffect, useRef } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera, Loader, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { useAuthStore } from "@/stores/auth-store";
-import { api } from "@/lib/api";
-import { authClient } from "@/lib/auth-client";
+import { useSession } from "@/hooks/api/use-session";
+import { useDeleteAvatar, useUpdateProfile, useUploadAvatar } from "@/features/settings/hooks/use-auth-mutations";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -27,10 +26,13 @@ const profileFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 export function ProfileForm() {
-  const [isUploading, setIsUploading] = useState(false);
   const avatarInputRef = useRef<HTMLInputElement>(null);
+  const { data: session } = useSession();
+  const updateProfile = useUpdateProfile();
+  const uploadAvatar = useUploadAvatar();
+  const deleteAvatarMutation = useDeleteAvatar();
 
-  const session = useAuthStore((s) => s.session);
+  const isUploading = uploadAvatar.isPending || deleteAvatarMutation.isPending;
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -41,25 +43,20 @@ export function ProfileForm() {
       company: session?.user?.company || "",
       bio: session?.user?.bio || "",
     },
-    // mode: "onChange",
   });
 
   useEffect(() => {
-    if (session) {
-      form.setValue("image", session?.user?.image || null);
-    }
+    form.setValue("image", session?.user?.image || null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user?.image]);
 
   async function onSubmit(data: ProfileFormValues) {
     try {
-      const { error } = await authClient.updateUser({
+      await updateProfile.mutateAsync({
         name: data.name,
         company: data.company,
         bio: data.bio,
       });
-      if (error) throw error;
-      await useAuthStore.getState().fetchSession();
       toast.success("Profile updated successfully.");
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Failed to update profile. Please try again.";
@@ -70,18 +67,13 @@ export function ProfileForm() {
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setIsUploading(true);
+
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const { data } = await api.post("/profile/avatar", formData);
-      form.setValue("image", data.user?.avatarUrl);
-      await useAuthStore.getState().fetchSession();
+      await uploadAvatar.mutateAsync(file);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Failed to upload avatar.";
       toast.error(message);
     } finally {
-      setIsUploading(false);
       if (avatarInputRef.current) {
         avatarInputRef.current.value = "";
       }
@@ -89,16 +81,12 @@ export function ProfileForm() {
   };
 
   const deleteAvatar = async () => {
-    setIsUploading(true);
     try {
-      await api.delete("/profile/avatar");
+      await deleteAvatarMutation.mutateAsync();
       form.setValue("image", null, { shouldDirty: true });
-      await useAuthStore.getState().fetchSession();
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Failed to remove avatar.";
       toast.error(message);
-    } finally {
-      setIsUploading(false);
     }
   };
 
@@ -191,7 +179,6 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        {/* Make email as input area */}
         <FormField
           control={form.control}
           name="email"
@@ -234,7 +221,9 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Update profile</Button>
+        <Button type="submit" disabled={updateProfile.isPending}>
+          Update profile
+        </Button>
       </form>
     </Form>
   );

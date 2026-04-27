@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+﻿﻿import { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { useAuthStore } from "@/stores/auth-store";
-import { authClient } from "@/lib/auth-client";
-import { sleep } from "@/lib/utils";
+import { useSession } from "@/hooks/api/use-session";
+import { useChangePassword, useRevokeOtherSessions } from "@/features/settings/hooks/use-auth-mutations";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
@@ -27,10 +26,12 @@ const accountFormSchema = z
 type AccountFormValues = z.infer<typeof accountFormSchema>;
 
 export function AccountForm() {
-  const session = useAuthStore((s) => s.session);
+  const { data: session } = useSession();
+  const changePassword = useChangePassword();
+  const revokeOtherSessions = useRevokeOtherSessions();
+
   const [is2faDialogOpen, setIs2faDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isRevoking, setIsRevoking] = useState(false);
 
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
@@ -42,7 +43,6 @@ export function AccountForm() {
     },
   });
 
-  // Sync session state to form
   useEffect(() => {
     if (session) {
       form.setValue("twoFactorEnabled", !!session.user.twoFactorEnabled);
@@ -52,13 +52,11 @@ export function AccountForm() {
 
   async function onUpdatePassword(data: AccountFormValues) {
     try {
-      const { error } = await authClient.changePassword({
+      await changePassword.mutateAsync({
         currentPassword: data.currentPassword,
         newPassword: data.newPassword,
         revokeOtherSessions: true,
       });
-
-      if (error) throw error;
 
       toast.success("Password updated successfully.");
       form.reset({
@@ -74,19 +72,14 @@ export function AccountForm() {
   }
 
   const handleRevokeOtherSessions = async () => {
-    setIsRevoking(true);
-    toast.promise(
-      sleep(2000).then(() => authClient.revokeOtherSessions()),
-      {
-        loading: "Revoking sessions...",
-        success: "Successfully logged out of all other devices.",
-        error: (err) => {
-          const message = err instanceof Error ? err.message : "Failed to revoke sessions.";
-          return message;
-        },
-      }
-    );
-    setIsRevoking(false);
+    toast.promise(revokeOtherSessions.mutateAsync(), {
+      loading: "Revoking sessions...",
+      success: "Successfully logged out of all other devices.",
+      error: (err) => {
+        const message = err instanceof Error ? err.message : "Failed to revoke sessions.";
+        return message;
+      },
+    });
   };
 
   return (
@@ -136,7 +129,9 @@ export function AccountForm() {
                 )}
               />
             </div>
-            <Button type="submit">Update password</Button>
+            <Button type="submit" disabled={changePassword.isPending}>
+              Update password
+            </Button>
           </div>
         </div>
 
@@ -175,9 +170,9 @@ export function AccountForm() {
                   variant="destructive"
                   size="sm"
                   onClick={handleRevokeOtherSessions}
-                  disabled={isRevoking}
+                  disabled={revokeOtherSessions.isPending}
                 >
-                  {isRevoking ? "Revoking..." : "Log out everywhere"}
+                  {revokeOtherSessions.isPending ? "Revoking..." : "Log out everywhere"}
                 </Button>
               </FormControl>
             </FormItem>

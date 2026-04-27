@@ -1,11 +1,14 @@
-import { useState } from "react";
+﻿import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Download, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
-import { useAuthStore } from "@/stores/auth-store";
 import { authClient } from "@/lib/auth-client";
+import { sessionKeys } from "@/hooks/api/query-keys";
+import { useDisableTwoFactor, useEnableTwoFactor } from "@/features/settings/hooks/use-auth-mutations";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -17,7 +20,7 @@ interface ActionDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   type: "2fa" | "delete-account";
-  enabled?: boolean; // Specific to 2FA
+  enabled?: boolean;
   onSuccess?: () => void;
 }
 
@@ -28,8 +31,24 @@ const passwordSchema = z.object({
 });
 
 type PasswordFormValues = z.infer<typeof passwordSchema>;
+type TwoFactorEnableResult = {
+  backupCodes?: unknown;
+};
+
+function hasStringBackupCodes(data: unknown): data is { backupCodes: string[] } {
+  if (typeof data !== "object" || data === null) return false;
+  if (!("backupCodes" in data)) return false;
+
+  const backupCodes = (data as TwoFactorEnableResult).backupCodes;
+  return Array.isArray(backupCodes) && backupCodes.every((code) => typeof code === "string");
+}
 
 export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: ActionDialogProps) {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const enableTwoFactor = useEnableTwoFactor();
+  const disableTwoFactor = useDisableTwoFactor();
+
   const [step, setStep] = useState<Step>("password");
   const [isLoading, setIsLoading] = useState(false);
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
@@ -56,33 +75,26 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
     try {
       if (type === "2fa") {
         if (enabled) {
-          const { error } = await authClient.twoFactor.disable({
-            password: values.password,
-          });
-          if (error) throw error;
-          await useAuthStore.getState().fetchSession();
+          await disableTwoFactor.mutateAsync(values.password);
           toast.success("Two-factor authentication disabled.");
           onSuccess?.();
           onOpenChange(false);
         } else {
-          const { data, error } = await authClient.twoFactor.enable({
-            password: values.password,
-          });
-          if (error) throw error;
-          await useAuthStore.getState().fetchSession();
-          if (data) {
+          const data = await enableTwoFactor.mutateAsync(values.password);
+          if (hasStringBackupCodes(data)) {
             setBackupCodes(data.backupCodes);
             setStep("backup-codes");
           }
+          await queryClient.invalidateQueries({ queryKey: sessionKeys.current });
         }
       } else if (type === "delete-account") {
         const { error } = await authClient.deleteUser({
           password: values.password,
         });
         if (error) throw error;
-        useAuthStore.getState().auth.reset();
+        queryClient.setQueryData(sessionKeys.current, null);
         toast.success("Account successfully deleted.");
-        // Redirect is usually handled by auth provider or window location
+        navigate({ to: "/sign-in", replace: true });
       }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "An error occurred. Please try again.";

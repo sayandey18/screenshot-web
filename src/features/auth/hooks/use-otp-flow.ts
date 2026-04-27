@@ -11,8 +11,8 @@ export const otpFormSchema = z.object({
 export type OtpFormValues = z.infer<typeof otpFormSchema>;
 
 interface UseOtpFlowProps {
-  onVerify: (code: string) => Promise<{ error?: any }>;
-  onResend: () => Promise<{ error?: any }>;
+  onVerify: (code: string) => Promise<{ error?: { message?: string } | null | undefined }>;
+  onResend: () => Promise<{ error?: { message?: string } | null | undefined }>;
   cooldownDuration?: number;
 }
 
@@ -32,11 +32,10 @@ export function useOtpFlow({ onVerify, onResend, cooldownDuration = 60 }: UseOtp
 
   // Timer effect
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (cooldown > 0) {
-      timer = setInterval(() => setCooldown((prev) => prev - 1), 1000);
-    }
-    return () => clearInterval(timer);
+    const timer = cooldown > 0 ? setInterval(() => setCooldown((prev) => prev - 1), 1000) : undefined;
+    return () => {
+      if (timer) clearInterval(timer);
+    };
   }, [cooldown]);
 
   const handleResend = useCallback(async () => {

@@ -3,15 +3,7 @@ import { Check, Crown, Sparkles, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { ContentSection } from "../components/content-section";
 
@@ -106,7 +98,7 @@ export function SubscriptionPlans() {
   const getCta = (plan: Plan) => {
     if (plan.id === activePlanId) {
       return {
-        label: "Current Plan",
+        label: "Current",
         variant: "default" as const,
         disabled: true,
       };
@@ -189,7 +181,7 @@ export function SubscriptionPlans() {
               const isCurrent = plan.id === activePlanId;
 
               return (
-                <Card key={plan.id} className={isCurrent ? "border-primary" : ""}>
+                <Card key={plan.id} className={isCurrent ? "border-2 border-primary" : ""}>
                   <CardHeader>
                     {/*<CardAction>{isCurrent ? <Badge>Current</Badge> : null}</CardAction>*/}
                     <CardTitle className="flex items-center gap-2 text-base">

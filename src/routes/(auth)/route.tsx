@@ -1,20 +1,12 @@
-import { createFileRoute, Outlet, redirect, isRedirect } from "@tanstack/react-router";
+﻿import { createFileRoute, Outlet, redirect, isRedirect } from "@tanstack/react-router";
+import { sessionQueryOptions } from "@/hooks/api/use-session";
 
 export const Route = createFileRoute("/(auth)")({
   beforeLoad: async ({ context }) => {
     try {
-      let state = context.authStore.getState();
+      const session = await context.queryClient.ensureQueryData(sessionQueryOptions());
 
-      if (state.isLoading || state.session === null) {
-        try {
-          await context.authStore.getState().fetchSession();
-        } catch (_error) {
-          // Swallow fetch error
-        }
-        state = context.authStore.getState();
-      }
-
-      if (state.session !== null) {
+      if (session !== null) {
         throw redirect({
           to: "/dashboard",
         });

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as publicIndexRouteImport } from './routes/(public)/index'
+import { Route as publicSlugRouteImport } from './routes/(public)/$slug'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
 import { Route as errors500RouteImport } from './routes/(errors)/500'
 import { Route as errors404RouteImport } from './routes/(errors)/404'
@@ -38,6 +39,7 @@ import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_a
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 import { Route as AuthenticatedDevelopersWebhookRouteImport } from './routes/_authenticated/developers/webhook'
+import { Route as publicBlogSlugRouteImport } from './routes/(public)/blog/$slug'
 import { Route as authSignUpVerifyRouteImport } from './routes/(auth)/sign-up/verify'
 import { Route as authSignIn2faRouteImport } from './routes/(auth)/sign-in/2fa'
 
@@ -52,6 +54,11 @@ const authRouteRoute = authRouteRouteImport.update({
 const publicIndexRoute = publicIndexRouteImport.update({
   id: '/(public)/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const publicSlugRoute = publicSlugRouteImport.update({
+  id: '/(public)/$slug',
+  path: '/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const errors503Route = errors503RouteImport.update({
@@ -199,6 +206,11 @@ const AuthenticatedDevelopersWebhookRoute =
     path: '/webhook',
     getParentRoute: () => AuthenticatedDevelopersRouteRoute,
   } as any)
+const publicBlogSlugRoute = publicBlogSlugRouteImport.update({
+  id: '/(public)/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authSignUpVerifyRoute = authSignUpVerifyRouteImport.update({
   id: '/sign-up/verify',
   path: '/sign-up/verify',
@@ -220,8 +232,10 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/$slug': typeof publicSlugRoute
   '/sign-in/2fa': typeof authSignIn2faRoute
   '/sign-up/verify': typeof authSignUpVerifyRoute
+  '/blog/$slug': typeof publicBlogSlugRoute
   '/developers/webhook': typeof AuthenticatedDevelopersWebhookRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
@@ -248,8 +262,10 @@ export interface FileRoutesByTo {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/$slug': typeof publicSlugRoute
   '/sign-in/2fa': typeof authSignIn2faRoute
   '/sign-up/verify': typeof authSignUpVerifyRoute
+  '/blog/$slug': typeof publicBlogSlugRoute
   '/developers/webhook': typeof AuthenticatedDevelopersWebhookRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
@@ -281,9 +297,11 @@ export interface FileRoutesById {
   '/(errors)/404': typeof errors404Route
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
+  '/(public)/$slug': typeof publicSlugRoute
   '/(public)/': typeof publicIndexRoute
   '/(auth)/sign-in/2fa': typeof authSignIn2faRoute
   '/(auth)/sign-up/verify': typeof authSignUpVerifyRoute
+  '/(public)/blog/$slug': typeof publicBlogSlugRoute
   '/_authenticated/developers/webhook': typeof AuthenticatedDevelopersWebhookRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
@@ -315,8 +333,10 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/$slug'
     | '/sign-in/2fa'
     | '/sign-up/verify'
+    | '/blog/$slug'
     | '/developers/webhook'
     | '/errors/$error'
     | '/settings/account'
@@ -343,8 +363,10 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/$slug'
     | '/sign-in/2fa'
     | '/sign-up/verify'
+    | '/blog/$slug'
     | '/developers/webhook'
     | '/errors/$error'
     | '/settings/account'
@@ -375,9 +397,11 @@ export interface FileRouteTypes {
     | '/(errors)/404'
     | '/(errors)/500'
     | '/(errors)/503'
+    | '/(public)/$slug'
     | '/(public)/'
     | '/(auth)/sign-in/2fa'
     | '/(auth)/sign-up/verify'
+    | '/(public)/blog/$slug'
     | '/_authenticated/developers/webhook'
     | '/_authenticated/errors/$error'
     | '/_authenticated/settings/account'
@@ -406,7 +430,9 @@ export interface RootRouteChildren {
   errors404Route: typeof errors404Route
   errors500Route: typeof errors500Route
   errors503Route: typeof errors503Route
+  publicSlugRoute: typeof publicSlugRoute
   publicIndexRoute: typeof publicIndexRoute
+  publicBlogSlugRoute: typeof publicBlogSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -430,6 +456,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof publicIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(public)/$slug': {
+      id: '/(public)/$slug'
+      path: '/$slug'
+      fullPath: '/$slug'
+      preLoaderRoute: typeof publicSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(errors)/503': {
@@ -614,6 +647,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDevelopersWebhookRouteImport
       parentRoute: typeof AuthenticatedDevelopersRouteRoute
     }
+    '/(public)/blog/$slug': {
+      id: '/(public)/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof publicBlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(auth)/sign-up/verify': {
       id: '/(auth)/sign-up/verify'
       path: '/sign-up/verify'
@@ -745,7 +785,9 @@ const rootRouteChildren: RootRouteChildren = {
   errors404Route: errors404Route,
   errors500Route: errors500Route,
   errors503Route: errors503Route,
+  publicSlugRoute: publicSlugRoute,
   publicIndexRoute: publicIndexRoute,
+  publicBlogSlugRoute: publicBlogSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

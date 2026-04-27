@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/stores/auth-store";
+﻿import { useSession } from "@/hooks/api/use-session";
 import { useLayout } from "@/context/layout-provider";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/ui/sidebar";
 import { AppTitle } from "./app-title";
@@ -9,7 +9,7 @@ import { NavUser } from "./nav-user";
 
 export function AppSidebar() {
   const { collapsible, variant } = useLayout();
-  const session = useAuthStore((s) => s.session);
+  const { data: session } = useSession();
 
   const user = {
     name: session?.user?.name || "",

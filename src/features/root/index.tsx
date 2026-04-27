@@ -1,46 +1,13 @@
-import { useEffect } from "react";
-import { Outlet } from "@tanstack/react-router";
+﻿import { HeadContent, Outlet } from "@tanstack/react-router";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Loader2 } from "lucide-react";
-import { useAuthStore } from "@/stores/auth-store";
+import { useSession } from "@/hooks/api/use-session";
 import { Toaster } from "@/components/ui/sonner";
 import { NavigationProgress } from "@/components/navigation-progress";
 
 export function RootComponent() {
-  const { fetchSession, isLoading } = useAuthStore();
-
-  useEffect(() => {
-    void fetchSession();
-
-    const onFocus = () => {
-      void fetchSession();
-    };
-
-    const onVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        void fetchSession();
-      }
-    };
-
-    window.addEventListener("focus", onFocus);
-    window.addEventListener("visibilitychange", onVisibilityChange);
-
-    const intervalId = setInterval(
-      () => {
-        if (!document.hidden) {
-          void fetchSession();
-        }
-      },
-      10 * 60 * 1000
-    ); // 10 minutes
-
-    return () => {
-      window.removeEventListener("focus", onFocus);
-      window.removeEventListener("visibilitychange", onVisibilityChange);
-      clearInterval(intervalId);
-    };
-  }, [fetchSession]);
+  const { isLoading } = useSession();
 
   return (
     <>
@@ -50,12 +17,15 @@ export function RootComponent() {
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       ) : (
-        <Outlet />
+        <>
+          <HeadContent />
+          <Outlet />
+        </>
       )}
       <Toaster duration={5000} />
       {import.meta.env.MODE === "development" && (
         <>
-          <ReactQueryDevtools buttonPosition="top-left" />
+          <ReactQueryDevtools buttonPosition="top-right" />
           <TanStackRouterDevtools position="bottom-right" />
         </>
       )}

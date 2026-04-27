@@ -1,6 +1,7 @@
-import { useRouter } from "@tanstack/react-router";
-import { useAuthStore } from "@/stores/auth-store";
+﻿import { useRouter } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
+import { sessionQueryOptions } from "@/hooks/api/use-session";
 import { AuthLayout } from "@/features/auth/components/auth-layout";
 import { VerifyForm } from "@/features/auth/components/verify-form";
 import { useOtpFlow } from "@/features/auth/hooks/use-otp-flow";
@@ -8,6 +9,7 @@ import { otpContext } from "@/features/auth/utils/otp-context";
 
 export function TwoFactor() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const ctx = otpContext.get("otp:login-2fa");
   const email = ctx?.email || "";
 
@@ -16,7 +18,8 @@ export function TwoFactor() {
       const { error } = await authClient.twoFactor.verifyOtp({ code });
       if (!error) {
         try {
-          await useAuthStore.getState().fetchSession();
+          await queryClient.invalidateQueries({ queryKey: sessionQueryOptions().queryKey });
+          await queryClient.ensureQueryData(sessionQueryOptions());
           const destination = otpContext.handleSuccess("otp:login-2fa", "/");
           router.navigate({ to: destination, replace: true });
         } catch (_e) {
