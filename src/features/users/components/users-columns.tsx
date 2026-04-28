@@ -20,7 +20,7 @@ export const usersColumns: ColumnDef<User>[] = [
       />
     ),
     meta: {
-      className: cn("max-md:sticky inset-s-0 z-10 rounded-tl-[inherit]"),
+      className: cn("inset-s-0 z-10 w-8 rounded-tl-[inherit] max-md:sticky"),
     },
     cell: ({ row }) => (
       <Checkbox
@@ -40,7 +40,7 @@ export const usersColumns: ColumnDef<User>[] = [
     meta: {
       className: cn(
         "drop-shadow-[0_1px_2px_rgb(0_0_0/0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255/0.1)]",
-        "ps-0.5 max-md:sticky inset-s-6 @4xl/content:table-cell @4xl/content:drop-shadow-none"
+        "inset-s-6 ps-0.5 max-md:sticky @4xl/content:table-cell @4xl/content:drop-shadow-none"
       ),
     },
     enableHiding: false,

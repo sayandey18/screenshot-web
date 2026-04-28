@@ -1,4 +1,4 @@
-import { CheckCircle2, CircleDashed, CircleX } from "lucide-react";
+import { AlertOctagon, CheckCircle2, CircleDashed, CircleX } from "lucide-react";
 
 export const statuses = [
   {
@@ -7,14 +7,19 @@ export const statuses = [
     icon: CheckCircle2,
   },
   {
-    label: "Failed",
-    value: "failed" as const,
+    label: "Error",
+    value: "error" as const,
     icon: CircleX,
   },
   {
     label: "Pending",
     value: "pending" as const,
     icon: CircleDashed,
+  },
+  {
+    label: "Limit Exceeded",
+    value: "limit_exceeded" as const,
+    icon: AlertOctagon,
   },
 ];
 
@@ -49,9 +54,5 @@ export const ranges = [
   {
     label: "Last 14 days",
     value: "14d" as const,
-  },
-  {
-    label: "Last 30 days",
-    value: "30d" as const,
   },
 ];

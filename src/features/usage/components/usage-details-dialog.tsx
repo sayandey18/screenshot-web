@@ -1,13 +1,7 @@
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { statuses } from "../data/data";
 import { type Usage } from "../data/schema";
 
@@ -17,20 +11,22 @@ type UsageDetailsDialogProps = {
   row: Usage | null;
 };
 
-function formatDuration(durationMs: number) {
+function formatDuration(durationMs: number | null) {
+  if (durationMs == null) return "-";
   if (durationMs < 1000) return `${durationMs}ms`;
   return `${(durationMs / 1000).toFixed(1)}s`;
 }
 
 function statusBadgeClass(status: Usage["status"]) {
   if (status === "success") return "border-green-600/30 bg-green-500/10 text-green-700 dark:text-green-400";
-  if (status === "failed") return "border-red-600/30 bg-red-500/10 text-red-700 dark:text-red-400";
+  if (status === "error") return "border-red-600/30 bg-red-500/10 text-red-700 dark:text-red-400";
+  if (status === "limit_exceeded") return "border-orange-600/30 bg-orange-500/10 text-orange-700 dark:text-orange-400";
   return "border-amber-600/30 bg-amber-500/10 text-amber-700 dark:text-amber-400";
 }
 
-function DateOrFallback({ date, fallback }: { date: Date | null; fallback: string }) {
+function DateOrFallback({ date, fallback }: { date: string | null; fallback: string }) {
   if (!date) return <>{fallback}</>;
-  return <>{format(date, "MMM d, yyyy h:mm:ss a")}</>;
+  return <>{format(new Date(date), "MMM d, yyyy h:mm:ss a")}</>;
 }
 
 function Row({ label, value }: { label: string; value: React.ReactNode }) {
@@ -60,6 +56,7 @@ export function UsageDetailsDialog({ open, onOpenChange, row }: UsageDetailsDial
             <section>
               <h3 className="mb-1 font-semibold">Request Info</h3>
               <Row label="URL" value={row.url} />
+              <Row label="URL Display" value={row.urlDisplay} />
               <Row label="Browser" value={row.browser} />
               <Row label="Format" value={row.format.toUpperCase()} />
               <Row
@@ -75,13 +72,9 @@ export function UsageDetailsDialog({ open, onOpenChange, row }: UsageDetailsDial
             <section>
               <h3 className="mb-1 font-semibold">Timing</h3>
               <Row label="Duration" value={formatDuration(row.durationMs)} />
+              <Row label="Duration Display" value={row.durationDisplay ?? "-"} />
               <Row label="Created At" value={<DateOrFallback date={row.createdAt} fallback="-" />} />
-              <Row label="Expires At" value={<DateOrFallback date={row.expiresAt} fallback="Never" />} />
-            </section>
-
-            <section>
-              <h3 className="mb-1 font-semibold">API Key</h3>
-              <Row label="API Key" value={row.apiKeyName} />
+              <Row label="File Expires At" value={<DateOrFallback date={row.fileExpiresAt} fallback="Never" />} />
             </section>
 
             <section>
@@ -98,13 +91,7 @@ export function UsageDetailsDialog({ open, onOpenChange, row }: UsageDetailsDial
                   )
                 }
               />
-              <Row label="Storage Key" value={row.storageKey ?? "None"} />
-            </section>
-
-            <section>
-              <h3 className="mb-1 font-semibold">Webhook</h3>
-              <Row label="Callback URL" value={row.callbackUrl ?? "Not configured"} />
-              <Row label="Webhook Sent At" value={<DateOrFallback date={row.webhookSentAt} fallback="Not sent" />} />
+              <Row label="File Available" value={row.fileAvailable ? "Yes" : "No"} />
             </section>
           </div>
         )}

@@ -27,7 +27,7 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
         />
       ),
       meta: {
-        className: cn("max-md:sticky inset-s-0 z-10 rounded-tl-[inherit]"),
+        className: cn("inset-s-0 z-10 w-8 rounded-tl-[inherit] max-md:sticky"),
       },
       cell: ({ row }) => (
         <Checkbox

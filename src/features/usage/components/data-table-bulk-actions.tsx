@@ -32,7 +32,7 @@ export function DataTableBulkActions<TData>({ table }: DataTableBulkActionsProps
       "format",
       "durationMs",
       "createdAt",
-      "apiKeyName",
+      "fileAvailable",
       "downloadUrl",
     ];
 
@@ -43,9 +43,9 @@ export function DataTableBulkActions<TData>({ table }: DataTableBulkActionsProps
         log.status,
         log.browser,
         log.format,
-        String(log.durationMs),
-        log.createdAt.toISOString(),
-        log.apiKeyName,
+        String(log.durationMs ?? ""),
+        log.createdAt,
+        String(log.fileAvailable),
         log.downloadUrl ?? "",
       ].map((cell) => escapeCsv(cell))
     );

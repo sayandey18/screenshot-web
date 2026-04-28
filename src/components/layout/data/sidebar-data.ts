@@ -47,7 +47,7 @@ export const sidebarData: SidebarData = {
           icon: Settings,
         },
         {
-          title: "Help Center",
+          title: "Support",
           url: "/help-center",
           icon: HelpCircle,
         },

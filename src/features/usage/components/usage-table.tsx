@@ -8,7 +8,6 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -26,9 +25,11 @@ const route = getRouteApi("/_authenticated/usage/");
 
 type DataTableProps = {
   data: Usage[];
+  totalPages: number;
+  total: number;
 };
 
-export function UsageTable({ data }: DataTableProps) {
+export function UsageTable({ data, totalPages, total }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -58,7 +59,6 @@ export function UsageTable({ data }: DataTableProps) {
     columnFilters: [
       { columnId: "status", searchKey: "status", type: "array" },
       { columnId: "browser", searchKey: "browser", type: "array" },
-      { columnId: "month", searchKey: "month", type: "array" },
     ],
   });
 
@@ -68,6 +68,8 @@ export function UsageTable({ data }: DataTableProps) {
   const table = useReactTable({
     data,
     columns,
+    pageCount: Math.max(1, totalPages),
+    manualPagination: true,
     state: {
       rowSelection,
       sorting,
@@ -83,12 +85,10 @@ export function UsageTable({ data }: DataTableProps) {
     globalFilterFn: (row, _columnId, filterValue) => {
       const url = String(row.getValue("url")).toLowerCase();
       const searchValue = String(filterValue).toLowerCase();
-
       return url.includes(searchValue);
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -97,15 +97,14 @@ export function UsageTable({ data }: DataTableProps) {
     onColumnFiltersChange,
   });
 
-  const pageCount = table.getPageCount();
   useEffect(() => {
-    ensurePageInRange(pageCount);
-  }, [pageCount, ensurePageInRange]);
+    ensurePageInRange(totalPages);
+  }, [totalPages, ensurePageInRange]);
 
   return (
     <div
       className={cn(
-        'max-sm:has-[div[role="toolbar"]]:mb-16', // Add margin bottom to the table on mobile when the toolbar is visible
+        'max-sm:has-[div[role="toolbar"]]:mb-16',
         "flex flex-1 flex-col gap-4"
       )}
     >
@@ -122,14 +121,6 @@ export function UsageTable({ data }: DataTableProps) {
             columnId: "browser",
             title: "Browser",
             options: browsers,
-          },
-          {
-            columnId: "month",
-            title: "Month",
-            options: Array.from(new Set(data.map((item) => item.month)))
-              .sort((a, b) => b.localeCompare(a))
-              .slice(0, 12)
-              .map((month) => ({ label: month, value: month })),
           },
         ]}
       />
@@ -176,7 +167,7 @@ export function UsageTable({ data }: DataTableProps) {
           </TableBody>
         </Table>
       </div>
-      {table.getFilteredRowModel().rows.length > 10 ? <DataTablePagination table={table} className="mt-auto" /> : null}
+      {total > pagination.pageSize ? <DataTablePagination table={table} className="mt-auto" /> : null}
       <DataTableBulkActions table={table} />
     </div>
   );
