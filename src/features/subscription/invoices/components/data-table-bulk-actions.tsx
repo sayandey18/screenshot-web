@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DataTableBulkActions as BulkActionsToolbar } from "@/components/data-table";
-import { type Invoice } from "../data/invoices";
+import { type Invoice } from "../data/schema";
 
 type DataTableBulkActionsProps<TData> = {
   table: Table<TData>;

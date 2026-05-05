@@ -13,6 +13,7 @@ export const authClient = createAuthClient({
     twoFactorClient(),
     inferAdditionalFields({
       user: {
+        plan: { type: "string" },
         company: { type: "string" },
         bio: { type: "string" },
       },

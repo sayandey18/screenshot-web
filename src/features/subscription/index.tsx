@@ -1,20 +1,24 @@
 import { Outlet } from "@tanstack/react-router";
 import { CreditCard, FileText, Package } from "lucide-react";
+import { useSession } from "@/hooks/api/use-session";
+import { Separator } from "@/components/ui/separator";
 import { ConfigDrawer } from "@/components/config-drawer";
 import { Header } from "@/components/layout/header";
 import { Main } from "@/components/layout/main";
 import { ProfileDropdown } from "@/components/profile-dropdown";
 import { Search } from "@/components/search";
-import { Separator } from "@/components/ui/separator";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { SidebarNav } from "./components/sidebar-nav";
 
-const sidebarNavItems = [
+const freeNavItems = [
   {
     title: "Plans",
     href: "/subscription",
     icon: <Package size={18} />,
   },
+];
+
+const paidNavItems = [
   {
     title: "Invoices",
     href: "/subscription/invoices",
@@ -28,6 +32,11 @@ const sidebarNavItems = [
 ];
 
 export function Subscription() {
+  const { data: session } = useSession();
+  const isStarter = !session || session.user.plan === "STARTER";
+
+  const sidebarNavItems = isStarter ? freeNavItems : [...freeNavItems, ...paidNavItems];
+
   return (
     <>
       <Header>

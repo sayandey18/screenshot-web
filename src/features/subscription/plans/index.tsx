@@ -1,30 +1,35 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { getRouteApi } from "@tanstack/react-router";
 import { Check, Crown, Sparkles, Zap } from "lucide-react";
 import { toast } from "sonner";
+import { subscriptionKeys, sessionKeys, quotaKeys } from "@/hooks/api/query-keys";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { ContentSection } from "../components/content-section";
+import type { SubscriptionStatus } from "../data/schema";
+import { useSubscription, useCheckout, useCancelSubscription } from "../hooks/use-subscription";
 
-type BillingCycle = "monthly" | "annual";
-type SubscriptionStatus = "active" | "cancelled" | "trial" | "cancellation_scheduled";
-type PlanId = "starter" | "growth" | "enterprise";
+const route = getRouteApi("/_authenticated/subscription/");
+
+type PlanId = "STARTER" | "GROWTH" | "ENTERPRISE";
 
 type Plan = {
   id: PlanId;
-  name: string;
   price: string;
   tagline: string;
   icon: React.ReactNode;
   features: string[];
   rank: number;
+  slug?: "growth-plan" | "enterprise-plan";
 };
 
 const plans: Plan[] = [
   {
-    id: "starter",
-    name: "STARTER",
+    id: "STARTER",
     price: "$0/month",
     tagline: "Perfect for getting started with essential screenshot workflows.",
     icon: <Sparkles size={16} />,
@@ -37,8 +42,7 @@ const plans: Plan[] = [
     ],
   },
   {
-    id: "growth",
-    name: "GROWTH",
+    id: "GROWTH",
     price: "$8/month",
     tagline: "Built for growing teams that need automation and higher limits.",
     icon: <Zap size={16} />,
@@ -46,8 +50,7 @@ const plans: Plan[] = [
     features: ["Up to 10,000 screenshots / month", "Priority processing queue", "Team member roles", "Email support"],
   },
   {
-    id: "enterprise",
-    name: "ENTERPRISE",
+    id: "ENTERPRISE",
     price: "$15/month",
     tagline: "Advanced controls and scale for production-grade workloads.",
     icon: <Crown size={16} />,
@@ -87,23 +90,31 @@ function statusLabel(status: SubscriptionStatus) {
 }
 
 export function SubscriptionPlans() {
-  const [activePlanId, setActivePlanId] = useState<PlanId>("starter");
-  const [status, setStatus] = useState<SubscriptionStatus>("active");
-  const [billingCycle] = useState<BillingCycle>("monthly");
-  const [nextBillingDate, setNextBillingDate] = useState("2026-02-01");
+  const queryClient = useQueryClient();
+
+  const navigate = route.useNavigate();
+  const search = route.useSearch();
+
+  useEffect(() => {
+    if (!search.success) return;
+    void navigate({ search: (prev) => ({ ...prev, success: undefined }), replace: true });
+    toast.success("Your subscription has been updated.");
+  }, [search.success, navigate]);
+
+  const { data: subscription, isLoading } = useSubscription();
+  const { mutate: startCheckout, isPending: isCheckingOut } = useCheckout();
+  const { mutate: cancelSubscription, isPending: isCancelling } = useCancelSubscription();
+
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
 
-  const activePlan = useMemo(() => plans.find((plan) => plan.id === activePlanId) ?? plans[0], [activePlanId]);
+  const activePlanId = subscription?.plan ?? "STARTER";
+
+  const activePlan = useMemo(() => plans.find((p) => p.id === activePlanId) ?? plans[0], [activePlanId]);
 
   const getCta = (plan: Plan) => {
     if (plan.id === activePlanId) {
-      return {
-        label: "Current",
-        variant: "default" as const,
-        disabled: true,
-      };
+      return { label: "Current", variant: "default" as const, disabled: true };
     }
-
     const isUpgrade = plan.rank > activePlan.rank;
     return {
       label: isUpgrade ? "Upgrade" : "Downgrade",
@@ -115,16 +126,25 @@ export function SubscriptionPlans() {
   const handleChangePlan = (targetPlan: Plan) => {
     if (targetPlan.id === activePlanId) return;
 
-    setActivePlanId(targetPlan.id);
-    setStatus("active");
-    setNextBillingDate("2026-02-01");
-    toast.success(`Your subscription has been updated to ${targetPlan.name}.`);
+    if (!targetPlan.slug) {
+      // Downgrading to STARTER — cancel the existing paid subscription
+      setCancelDialogOpen(true);
+      return;
+    }
+
+    // Upgrading — redirect to Dodo Payments hosted checkout
+    startCheckout({ slug: targetPlan.slug });
   };
 
   const handleCancelSubscription = () => {
-    setStatus("cancellation_scheduled");
-    toast.success("Cancellation scheduled. Your plan will revert to STARTER at period end.");
     setCancelDialogOpen(false);
+    cancelSubscription(undefined, {
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: subscriptionKeys.all });
+        void queryClient.invalidateQueries({ queryKey: sessionKeys.current });
+        void queryClient.invalidateQueries({ queryKey: quotaKeys.current });
+      },
+    });
   };
 
   return (
@@ -135,50 +155,77 @@ export function SubscriptionPlans() {
             <CardHeader>
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <CardTitle>Active Subscription</CardTitle>
-                  <CardDescription>Current plan details and billing timeline.</CardDescription>
+                  <CardTitle className="mb-1">Active Subscription</CardTitle>
+                  <CardDescription>Current subscription details and billing timeline.</CardDescription>
                 </div>
-                <Badge variant={statusToBadgeVariant(status)}>{statusLabel(status)}</Badge>
+                {isLoading ? (
+                  <Skeleton className="h-5 w-24 rounded-full" />
+                ) : subscription ? (
+                  <Badge variant={statusToBadgeVariant(subscription.status)}>{statusLabel(subscription.status)}</Badge>
+                ) : null}
               </div>
             </CardHeader>
 
             <CardContent className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               <div>
-                <p className="text-xs text-muted-foreground">Plan</p>
-                <p className="text-sm font-medium">{activePlan.name}</p>
+                <p className="pb-1 text-xs text-muted-foreground">Subscription</p>
+                <p className="text-sm font-medium">{activePlan.id}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Billing Cycle</p>
-                <p className="text-sm font-medium capitalize">{billingCycle}</p>
+                <p className="pb-1 text-xs text-muted-foreground">Cycle</p>
+                {isLoading ? (
+                  <Skeleton className="mt-1 h-4 w-16" />
+                ) : (
+                  <p className="text-sm font-medium capitalize">{subscription?.billingCycle ?? "—"}</p>
+                )}
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Next Billing Date</p>
-                <p className="text-sm font-medium">{nextBillingDate}</p>
+                <p className="pb-1 text-xs text-muted-foreground">Upcoming Date</p>
+                {isLoading ? (
+                  <Skeleton className="mt-1 h-4 w-24" />
+                ) : (
+                  <p className="text-sm font-medium">
+                    {subscription?.nextBillingDate
+                      ? (() => {
+                          const d = new Date(subscription.nextBillingDate);
+                          const day = String(d.getUTCDate()).padStart(2, "0");
+                          const month = String(d.getUTCMonth() + 1).padStart(2, "0");
+                          const year = d.getUTCFullYear();
+                          return `${day}-${month}-${year}`;
+                        })()
+                      : "—"}
+                  </p>
+                )}
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Provider</p>
-                <p className="text-sm font-medium">Dodo Payments</p>
+                <p className="pb-1 text-xs text-muted-foreground">Provider</p>
+                <p className="text-sm font-medium">{activePlan.id === "STARTER" ? "—" : "Dodo Payments"}</p>
               </div>
             </CardContent>
 
-            {activePlan.name && activePlan.name !== "STARTER" && (
+            {/*{!isLoading && activePlan.id !== "STARTER" && (
               <CardFooter>
                 <Button
                   variant="outline"
                   className="text-sm text-destructive hover:text-destructive"
                   onClick={() => setCancelDialogOpen(true)}
-                  disabled={status === "cancellation_scheduled" || status === "cancelled"}
+                  disabled={
+                    isCancelling ||
+                    subscription?.status === "cancellation_scheduled" ||
+                    subscription?.status === "cancelled"
+                  }
                 >
-                  Cancel Subscription
+                  {isCancelling ? "Cancelling…" : "Cancel Subscription"}
                 </Button>
               </CardFooter>
-            )}
+            )}*/}
           </Card>
 
           <div className="grid gap-4 lg:grid-cols-3">
             {plans.map((plan) => {
               const cta = getCta(plan);
               const isCurrent = plan.id === activePlanId;
+              const isThisCheckingOut = isCheckingOut && !isCurrent;
 
               return (
                 <Card key={plan.id} className={isCurrent ? "border-2 border-primary" : ""}>
@@ -207,10 +254,10 @@ export function SubscriptionPlans() {
                     <Button
                       variant={cta.variant}
                       className="w-full"
-                      disabled={cta.disabled}
+                      disabled={cta.disabled || isThisCheckingOut || isLoading}
                       onClick={() => handleChangePlan(plan)}
                     >
-                      {cta.label}
+                      {isThisCheckingOut ? "Redirecting…" : cta.label}
                     </Button>
                   </CardFooter>
                 </Card>

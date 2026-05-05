@@ -33,8 +33,8 @@ export const browsers = [
     value: "firefox" as const,
   },
   {
-    label: "WebKit",
-    value: "webkit" as const,
+    label: "Safari",
+    value: "safari" as const,
   },
 ];
 

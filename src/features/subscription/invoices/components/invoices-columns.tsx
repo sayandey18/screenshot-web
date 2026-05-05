@@ -6,28 +6,24 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/data-table";
-import { type Invoice } from "../data/invoices";
+import type { Invoice, InvoiceStatus } from "../data/schema";
 
 type InvoicesColumnsOptions = {
   onDownload: (row: Invoice) => void;
 };
 
-const statusBadgeClassMap: Record<Invoice["status"], string> = {
+const statusBadgeClassMap: Record<InvoiceStatus, string> = {
   paid: "border-green-600/30 bg-green-500/10 text-green-700 dark:text-green-400",
   pending: "border-amber-600/30 bg-amber-500/10 text-amber-700 dark:text-amber-400",
   failed: "border-red-600/30 bg-red-500/10 text-red-700 dark:text-red-400",
+  refunded: "border-gray-600/30 bg-gray-500/10 text-gray-700 dark:text-gray-400",
 };
 
-const statusLabelMap: Record<Invoice["status"], string> = {
+const statusLabelMap: Record<InvoiceStatus, string> = {
   paid: "Paid",
   pending: "Pending",
   failed: "Failed",
-};
-
-const planLabelMap: Record<Invoice["plan"], string> = {
-  starter: "STARTER",
-  growth: "GROWTH",
-  enterprise: "ENTERPRISE",
+  refunded: "Refunded",
 };
 
 export function getInvoicesColumns({ onDownload }: InvoicesColumnsOptions): ColumnDef<Invoice>[] {
@@ -54,6 +50,17 @@ export function getInvoicesColumns({ onDownload }: InvoicesColumnsOptions): Colu
       enableHiding: false,
     },
     {
+      accessorKey: "id",
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Invoice" />,
+      cell: ({ row }) => {
+        const id = row.original.id.replace("inv_", "");
+        const shortID = id.slice(-6).toLocaleUpperCase();
+        return <div className="font-medium">{`INV_${shortID}`}</div>;
+      },
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
       accessorKey: "issuedAt",
       header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
       cell: ({ row }) => {
@@ -66,10 +73,10 @@ export function getInvoicesColumns({ onDownload }: InvoicesColumnsOptions): Colu
     },
     {
       accessorKey: "plan",
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Plan" />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Subscription" />,
       cell: ({ row }) => {
         const plan = row.original.plan;
-        return <div className="font-medium">{planLabelMap[plan]}</div>;
+        return <div>{plan}</div>;
       },
       enableSorting: false,
       enableHiding: false,

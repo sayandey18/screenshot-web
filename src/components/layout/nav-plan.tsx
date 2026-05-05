@@ -1,18 +1,21 @@
+import { Link } from "@tanstack/react-router";
 import { Crown, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { QuotaResponse } from "@/hooks/api/use-quota";
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
 
 type NavPlanProps = {
-  plan: {
-    name: string;
-    used: number;
-    limit: number;
-  };
+  quota?: QuotaResponse;
 };
 
-export function NavPlan({ plan }: NavPlanProps) {
+export function NavPlan({ quota }: NavPlanProps) {
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
+
+  const planName = quota?.plan ?? "Loading...";
+  const used = quota?.quota.used ?? 0;
+  const limit = quota?.quota.limit ?? 0;
+  const percentUsed = quota?.quota.percentUsed ?? 0;
 
   return (
     <SidebarMenu>
@@ -28,24 +31,28 @@ export function NavPlan({ plan }: NavPlanProps) {
               <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-sm">
                 <Crown className="h-4 w-4" />
               </div>
-              <span className="text-xs font-semibold tracking-wider text-foreground uppercase">{plan.name}</span>
+              <span className="text-xs font-semibold tracking-wider text-foreground uppercase">{planName}</span>
             </div>
-            <button className="text-muted-foreground transition-colors hover:text-foreground">
+            <Link
+              to="/subscription"
+              className="text-muted-foreground transition-colors hover:text-foreground"
+              aria-label="View subscription"
+            >
               <ArrowUpRight className="h-4 w-4" />
-            </button>
+            </Link>
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center justify-between text-[11px] leading-none font-medium">
               <span className="text-muted-foreground">Used</span>
               <span className="text-foreground">
-                {plan.used} / {plan.limit}
+                {used.toLocaleString()} / {limit.toLocaleString()}
               </span>
             </div>
             <div className="relative h-1 w-full overflow-hidden rounded-full bg-sidebar-border/90">
               <div
                 className="h-full bg-primary transition-all duration-500 ease-in-out"
-                style={{ width: `${(plan.used / plan.limit) * 100}%` }}
+                style={{ width: `${Math.min(percentUsed, 100)}%` }}
               />
             </div>
           </div>
@@ -54,10 +61,13 @@ export function NavPlan({ plan }: NavPlanProps) {
         {/* Collapsed view */}
         {isCollapsed && (
           <SidebarMenuButton
-            tooltip={`${plan.name} (${Math.round((plan.used / plan.limit) * 100)}% used)`}
+            tooltip={`${planName} (${Math.min(percentUsed, 100).toFixed(1)}% used)`}
             className="bg-sidebar-accent text-sidebar-accent-foreground"
+            asChild
           >
-            <Crown className="h-4 w-4" />
+            <Link to="/subscription">
+              <Crown className="h-4 w-4" />
+            </Link>
           </SidebarMenuButton>
         )}
       </SidebarMenuItem>

@@ -2,14 +2,14 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Loader2, LogIn } from "lucide-react";
 import { toast } from "sonner";
-import { IconFacebook, IconGithub } from "@/assets/brand-icons";
+import { IconFacebook, IconGithub, IconGoogle } from "@/assets/brand-icons";
 import { authClient } from "@/lib/auth-client";
-import { sessionQueryOptions } from "@/hooks/api/use-session";
 import { cn } from "@/lib/utils";
+import { sessionQueryOptions } from "@/hooks/api/use-session";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -153,11 +153,23 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
         </div>
 
         <div className="grid grid-cols-2 gap-2">
-          <Button variant="outline" type="button" disabled={isLoading}>
+          <Button
+            variant="outline"
+            type="button"
+            disabled={isLoading}
+            onClick={async () => {
+              setIsLoading(true);
+              await authClient.signIn.social({
+                provider: "github",
+                callbackURL: `${window.location.origin}/dashboard`,
+              });
+              setIsLoading(false);
+            }}
+          >
             <IconGithub className="h-4 w-4" /> GitHub
           </Button>
           <Button variant="outline" type="button" disabled={isLoading}>
-            <IconFacebook className="h-4 w-4" /> Facebook
+            <IconGoogle className="h-4 w-4" /> Google
           </Button>
         </div>
       </form>
