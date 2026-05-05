@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useSession } from "@/hooks/api/use-session";
+import { useAccounts } from "@/hooks/api/use-accounts";
 import { useChangePassword, useRevokeOtherSessions } from "@/features/settings/hooks/use-auth-mutations";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -27,6 +28,7 @@ type AccountFormValues = z.infer<typeof accountFormSchema>;
 
 export function AccountForm() {
   const { data: session } = useSession();
+  const { data: accounts } = useAccounts();
   const changePassword = useChangePassword();
   const revokeOtherSessions = useRevokeOtherSessions();
 
@@ -82,32 +84,21 @@ export function AccountForm() {
     });
   };
 
+  const hasCredentialAccount = accounts?.some((account) => account.providerId === "credential");
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onUpdatePassword)} className="space-y-8">
-        <div className="relative">
-          <h3 className="mb-4 text-lg font-medium">Change Password</h3>
-          <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="currentPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Current Password</FormLabel>
-                  <FormControl>
-                    <PasswordInput placeholder="••••••••" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="grid gap-4 sm:grid-cols-2">
+        {hasCredentialAccount && (
+          <div className="relative">
+            <h3 className="mb-4 text-lg font-medium">Change Password</h3>
+            <div className="space-y-4">
               <FormField
                 control={form.control}
-                name="newPassword"
+                name="currentPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>New Password</FormLabel>
+                    <FormLabel>Current Password</FormLabel>
                     <FormControl>
                       <PasswordInput placeholder="••••••••" {...field} />
                     </FormControl>
@@ -115,25 +106,40 @@ export function AccountForm() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <PasswordInput placeholder="••••••••" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="newPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>New Password</FormLabel>
+                      <FormControl>
+                        <PasswordInput placeholder="••••••••" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <FormControl>
+                        <PasswordInput placeholder="••••••••" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button type="submit" disabled={changePassword.isPending}>
+                Update password
+              </Button>
             </div>
-            <Button type="submit" disabled={changePassword.isPending}>
-              Update password
-            </Button>
           </div>
-        </div>
+        )}
 
         <div className="relative">
           <h3 className="mb-4 text-lg font-medium">Two-Factor Authentication</h3>

@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Loader2, LogIn } from "lucide-react";
 import { toast } from "sonner";
-import { IconFacebook, IconGithub, IconGoogle } from "@/assets/brand-icons";
+import { IconGithub, IconGoogle } from "@/assets/brand-icons";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { sessionQueryOptions } from "@/hooks/api/use-session";
@@ -157,18 +157,26 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
             variant="outline"
             type="button"
             disabled={isLoading}
-            onClick={async () => {
-              setIsLoading(true);
-              await authClient.signIn.social({
+            onClick={() => {
+              authClient.signIn.social({
                 provider: "github",
                 callbackURL: `${window.location.origin}/dashboard`,
               });
-              setIsLoading(false);
             }}
           >
             <IconGithub className="h-4 w-4" /> GitHub
           </Button>
-          <Button variant="outline" type="button" disabled={isLoading}>
+          <Button
+            variant="outline"
+            type="button"
+            disabled={isLoading}
+            onClick={() => {
+              authClient.signIn.social({
+                provider: "google",
+                callbackURL: `${window.location.origin}/dashboard`,
+              });
+            }}
+          >
             <IconGoogle className="h-4 w-4" /> Google
           </Button>
         </div>

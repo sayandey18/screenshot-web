@@ -2,6 +2,10 @@
   current: ["session", "current"] as const,
 };
 
+export const accountKeys = {
+  all: ["accounts"] as const,
+};
+
 export const quotaKeys = {
   current: ["usage", "quota"] as const,
 };

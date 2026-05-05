@@ -1,20 +1,21 @@
 ﻿import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import { Download, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { sessionKeys } from "@/hooks/api/query-keys";
-import { useDisableTwoFactor, useEnableTwoFactor } from "@/features/settings/hooks/use-auth-mutations";
+import { useAccounts } from "@/hooks/api/use-accounts";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { PasswordInput } from "@/components/password-input";
+import { useDisableTwoFactor, useEnableTwoFactor } from "@/features/settings/hooks/use-auth-mutations";
 
 interface ActionDialogProps {
   open: boolean;
@@ -26,11 +27,12 @@ interface ActionDialogProps {
 
 type Step = "password" | "backup-codes" | "disable";
 
-const passwordSchema = z.object({
-  password: z.string().min(1, "Password is required"),
-});
+const passwordSchema = (isRequired: boolean) =>
+  z.object({
+    password: isRequired ? z.string().min(1, "Password is required") : z.string().optional(),
+  });
 
-type PasswordFormValues = z.infer<typeof passwordSchema>;
+type PasswordFormValues = z.infer<ReturnType<typeof passwordSchema>>;
 type TwoFactorEnableResult = {
   backupCodes?: unknown;
 };
@@ -48,6 +50,8 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
   const queryClient = useQueryClient();
   const enableTwoFactor = useEnableTwoFactor();
   const disableTwoFactor = useDisableTwoFactor();
+  const { data: accounts } = useAccounts();
+  const hasCredentialAccount = accounts?.some((account) => account.providerId === "credential");
 
   const [step, setStep] = useState<Step>("password");
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +60,7 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
   const [hasSavedCodes, setHasSavedCodes] = useState(false);
 
   const form = useForm<PasswordFormValues>({
-    resolver: zodResolver(passwordSchema),
+    resolver: zodResolver(passwordSchema(!!hasCredentialAccount)),
     defaultValues: {
       password: "",
     },
@@ -124,13 +128,19 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
 
   const getDescriptions = () => {
     if (type === "delete-account")
-      return "This action is permanent and cannot be undone. All your data will be permanently removed. Please enter your password to confirm.";
+      return hasCredentialAccount
+        ? "This action is permanent and cannot be undone. All your data will be permanently removed. Please enter your password to confirm."
+        : "This action is permanent and cannot be undone. All your data will be permanently removed.";
     if (step === "password")
-      return "To enable Email Two-Factor Authentication, please enter your password for security.";
+      return hasCredentialAccount
+        ? "To enable Email Two-Factor Authentication, please enter your password for security."
+        : "To enable Email Two-Factor Authentication, please click confirm to proceed.";
     if (step === "backup-codes")
       return "Your account is now protected. Save these codes in a safe place to access your account if you lose access to your email.";
     if (step === "disable")
-      return "Please enter your password to confirm you want to disable Two-Factor Authentication.";
+      return hasCredentialAccount
+        ? "Please enter your password to confirm you want to disable Two-Factor Authentication."
+        : "Are you sure you want to disable Two-Factor Authentication?";
     return "";
   };
 
@@ -184,19 +194,21 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
         {step !== "backup-codes" && (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleAction)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{type === "delete-account" ? "Confirm Password" : "Password"}</FormLabel>
-                    <FormControl>
-                      <PasswordInput placeholder="Enter your password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {hasCredentialAccount && (
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{type === "delete-account" ? "Confirm Password" : "Password"}</FormLabel>
+                      <FormControl>
+                        <PasswordInput placeholder="Enter your password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
             </form>
           </Form>
         )}

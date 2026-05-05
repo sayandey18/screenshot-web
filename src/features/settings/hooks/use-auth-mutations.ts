@@ -88,7 +88,7 @@ export const useRevokeOtherSessions = () => {
 
 export const useEnableTwoFactor = () =>
   useMutation({
-    mutationFn: async (password: string) => {
+    mutationFn: async (password?: string) => {
       const result = await authClient.twoFactor.enable({ password });
       return unwrapAuthResult(result as { data: typeof result.data; error: unknown });
     },
@@ -98,7 +98,7 @@ export const useDisableTwoFactor = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (password: string) => {
+    mutationFn: async (password?: string) => {
       const result = await authClient.twoFactor.disable({ password });
       return unwrapAuthResult(result as { data: typeof result.data; error: unknown });
     },

@@ -1,5 +1,5 @@
-﻿import { useRouter } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
+﻿import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "@tanstack/react-router";
 import { authClient } from "@/lib/auth-client";
 import { sessionQueryOptions } from "@/hooks/api/use-session";
 import { AuthLayout } from "@/features/auth/components/auth-layout";
