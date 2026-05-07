@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { IconFacebook, IconGithub } from "@/assets/brand-icons";
+import { IconGithub, IconGoogle } from "@/assets/brand-icons";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -50,8 +50,6 @@ export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) 
       name: data.name,
       email: data.email,
       password: data.password,
-      company: "",
-      bio: "",
       callbackURL: `${window.location.origin}/`,
     };
 
@@ -150,7 +148,7 @@ export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) 
             <IconGithub className="h-4 w-4" /> GitHub
           </Button>
           <Button variant="outline" className="w-full" type="button" disabled={isLoading}>
-            <IconFacebook className="h-4 w-4" /> Facebook
+            <IconGoogle className="h-4 w-4" /> Facebook
           </Button>
         </div>
       </form>

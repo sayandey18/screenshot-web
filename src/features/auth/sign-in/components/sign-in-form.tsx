@@ -4,12 +4,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Loader2, LogIn } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { IconGithub, IconGoogle } from "@/assets/brand-icons";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { sessionQueryOptions } from "@/hooks/api/use-session";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -32,6 +33,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const lastLoginMethod = authClient.getLastUsedLoginMethod();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -138,11 +140,15 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
             </FormItem>
           )}
         />
-        <Button className="mt-2" disabled={isLoading}>
-          {isLoading ? <Loader2 className="animate-spin" /> : <LogIn />}
+        <Button className="relative mt-2" disabled={isLoading}>
+          {isLoading && <Loader2 className="animate-spin" />}
           Sign in
+          {lastLoginMethod === "email" && (
+            <Badge className="absolute -top-2 -right-2 h-4 border-none bg-amber-500 px-1 text-[10px] tracking-wider text-white uppercase shadow-sm transition-transform group-hover:scale-105">
+              Last used
+            </Badge>
+          )}
         </Button>
-
         <div className="relative my-2">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
@@ -156,6 +162,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
           <Button
             variant="outline"
             type="button"
+            className="group relative"
             disabled={isLoading}
             onClick={() => {
               authClient.signIn.social({
@@ -165,10 +172,16 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
             }}
           >
             <IconGithub className="h-4 w-4" /> GitHub
+            {lastLoginMethod === "github" && (
+              <Badge className="absolute -top-2 -right-2 h-4 border-none bg-amber-500 px-1 text-[10px] tracking-wider text-white uppercase shadow-sm transition-transform group-hover:scale-105">
+                Last used
+              </Badge>
+            )}
           </Button>
           <Button
             variant="outline"
             type="button"
+            className="group relative"
             disabled={isLoading}
             onClick={() => {
               authClient.signIn.social({
@@ -178,6 +191,11 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
             }}
           >
             <IconGoogle className="h-4 w-4" /> Google
+            {lastLoginMethod === "google" && (
+              <Badge className="absolute -top-2 -right-2 h-4 border-none bg-amber-500 px-1 text-[10px] tracking-wider text-white uppercase shadow-sm transition-transform group-hover:scale-105">
+                Last used
+              </Badge>
+            )}
           </Button>
         </div>
       </form>

@@ -37,7 +37,11 @@ export function TwoFactor() {
   return (
     <AuthLayout
       title="Two-factor authentication"
-      description={`Enter the 6-digit code we sent to <span className="font-medium text-foreground">${email}</span>`}
+      description={
+        <>
+          Enter the 6-digit code we sent to <span className="font-medium text-foreground">{email}</span>
+        </>
+      }
     >
       <VerifyForm {...baseFlow} />
     </AuthLayout>

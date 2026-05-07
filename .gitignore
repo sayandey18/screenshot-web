@@ -28,7 +28,9 @@ dist-ssr
 
 # Agents
 .agents
+.claude
 skills-lock.json
+CLAUDE.md
 OVERVIEW.md
 
 # CodeRabbit

@@ -1,5 +1,10 @@
 import { apiKeyClient } from "@better-auth/api-key/client";
-import { inferAdditionalFields, emailOTPClient, twoFactorClient } from "better-auth/client/plugins";
+import {
+  inferAdditionalFields,
+  emailOTPClient,
+  twoFactorClient,
+  lastLoginMethodClient,
+} from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
@@ -10,12 +15,17 @@ export const authClient = createAuthClient({
   plugins: [
     apiKeyClient(),
     emailOTPClient(),
-    twoFactorClient(),
+    lastLoginMethodClient(),
+    twoFactorClient({
+      onTwoFactorRedirect() {
+        window.location.replace("/sign-in/2fa");
+      },
+    }),
     inferAdditionalFields({
       user: {
-        plan: { type: "string" },
-        company: { type: "string" },
-        bio: { type: "string" },
+        plan: { type: "string", required: false },
+        company: { type: "string", required: false },
+        bio: { type: "string", required: false },
       },
     }),
   ],
