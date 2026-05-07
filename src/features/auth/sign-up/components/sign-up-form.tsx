@@ -50,7 +50,7 @@ export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) 
       name: data.name,
       email: data.email,
       password: data.password,
-      callbackURL: `${window.location.origin}/`,
+      callbackURL: `${window.location.origin}/dashboard`,
     };
 
     const { error: signUpError } = await authClient.signUp.email(signUpPayload);
