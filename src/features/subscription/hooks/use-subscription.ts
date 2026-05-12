@@ -4,33 +4,53 @@ import { api } from "@/lib/api";
 import { subscriptionKeys, sessionKeys, quotaKeys } from "@/hooks/api/query-keys";
 import { subscriptionInfoSchema, type SubscriptionInfo } from "../data/schema";
 
-// ─── Fetch ───────────────────────────────────────────────────────────────────
-
 async function fetchSubscription(): Promise<SubscriptionInfo> {
   const { data } = await api.get("/billing/subscription");
-  return subscriptionInfoSchema.parse(data);
+  const parsed = subscriptionInfoSchema.safeParse(data);
+  if (parsed.success) return parsed.data;
+
+  return {
+    plan: "STARTER",
+    status: "active",
+    billingCycle: null,
+    nextBillingDate: null,
+    cancelledAt: null,
+    cancelSchedule: false,
+  };
 }
 
 export const subscriptionQueryOptions = () =>
   queryOptions({
     queryKey: subscriptionKeys.current(),
     queryFn: fetchSubscription,
-    staleTime: 1000 * 60 * 5, // 5 min — plan doesn't change mid-session
+    staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
 
 export const useSubscription = () => useQuery(subscriptionQueryOptions());
 
-// ─── Checkout (Upgrade) ──────────────────────────────────────────────────────
-// Calls our backend which creates a Dodo Payments hosted checkout session
-// and returns the checkout URL. The browser is then redirected to Dodo.
+const invalidateSubscriptionCaches = (queryClient: ReturnType<typeof useQueryClient>) => {
+  void queryClient.invalidateQueries({ queryKey: subscriptionKeys.all });
+  void queryClient.invalidateQueries({ queryKey: sessionKeys.current });
+  void queryClient.invalidateQueries({ queryKey: quotaKeys.current });
+};
 
-type CheckoutInput = { slug: "growth-plan" | "enterprise-plan" };
+export type PlanId = "STARTER" | "GROWTH" | "ENTERPRISE";
+export type SwitchPreviewInput = { plan: PlanId };
 
-export const useCheckout = () =>
+export type SwitchPreviewResponse = {
+  title?: string;
+  description?: string;
+  lines?: string[];
+  amount?: number;
+  currency?: string;
+  [key: string]: unknown;
+};
+
+export const useStartCheckout = () =>
   useMutation({
-    mutationFn: async ({ slug }: CheckoutInput) => {
-      const { data } = await api.post<{ checkoutUrl: string }>("/billing/checkout", { slug });
+    mutationFn: async ({ plan }: { plan: Exclude<PlanId, "STARTER"> }) => {
+      const { data } = await api.post<{ checkoutUrl: string }>("/billing/checkout", { plan });
       return data;
     },
     onSuccess: ({ checkoutUrl }) => {
@@ -41,7 +61,33 @@ export const useCheckout = () =>
     },
   });
 
-// ─── Cancel Subscription ─────────────────────────────────────────────────────
+export const useSwitchPreview = () =>
+  useMutation({
+    mutationFn: async ({ plan }: SwitchPreviewInput) => {
+      const { data } = await api.post<SwitchPreviewResponse>("/billing/switch/preview", { plan });
+      return data;
+    },
+    onError: () => {
+      toast.error("Unable to fetch switch preview. Please try again.");
+    },
+  });
+
+export const useConfirmSwitch = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ plan }: { plan: Exclude<PlanId, "STARTER"> }) => {
+      await api.post("/billing/switch", { plan });
+    },
+    onSuccess: () => {
+      invalidateSubscriptionCaches(queryClient);
+      toast.success("Your subscription plan has been updated.");
+    },
+    onError: () => {
+      toast.error("Unable to switch plans. Please try again.");
+    },
+  });
+};
 
 export const useCancelSubscription = () => {
   const queryClient = useQueryClient();
@@ -49,10 +95,7 @@ export const useCancelSubscription = () => {
   return useMutation({
     mutationFn: () => api.post("/billing/cancel"),
     onSuccess: () => {
-      // Plan status changes — invalidate both session and subscription caches
-      void queryClient.invalidateQueries({ queryKey: subscriptionKeys.all });
-      void queryClient.invalidateQueries({ queryKey: sessionKeys.current });
-      void queryClient.invalidateQueries({ queryKey: quotaKeys.current });
+      invalidateSubscriptionCaches(queryClient);
       toast.success("Cancellation scheduled. Your plan will revert to STARTER at period end.");
     },
     onError: () => {

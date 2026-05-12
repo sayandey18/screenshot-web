@@ -22,11 +22,19 @@ export const billingCycleEnum = z.enum(["Month", "Year"]);
 export type BillingCycle = z.infer<typeof billingCycleEnum>;
 
 export const subscriptionInfoSchema = z.object({
-  plan: z.enum(["STARTER", "GROWTH", "ENTERPRISE"]),
-  status: subscriptionStatusEnum,
-  billingCycle: billingCycleEnum.nullable().optional(),
+  plan: z.enum(["STARTER", "GROWTH", "ENTERPRISE"]).catch("STARTER"),
+  status: subscriptionStatusEnum.catch("active"),
+  billingCycle: billingCycleEnum
+    .or(z.enum(["month", "year"]).transform((v) => (v === "month" ? "Month" : "Year")))
+    .nullable()
+    .optional(),
   nextBillingDate: z.string().nullable().optional(), // ISO date string
   cancelledAt: z.string().nullable().optional(),
+  cancelSchedule: z
+    .boolean()
+    .nullable()
+    .optional()
+    .transform((v) => Boolean(v)),
 });
 
 export type SubscriptionInfo = z.infer<typeof subscriptionInfoSchema>;
