@@ -1,4 +1,4 @@
-﻿export const sessionKeys = {
+export const sessionKeys = {
   current: ["session", "current"] as const,
 };
 
@@ -24,6 +24,7 @@ export const subscriptionKeys = {
 export const billingKeys = {
   all: ["billing"] as const,
   address: () => [...billingKeys.all, "address"] as const,
+  paymentMethods: () => [...billingKeys.all, "payment-methods"] as const,
 };
 
 export const invoiceKeys = {

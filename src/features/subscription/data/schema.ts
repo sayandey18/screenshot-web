@@ -41,7 +41,7 @@ export type SubscriptionInfo = z.infer<typeof subscriptionInfoSchema>;
 
 // ─── Invoice Info ───────────────────────────────────────────────────────
 
-export const invoiceStatusEnum = z.enum(["paid", "pending", "failed", "refunded"]);
+export const invoiceStatusEnum = z.enum(["succeeded", "processing", "failed", "cancelled", "refunded"]);
 export type InvoiceStatus = z.infer<typeof invoiceStatusEnum>;
 
 export const invoiceSchema = z.object({

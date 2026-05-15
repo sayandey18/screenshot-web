@@ -16,7 +16,7 @@ import { type NavigateFn, useTableUrlState } from "@/hooks/use-table-url-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/data-table";
-import { type Invoice } from "../data/schema";
+import { type Invoice } from "../../data/schema";
 import { DataTableBulkActions } from "./data-table-bulk-actions";
 import { getInvoicesColumns } from "./invoices-columns";
 

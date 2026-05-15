@@ -1,17 +1,14 @@
 import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { api } from "@/lib/api";
 import { billingKeys } from "@/hooks/api/query-keys";
-import { billingAddressSchema, type BillingAddress } from "../data/schema";
+import {
+  fetchBillingAddress,
+  updateBillingAddress,
+  openBillingPortal,
+} from "../data/api";
+import type { BillingAddress } from "../data/schema";
 
 // ─── Billing Address — Fetch ─────────────────────────────────────────────────
-
-async function fetchBillingAddress(): Promise<BillingAddress | null> {
-  const { data } = await api.get("/billing/address");
-  // Backend returns null when no address has been saved yet
-  if (!data) return null;
-  return billingAddressSchema.parse(data);
-}
 
 export const billingAddressQueryOptions = () =>
   queryOptions({
@@ -32,7 +29,7 @@ export const useUpdateBillingAddress = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (address: BillingAddress) => api.put<BillingAddress>("/billing/address", address),
+    mutationFn: (address: BillingAddress) => updateBillingAddress(address),
     onSuccess: (_, variables) => {
       // Optimistically update the cache so the UI reflects changes immediately
       queryClient.setQueryData<BillingAddress>(billingKeys.address(), variables);
@@ -53,9 +50,9 @@ export const useUpdateBillingAddress = () => {
 
 export const useOpenBillingPortal = () =>
   useMutation({
-    mutationFn: () => api.post<{ url: string }>("/billing/portal"),
-    onSuccess: ({ data }) => {
-      window.location.href = data.url;
+    mutationFn: openBillingPortal,
+    onSuccess: ({ url }) => {
+      window.location.href = url;
     },
     onError: () => {
       toast.error("Unable to open billing portal. Please try again.");

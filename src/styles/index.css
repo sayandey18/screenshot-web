@@ -51,6 +51,11 @@
     overflow: unset !important;
   }
 
+  input[class],
+  textarea[class] {
+    @apply bg-white! dark:bg-input/30!;
+  }
+
   /* Cursor pointer for buttons */
   button:not(:disabled),
   [role="button"]:not(:disabled) {

@@ -1,17 +1,9 @@
 import { keepPreviousData, queryOptions, useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api";
 import { invoiceKeys } from "@/hooks/api/query-keys";
-import { invoicesResponseSchema, type InvoicesResponse } from "../data/schema";
+import { fetchInvoices, type InvoicesQuery } from "../data/api";
+import type { InvoicesResponse } from "../data/schema";
 
-export type InvoicesQuery = {
-  page: number;
-  pageSize: number;
-};
-
-async function fetchInvoices(params: InvoicesQuery): Promise<InvoicesResponse> {
-  const { data } = await api.get("/billing/invoices", { params });
-  return invoicesResponseSchema.parse(data);
-}
+export type { InvoicesQuery };
 
 export const invoicesQueryOptions = ({ page, pageSize }: InvoicesQuery) =>
   queryOptions({
@@ -22,4 +14,5 @@ export const invoicesQueryOptions = ({ page, pageSize }: InvoicesQuery) =>
     refetchOnWindowFocus: false,
   });
 
-export const useInvoices = (params: InvoicesQuery) => useQuery(invoicesQueryOptions(params));
+export const useInvoices = (params: InvoicesQuery): ReturnType<typeof useQuery<InvoicesResponse>> =>
+  useQuery(invoicesQueryOptions(params));

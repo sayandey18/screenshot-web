@@ -22,7 +22,7 @@ export function NavPlan({ quota }: NavPlanProps) {
       <SidebarMenuItem>
         <div
           className={cn(
-            "flex flex-col gap-2 rounded-md border border-sidebar-border bg-muted/25 p-3 transition-all",
+            "flex flex-col gap-2 rounded-md border border-sidebar-border bg-white p-3 transition-all dark:bg-accent",
             isCollapsed && "hidden"
           )}
         >
@@ -49,7 +49,7 @@ export function NavPlan({ quota }: NavPlanProps) {
                 {used.toLocaleString()} / {limit.toLocaleString()}
               </span>
             </div>
-            <div className="relative h-1 w-full overflow-hidden rounded-full bg-sidebar-border/90">
+            <div className="relative h-1 w-full overflow-hidden rounded-full bg-sidebar-border/90 dark:bg-muted-foreground">
               <div
                 className="h-full bg-primary transition-all duration-500 ease-in-out"
                 style={{ width: `${Math.min(percentUsed, 100)}%` }}

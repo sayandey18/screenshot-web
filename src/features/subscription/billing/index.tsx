@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { Country, State } from "country-state-city";
-import { Check, ChevronsUpDown, CreditCard, MapPin } from "lucide-react";
+import { Check, ChevronsUpDown, CreditCard, MapPin, Plus, ExternalLink, Loader2, Landmark } from "lucide-react";
 import { toast } from "sonner";
+import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,26 +18,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ContentSection } from "../components/content-section";
-
-type PaymentMethod = {
-  brand: string;
-  last4: string;
-  expMonth: string;
-  expYear: string;
-};
-
-type BillingAddress = {
-  fullName: string;
-  addressLine1: string;
-  addressLine2: string;
-  countryCode: string;
-  countryName: string;
-  stateCode: string;
-  stateName: string;
-  city: string;
-  postalCode: string;
-};
+import {
+  usePaymentMethods,
+  useBillingAddress,
+  useUpdateBillingAddress,
+  type BillingAddressInput,
+} from "../hooks/use-subscription";
 
 type CountryOption = {
   isoCode: string;
@@ -69,44 +58,36 @@ function getStates(countryCode: string): StateOption[] {
 export function SubscriptionBilling() {
   const countries = useMemo(() => getCountries(), []);
 
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>({
-    brand: "Visa",
-    last4: "4242",
-    expMonth: "08",
-    expYear: "2029",
-  });
+  const { data: pmData, isLoading: isLoadingPM } = usePaymentMethods();
+  const { data: addressData, isLoading: isLoadingAddress } = useBillingAddress();
+  const updateAddress = useUpdateBillingAddress();
 
-  const [billingAddress, setBillingAddress] = useState<BillingAddress>({
-    fullName: "Alex Johnson",
-    addressLine1: "221B Baker Street",
-    addressLine2: "Suite 4",
-    countryCode: "GB",
-    countryName: "United Kingdom",
-    stateCode: "ENG",
-    stateName: "England",
-    city: "London",
-    postalCode: "NW1 6XE",
-  });
-
-  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [addressDialogOpen, setAddressDialogOpen] = useState(false);
+  const [isPortalLoading, setIsPortalLoading] = useState(false);
 
-  const [cardBrand, setCardBrand] = useState(paymentMethod.brand);
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardExpMonth, setCardExpMonth] = useState(paymentMethod.expMonth);
-  const [cardExpYear, setCardExpYear] = useState(paymentMethod.expYear);
-  const [cardCvc, setCardCvc] = useState("");
-
-  const [fullName, setFullName] = useState(billingAddress.fullName);
-  const [addressLine1, setAddressLine1] = useState(billingAddress.addressLine1);
-  const [addressLine2, setAddressLine2] = useState(billingAddress.addressLine2);
-  const [countryCode, setCountryCode] = useState(billingAddress.countryCode);
-  const [stateCode, setStateCode] = useState(billingAddress.stateCode);
-  const [city, setCity] = useState(billingAddress.city);
-  const [postalCode, setPostalCode] = useState(billingAddress.postalCode);
+  // Address form state
+  const [fullName, setFullName] = useState("");
+  const [addressLine1, setAddressLine1] = useState("");
+  const [addressLine2, setAddressLine2] = useState("");
+  const [countryCode, setCountryCode] = useState("");
+  const [stateCode, setStateCode] = useState("");
+  const [city, setCity] = useState("");
+  const [postalCode, setPostalCode] = useState("");
 
   const [countryPopoverOpen, setCountryPopoverOpen] = useState(false);
   const [statePopoverOpen, setStatePopoverOpen] = useState(false);
+
+  // useEffect(() => {
+  //   if (addressData) {
+  //     setFullName(addressData.fullName);
+  //     setAddressLine1(addressData.addressLine1);
+  //     setAddressLine2(addressData.addressLine2 || "");
+  //     setCountryCode(addressData.countryCode);
+  //     setStateCode(addressData.stateCode);
+  //     setCity(addressData.city);
+  //     setPostalCode(addressData.postalCode);
+  //   }
+  // }, [addressData]);
 
   const states = useMemo(() => {
     if (!countryCode) return [];
@@ -120,25 +101,16 @@ export function SubscriptionBilling() {
 
   const selectedState = useMemo(() => states.find((state) => state.isoCode === stateCode), [states, stateCode]);
 
-  const openPaymentDialog = () => {
-    setCardBrand(paymentMethod.brand);
-    setCardExpMonth(paymentMethod.expMonth);
-    setCardExpYear(paymentMethod.expYear);
-    setCardNumber("");
-    setCardCvc("");
-    setPaymentDialogOpen(true);
-  };
-
   const openAddressDialog = () => {
-    setFullName(billingAddress.fullName);
-    setAddressLine1(billingAddress.addressLine1);
-    setAddressLine2(billingAddress.addressLine2);
-    setCountryCode(billingAddress.countryCode);
-    setStateCode(billingAddress.stateCode);
-    setCity(billingAddress.city);
-    setPostalCode(billingAddress.postalCode);
-    setCountryPopoverOpen(false);
-    setStatePopoverOpen(false);
+    if (addressData) {
+      setFullName(addressData.fullName);
+      setAddressLine1(addressData.addressLine1);
+      setAddressLine2(addressData.addressLine2 || "");
+      setCountryCode(addressData.countryCode);
+      setStateCode(addressData.stateCode);
+      setCity(addressData.city);
+      setPostalCode(addressData.postalCode);
+    }
     setAddressDialogOpen(true);
   };
 
@@ -153,196 +125,205 @@ export function SubscriptionBilling() {
     setStatePopoverOpen(false);
   };
 
-  const handleSavePaymentMethod = () => {
-    const trimmed = cardNumber.replace(/\s/g, "");
-    if (trimmed.length < 12) {
-      toast.error("Please enter a valid card number.");
-      return;
-    }
-
-    if (!cardExpMonth || !cardExpYear || !cardCvc) {
-      toast.error("Please complete all card fields.");
-      return;
-    }
-
-    const nextLast4 = trimmed.slice(-4);
-    setPaymentMethod({
-      brand: cardBrand,
-      last4: nextLast4,
-      expMonth: cardExpMonth,
-      expYear: cardExpYear,
-    });
-
-    setPaymentDialogOpen(false);
-    toast.success("Payment method updated.");
-  };
-
-  const handleSaveAddress = () => {
+  const handleSaveAddress = async () => {
     if (!fullName || !addressLine1 || !countryCode || !stateCode || !city || !postalCode) {
       toast.error("Please complete all required address fields.");
       return;
     }
 
-    if (!selectedCountry || !selectedState) {
-      toast.error("Please select a valid country and state.");
-      return;
-    }
-
-    setBillingAddress({
+    const payload: BillingAddressInput = {
       fullName,
       addressLine1,
       addressLine2,
       countryCode,
-      countryName: selectedCountry.name,
       stateCode,
-      stateName: selectedState.name,
       city,
       postalCode,
-    });
+    };
 
-    setAddressDialogOpen(false);
-    toast.success("Billing address updated.");
+    updateAddress.mutate(payload, {
+      onSuccess: () => setAddressDialogOpen(false),
+    });
   };
+
+  const handleManagePaymentMethods = async () => {
+    setIsPortalLoading(true);
+    try {
+      const { data } = await api.post<{ url: string }>("/billing/portal");
+      window.location.href = data.url;
+    } catch (_err) {
+      toast.error("Unable to open customer portal. Please try again.");
+      setIsPortalLoading(false);
+    }
+  };
+
+  const renderPaymentMethodIcon = (type: string) => {
+    switch (type) {
+      case "card":
+        return <CreditCard className="size-4 text-primary" />;
+      case "upi":
+        return <Landmark className="size-4 text-primary" />;
+      default:
+        return <CreditCard className="size-4 text-primary" />;
+    }
+  };
+
+  const paymentMethods = pmData || [];
 
   return (
     <ContentSection
       title="Billing"
-      desc="Manage your payment method and billing address. Structured to support Dodo Payments integration in upcoming phases."
+      desc="Manage your payment methods and billing information. Securely processed by Dodo Payments."
     >
-      <>
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardAction>
-                <Button onClick={openPaymentDialog}>Update Payment Method</Button>
-              </CardAction>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <CreditCard size={16} />
-                Payment Method
-              </CardTitle>
-              <CardDescription>Your default card for recurring subscription charges.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-3 sm:grid-cols-3">
-              <div>
-                <p className="text-xs text-muted-foreground">Card</p>
-                <p className="text-sm font-medium">
-                  {paymentMethod.brand} ending in {paymentMethod.last4}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Expiry</p>
-                <p className="text-sm font-medium">
-                  {paymentMethod.expMonth}/{paymentMethod.expYear}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Processor</p>
-                <p className="text-sm font-medium">Dodo Payments (ready)</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardAction>
-                <Button variant="outline" onClick={openAddressDialog}>
-                  Edit
-                </Button>
-              </CardAction>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <MapPin size={16} />
-                Billing Address
-              </CardTitle>
-              <CardDescription>Address used for invoices, tax calculations, and payment records.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-1 text-sm">
-              <p className="font-medium">{billingAddress.fullName}</p>
-              <p>{billingAddress.addressLine1}</p>
-              {billingAddress.addressLine2 ? <p>{billingAddress.addressLine2}</p> : null}
-              <p>
-                {billingAddress.city}, {billingAddress.stateName} {billingAddress.postalCode}
-              </p>
-              <p>{billingAddress.countryName}</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Update Payment Method</DialogTitle>
-              <DialogDescription>Update card details for upcoming subscription renewals.</DialogDescription>
-            </DialogHeader>
-
-            <div className="grid gap-4 py-1">
-              <div className="grid gap-2">
-                <Label htmlFor="card-brand">Card Brand</Label>
-                <Input
-                  id="card-brand"
-                  value={cardBrand}
-                  onChange={(event) => setCardBrand(event.target.value)}
-                  placeholder="Visa"
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="card-number">Card Number</Label>
-                <Input
-                  id="card-number"
-                  value={cardNumber}
-                  onChange={(event) => setCardNumber(event.target.value)}
-                  placeholder="4242 4242 4242 4242"
-                />
-              </div>
-
-              <div className="grid grid-cols-3 gap-3">
-                <div className="grid gap-2">
-                  <Label htmlFor="exp-month">Expiry Month</Label>
-                  <Input
-                    id="exp-month"
-                    value={cardExpMonth}
-                    onChange={(event) => setCardExpMonth(event.target.value)}
-                    placeholder="08"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="exp-year">Expiry Year</Label>
-                  <Input
-                    id="exp-year"
-                    value={cardExpYear}
-                    onChange={(event) => setCardExpYear(event.target.value)}
-                    placeholder="2029"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="card-cvc">CVC</Label>
-                  <Input
-                    id="card-cvc"
-                    value={cardCvc}
-                    onChange={(event) => setCardCvc(event.target.value)}
-                    placeholder="123"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setPaymentDialogOpen(false)}>
-                Cancel
+      <div className="space-y-6">
+        <Card className="overflow-hidden border-muted/60 shadow-sm">
+          <CardHeader className="pb-3">
+            <CardAction>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleManagePaymentMethods}
+                disabled={isPortalLoading}
+                className="h-8 gap-2"
+              >
+                {isPortalLoading ? (
+                  <Loader2 className="size-3.5 animate-spin" />
+                ) : (
+                  <ExternalLink className="size-3.5" />
+                )}
+                Manage in Dodo
               </Button>
-              <Button onClick={handleSavePaymentMethod}>Save Changes</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            </CardAction>
+            <CardTitle className="text-base font-semibold">Payment Methods</CardTitle>
+            <CardDescription>All payment methods saved for your subscription renewals.</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            {isLoadingPM ? (
+              <div className="space-y-4 px-6 py-4">
+                <div className="flex items-center gap-4">
+                  <Skeleton className="size-10 rounded-lg" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-24" />
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Skeleton className="size-10 rounded-lg" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-24" />
+                  </div>
+                </div>
+              </div>
+            ) : paymentMethods.length > 0 ? (
+              <div className="divide-y divide-muted/60">
+                {paymentMethods.map((pm) => (
+                  <div key={pm.payment_method_id} className="flex items-center justify-between px-6 py-4">
+                    <div className="flex items-center gap-4">
+                      <div className="flex size-10 items-center justify-center rounded-lg bg-primary/5">
+                        {renderPaymentMethodIcon(pm.payment_method)}
+                      </div>
+                      <div className="space-y-0.5">
+                        <p className={cn("text-sm font-medium", pm.payment_method !== "upi" && "capitalize")}>
+                          {pm.payment_method === "card"
+                            ? `${pm.card?.card_network || "Card"} •••• ${pm.card?.last4_digits || ""}`
+                            : pm.payment_method === "upi"
+                              ? "UPI"
+                              : pm.payment_method}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {pm.payment_method === "card"
+                            ? `Expires ${pm.card?.expiry_month}/${pm.card?.expiry_year}`
+                            : pm.recurring_enabled
+                              ? "Auto-renewal active"
+                              : "Single use"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-10 text-center">
+                <div className="flex size-12 items-center justify-center rounded-full bg-muted/30">
+                  <Plus className="size-6 text-muted-foreground/60" />
+                </div>
+                <h3 className="mt-4 text-sm font-medium">No payment methods</h3>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Add a payment method via the Dodo portal to get started.
+                </p>
+                <Button variant="link" size="sm" onClick={handleManagePaymentMethods} className="mt-2 text-xs">
+                  Go to Dodo Portal
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="border-muted/60 shadow-sm">
+          <CardHeader className="pb-3">
+            <CardAction>
+              <Button variant="outline" size="sm" onClick={openAddressDialog} className="h-8">
+                Edit Address
+              </Button>
+            </CardAction>
+            <CardTitle className="text-base font-semibold">Billing Address</CardTitle>
+            <CardDescription>Information used for your receipts and tax compliance.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {isLoadingAddress ? (
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Skeleton className="h-3 w-20" />
+                  <Skeleton className="h-4 w-40" />
+                  <Skeleton className="h-4 w-32" />
+                </div>
+                <div className="space-y-2">
+                  <Skeleton className="h-3 w-20" />
+                  <Skeleton className="h-4 w-36" />
+                  <Skeleton className="h-4 w-24" />
+                </div>
+              </div>
+            ) : addressData ? (
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-1">
+                  <Label className="text-[10px] tracking-wider text-muted-foreground/70 uppercase">
+                    Name & Address
+                  </Label>
+                  <p className="text-sm font-medium">{addressData.fullName}</p>
+                  <p className="text-sm text-muted-foreground">{addressData.addressLine1}</p>
+                  {addressData.addressLine2 && (
+                    <p className="text-sm text-muted-foreground">{addressData.addressLine2}</p>
+                  )}
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-[10px] tracking-wider text-muted-foreground/70 uppercase">Location</Label>
+                  <p className="text-sm text-muted-foreground">
+                    {addressData.city}, {addressData.stateCode} {addressData.postalCode},
+                  </p>
+                  <p className="text-sm text-muted-foreground">{addressData.countryCode}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-6 text-center">
+                <MapPin className="size-8 text-muted-foreground/40" />
+                <p className="mt-2 text-sm text-muted-foreground">No billing address on file.</p>
+                <Button variant="link" size="sm" onClick={openAddressDialog} className="mt-1 text-xs">
+                  Add Address
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         <Dialog open={addressDialogOpen} onOpenChange={setAddressDialogOpen}>
-          <DialogContent>
+          <DialogContent className="max-w-md sm:max-w-lg">
             <DialogHeader>
               <DialogTitle>Edit Billing Address</DialogTitle>
               <DialogDescription>Update your billing contact and address information.</DialogDescription>
             </DialogHeader>
 
-            <div className="grid gap-4 py-1">
+            <div className="grid gap-4 py-4">
               <div className="grid gap-2">
                 <Label htmlFor="full-name">Billing Name</Label>
                 <Input
@@ -350,6 +331,7 @@ export function SubscriptionBilling() {
                   value={fullName}
                   onChange={(event) => setFullName(event.target.value)}
                   placeholder="Full name"
+                  className="h-9"
                 />
               </div>
 
@@ -360,6 +342,7 @@ export function SubscriptionBilling() {
                   value={addressLine1}
                   onChange={(event) => setAddressLine1(event.target.value)}
                   placeholder="Address line 1"
+                  className="h-9"
                 />
               </div>
 
@@ -370,6 +353,7 @@ export function SubscriptionBilling() {
                   value={addressLine2}
                   onChange={(event) => setAddressLine2(event.target.value)}
                   placeholder="Address line 2"
+                  className="h-9"
                 />
               </div>
 
@@ -383,7 +367,7 @@ export function SubscriptionBilling() {
                         variant="outline"
                         role="combobox"
                         aria-expanded={countryPopoverOpen}
-                        className="w-full min-w-0 justify-between gap-2 overflow-hidden font-normal"
+                        className="h-9 w-full min-w-0 justify-between gap-2 overflow-hidden font-normal"
                       >
                         <span className="min-w-0 flex-1 truncate text-left">
                           {selectedCountry?.name ?? "Select country"}
@@ -393,13 +377,8 @@ export function SubscriptionBilling() {
                     </PopoverTrigger>
                     <PopoverContent className="w-(--radix-popover-trigger-width) min-w-0 p-0" align="start">
                       <Command className="w-full">
-                        <CommandInput placeholder="Search country..." />
-                        <CommandList
-                          className="max-h-64 overflow-x-hidden overflow-y-auto overscroll-contain"
-                          onWheel={(event) => {
-                            event.stopPropagation();
-                          }}
-                        >
+                        <CommandInput placeholder="Search country..." className="h-9" />
+                        <CommandList className="max-h-64 overflow-x-hidden overflow-y-auto overscroll-contain">
                           <CommandEmpty>No country found.</CommandEmpty>
                           <CommandGroup>
                             {countries.map((country) => (
@@ -434,25 +413,20 @@ export function SubscriptionBilling() {
                         variant="outline"
                         role="combobox"
                         aria-expanded={statePopoverOpen}
-                        className="w-full min-w-0 justify-between gap-2 overflow-hidden font-normal"
+                        className="h-9 w-full min-w-0 justify-between gap-2 overflow-hidden font-normal"
                         disabled={!countryCode}
                       >
                         <span className="min-w-0 flex-1 truncate text-left">
-                          {selectedState?.name ?? (countryCode ? "Select state/province" : "Select country first")}
+                          {selectedState?.name ?? (countryCode ? "Select state" : "Select country first")}
                         </span>
                         <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-(--radix-popover-trigger-width) min-w-0 p-0" align="start">
                       <Command className="w-full">
-                        <CommandInput placeholder="Search state/province..." />
-                        <CommandList
-                          className="max-h-64 overflow-x-hidden overflow-y-auto overscroll-contain"
-                          onWheel={(event) => {
-                            event.stopPropagation();
-                          }}
-                        >
-                          <CommandEmpty>No state/province found.</CommandEmpty>
+                        <CommandInput placeholder="Search state..." className="h-9" />
+                        <CommandList className="max-h-64 overflow-x-hidden overflow-y-auto overscroll-contain">
+                          <CommandEmpty>No state found.</CommandEmpty>
                           <CommandGroup>
                             {states.map((state) => (
                               <CommandItem
@@ -481,7 +455,13 @@ export function SubscriptionBilling() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="grid gap-2">
                   <Label htmlFor="city">City</Label>
-                  <Input id="city" value={city} onChange={(event) => setCity(event.target.value)} placeholder="City" />
+                  <Input
+                    id="city"
+                    value={city}
+                    onChange={(event) => setCity(event.target.value)}
+                    placeholder="City"
+                    className="h-9"
+                  />
                 </div>
 
                 <div className="grid gap-2">
@@ -491,20 +471,24 @@ export function SubscriptionBilling() {
                     value={postalCode}
                     onChange={(event) => setPostalCode(event.target.value)}
                     placeholder="ZIP/Postal Code"
+                    className="h-9"
                   />
                 </div>
               </div>
             </div>
 
             <DialogFooter>
-              <Button variant="outline" onClick={() => setAddressDialogOpen(false)}>
+              <Button variant="outline" onClick={() => setAddressDialogOpen(false)} disabled={updateAddress.isPending}>
                 Cancel
               </Button>
-              <Button onClick={handleSaveAddress}>Save Address</Button>
+              <Button onClick={handleSaveAddress} disabled={updateAddress.isPending}>
+                {updateAddress.isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
+                Save Address
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      </>
+      </div>
     </ContentSection>
   );
 }

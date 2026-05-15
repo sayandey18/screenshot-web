@@ -1,10 +1,9 @@
-import { createContext, useContext, useEffect, useState, useMemo } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { getCookie, setCookie, removeCookie } from "@/lib/cookies";
 
-type Theme = "dark" | "light" | "system";
-type ResolvedTheme = Exclude<Theme, "system">;
+type Theme = "dark" | "light";
 
-const DEFAULT_THEME = "system";
+const DEFAULT_THEME = "light";
 const THEME_COOKIE_NAME = "vite-ui-theme";
 const THEME_COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
@@ -16,7 +15,6 @@ type ThemeProviderProps = {
 
 type ThemeProviderState = {
   defaultTheme: Theme;
-  resolvedTheme: ResolvedTheme;
   theme: Theme;
   setTheme: (theme: Theme) => void;
   resetTheme: () => void;
@@ -24,7 +22,6 @@ type ThemeProviderState = {
 
 const initialState: ThemeProviderState = {
   defaultTheme: DEFAULT_THEME,
-  resolvedTheme: "light",
   theme: DEFAULT_THEME,
   setTheme: () => null,
   resetTheme: () => null,
@@ -38,38 +35,45 @@ export function ThemeProvider({
   storageKey = THEME_COOKIE_NAME,
   ...props
 }: ThemeProviderProps) {
-  const [theme, _setTheme] = useState<Theme>(() => (getCookie(storageKey) as Theme) || defaultTheme);
-
-  // Optimized: Memoize the resolved theme calculation to prevent unnecessary re-computations
-  const resolvedTheme = useMemo((): ResolvedTheme => {
-    if (theme === "system") {
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
-    return theme as ResolvedTheme;
-  }, [theme]);
+  const [theme, _setTheme] = useState<Theme>(() => {
+    const cookieValue = getCookie(storageKey) as Theme;
+    if (cookieValue === "light" || cookieValue === "dark") return cookieValue;
+    return defaultTheme;
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
-    const applyTheme = (currentResolvedTheme: ResolvedTheme) => {
+    const applyTheme = (currentTheme: Theme) => {
+      // Create a style element to disable transitions
+      const disableTransitions = document.createElement("style");
+      disableTransitions.appendChild(
+        document.createTextNode(
+          `* {
+            -webkit-transition: none !important;
+            -moz-transition: none !important;
+            -o-transition: none !important;
+            -ms-transition: none !important;
+            transition: none !important;
+          }`
+        )
+      );
+      document.head.appendChild(disableTransitions);
+
       root.classList.remove("light", "dark"); // Remove existing theme classes
-      root.classList.add(currentResolvedTheme); // Add the new theme class
+      root.classList.add(currentTheme); // Add the new theme class
+      root.style.colorScheme = currentTheme; // Set the color scheme
+
+      // Force a reflow to ensure the theme change is applied without transitions
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      window.getComputedStyle(disableTransitions).opacity;
+
+      // Remove the style element to re-enable transitions
+      document.head.removeChild(disableTransitions);
     };
 
-    const handleChange = () => {
-      if (theme === "system") {
-        const systemTheme = mediaQuery.matches ? "dark" : "light";
-        applyTheme(systemTheme);
-      }
-    };
-
-    applyTheme(resolvedTheme);
-
-    mediaQuery.addEventListener("change", handleChange);
-
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, [theme, resolvedTheme]);
+    applyTheme(theme);
+  }, [theme]);
 
   const setTheme = (theme: Theme) => {
     setCookie(storageKey, theme, THEME_COOKIE_MAX_AGE);
@@ -83,7 +87,6 @@ export function ThemeProvider({
 
   const contextValue = {
     defaultTheme,
-    resolvedTheme,
     resetTheme,
     theme,
     setTheme,

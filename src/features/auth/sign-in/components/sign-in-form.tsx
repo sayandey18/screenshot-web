@@ -144,7 +144,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
           {isLoading && <Loader2 className="animate-spin" />}
           Sign in
           {lastLoginMethod === "email" && (
-            <Badge className="absolute -top-2 -right-2 h-4 border-none bg-amber-500 px-1 text-[10px] tracking-wider text-white uppercase shadow-sm transition-transform group-hover:scale-105">
+            <Badge className="absolute -top-2 -right-2 h-4 border-none bg-zinc-800 px-1 text-[10px] tracking-wider text-white uppercase shadow-sm transition-transform group-hover:scale-105">
               Last used
             </Badge>
           )}

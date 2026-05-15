@@ -1,23 +1,27 @@
 import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { api } from "@/lib/api";
-import { subscriptionKeys, sessionKeys, quotaKeys } from "@/hooks/api/query-keys";
-import { subscriptionInfoSchema, type SubscriptionInfo } from "../data/schema";
+import { subscriptionKeys, sessionKeys, quotaKeys, billingKeys } from "@/hooks/api/query-keys";
+import {
+  fetchSubscription,
+  startCheckout,
+  fetchSwitchPreview,
+  confirmSwitch,
+  cancelSubscription,
+  fetchPaymentMethods,
+  fetchBillingAddress,
+  updateBillingAddress,
+  type PlanId,
+  type SwitchPreviewResponse,
+  type PaymentMethodItem,
+  type BillingAddressInput,
+} from "../data/api";
 
-async function fetchSubscription(): Promise<SubscriptionInfo> {
-  const { data } = await api.get("/billing/subscription");
-  const parsed = subscriptionInfoSchema.safeParse(data);
-  if (parsed.success) return parsed.data;
+// Re-export types so existing consumers need no import path changes
+export type { PlanId, SwitchPreviewResponse, PaymentMethodItem, BillingAddressInput };
 
-  return {
-    plan: "STARTER",
-    status: "active",
-    billingCycle: null,
-    nextBillingDate: null,
-    cancelledAt: null,
-    cancelSchedule: false,
-  };
-}
+export type SwitchPreviewInput = { plan: PlanId };
+
+// ─── Subscription ─────────────────────────────────────────────────────────────
 
 export const subscriptionQueryOptions = () =>
   queryOptions({
@@ -35,24 +39,11 @@ const invalidateSubscriptionCaches = (queryClient: ReturnType<typeof useQueryCli
   void queryClient.invalidateQueries({ queryKey: quotaKeys.current });
 };
 
-export type PlanId = "STARTER" | "GROWTH" | "ENTERPRISE";
-export type SwitchPreviewInput = { plan: PlanId };
-
-export type SwitchPreviewResponse = {
-  title?: string;
-  description?: string;
-  lines?: string[];
-  amount?: number;
-  currency?: string;
-  [key: string]: unknown;
-};
+// ─── Checkout ─────────────────────────────────────────────────────────────────
 
 export const useStartCheckout = () =>
   useMutation({
-    mutationFn: async ({ plan }: { plan: Exclude<PlanId, "STARTER"> }) => {
-      const { data } = await api.post<{ checkoutUrl: string }>("/billing/checkout", { plan });
-      return data;
-    },
+    mutationFn: ({ plan }: { plan: Exclude<PlanId, "STARTER"> }) => startCheckout(plan),
     onSuccess: ({ checkoutUrl }) => {
       window.location.href = checkoutUrl;
     },
@@ -61,12 +52,11 @@ export const useStartCheckout = () =>
     },
   });
 
+// ─── Plan Switch ──────────────────────────────────────────────────────────────
+
 export const useSwitchPreview = () =>
   useMutation({
-    mutationFn: async ({ plan }: SwitchPreviewInput) => {
-      const { data } = await api.post<SwitchPreviewResponse>("/billing/switch/preview", { plan });
-      return data;
-    },
+    mutationFn: ({ plan }: SwitchPreviewInput) => fetchSwitchPreview(plan),
     onError: () => {
       toast.error("Unable to fetch switch preview. Please try again.");
     },
@@ -76,9 +66,7 @@ export const useConfirmSwitch = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ plan }: { plan: Exclude<PlanId, "STARTER"> }) => {
-      await api.post("/billing/switch", { plan });
-    },
+    mutationFn: ({ plan }: { plan: Exclude<PlanId, "STARTER"> }) => confirmSwitch(plan),
     onSuccess: () => {
       invalidateSubscriptionCaches(queryClient);
       toast.success("Your subscription plan has been updated.");
@@ -89,17 +77,52 @@ export const useConfirmSwitch = () => {
   });
 };
 
+// ─── Cancel ───────────────────────────────────────────────────────────────────
+
 export const useCancelSubscription = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => api.post("/billing/cancel"),
+    mutationFn: cancelSubscription,
     onSuccess: () => {
       invalidateSubscriptionCaches(queryClient);
       toast.success("Cancellation scheduled. Your plan will revert to STARTER at period end.");
     },
     onError: () => {
       toast.error("Unable to cancel subscription. Please try again.");
+    },
+  });
+};
+
+// ─── Payment Methods ──────────────────────────────────────────────────────────
+
+export const usePaymentMethods = () =>
+  useQuery({
+    queryKey: billingKeys.paymentMethods(),
+    queryFn: fetchPaymentMethods,
+    staleTime: 1000 * 60 * 10,
+  });
+
+// ─── Billing Address ──────────────────────────────────────────────────────────
+
+export const useBillingAddress = () =>
+  useQuery({
+    queryKey: billingKeys.address(),
+    queryFn: fetchBillingAddress,
+    staleTime: 1000 * 60 * 60,
+  });
+
+export const useUpdateBillingAddress = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (address: BillingAddressInput) => updateBillingAddress(address),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: billingKeys.address() });
+      toast.success("Billing address updated.");
+    },
+    onError: () => {
+      toast.error("Unable to update billing address. Please try again.");
     },
   });
 };
