@@ -16,4 +16,4 @@
  *      --font-roboto: 'Roboto', var(--font-sans);
  *   }
  */
-export const fonts = ["geist", "geist-mono", "system"] as const;
+export const fonts = ["inter", "dm-sans", "google", "geist", "system"] as const;

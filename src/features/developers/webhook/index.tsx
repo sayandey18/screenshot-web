@@ -4,7 +4,7 @@ import { ContentSection } from "../components/content-section";
 
 export function DevelopersWebhook() {
   return (
-    <ContentSection title="Webhook" desc="Manage event webhooks for your workspace.">
+    <ContentSection title="Webhook" desc="Manage event webhooks for your workspace." header={false}>
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between gap-2">

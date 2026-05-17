@@ -4,22 +4,18 @@ import { subscriptionKeys, sessionKeys, quotaKeys, billingKeys } from "@/hooks/a
 import {
   fetchSubscription,
   startCheckout,
-  fetchSwitchPreview,
   confirmSwitch,
   cancelSubscription,
   fetchPaymentMethods,
   fetchBillingAddress,
   updateBillingAddress,
   type PlanId,
-  type SwitchPreviewResponse,
   type PaymentMethodItem,
   type BillingAddressInput,
 } from "../data/api";
 
 // Re-export types so existing consumers need no import path changes
-export type { PlanId, SwitchPreviewResponse, PaymentMethodItem, BillingAddressInput };
-
-export type SwitchPreviewInput = { plan: PlanId };
+export type { PlanId, PaymentMethodItem, BillingAddressInput };
 
 // ─── Subscription ─────────────────────────────────────────────────────────────
 
@@ -53,14 +49,6 @@ export const useStartCheckout = () =>
   });
 
 // ─── Plan Switch ──────────────────────────────────────────────────────────────
-
-export const useSwitchPreview = () =>
-  useMutation({
-    mutationFn: ({ plan }: SwitchPreviewInput) => fetchSwitchPreview(plan),
-    onError: () => {
-      toast.error("Unable to fetch switch preview. Please try again.");
-    },
-  });
 
 export const useConfirmSwitch = () => {
   const queryClient = useQueryClient();

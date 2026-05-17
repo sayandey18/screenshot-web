@@ -56,7 +56,6 @@ export function UsageDetailsDialog({ open, onOpenChange, row }: UsageDetailsDial
             <section>
               <h3 className="mb-1 font-semibold">Request Info</h3>
               <Row label="URL" value={row.url} />
-              <Row label="URL Display" value={row.urlDisplay} />
               <Row label="Browser" value={row.browser} />
               <Row label="Format" value={row.format.toUpperCase()} />
               <Row
@@ -72,9 +71,8 @@ export function UsageDetailsDialog({ open, onOpenChange, row }: UsageDetailsDial
             <section>
               <h3 className="mb-1 font-semibold">Timing</h3>
               <Row label="Duration" value={formatDuration(row.durationMs)} />
-              <Row label="Duration Display" value={row.durationDisplay ?? "-"} />
               <Row label="Created At" value={<DateOrFallback date={row.createdAt} fallback="-" />} />
-              <Row label="File Expires At" value={<DateOrFallback date={row.fileExpiresAt} fallback="Never" />} />
+              <Row label="Expires At" value={<DateOrFallback date={row.fileExpiresAt} fallback="Never" />} />
             </section>
 
             <section>
@@ -82,8 +80,15 @@ export function UsageDetailsDialog({ open, onOpenChange, row }: UsageDetailsDial
               <Row
                 label="Download URL"
                 value={
-                  row.downloadUrl ? (
-                    <a href={row.downloadUrl} target="_blank" rel="noreferrer" className="text-primary underline">
+                  row.fileExpiresAt && new Date(row.fileExpiresAt) < new Date() ? (
+                    <span className="font-medium text-destructive">Expired</span>
+                  ) : row.downloadUrl ? (
+                    <a
+                      href={row.downloadUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-medium text-primary underline"
+                    >
                       Download
                     </a>
                   ) : (

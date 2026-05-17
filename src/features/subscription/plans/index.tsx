@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { getRouteApi } from "@tanstack/react-router";
-import { Crown, Sparkles, Zap } from "lucide-react";
+import { Building2, Calendar, Clock, Crown, Package, RefreshCw, Sparkles, Zap } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,14 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { ContentSection } from "../components/content-section";
 import type { SubscriptionStatus } from "../data/schema";
-import {
-  useCancelSubscription,
-  useConfirmSwitch,
-  useStartCheckout,
-  useSubscription,
-  useSwitchPreview,
-  type SwitchPreviewResponse,
-} from "../hooks/use-subscription";
+import { useCancelSubscription, useConfirmSwitch, useStartCheckout, useSubscription } from "../hooks/use-subscription";
 
 const route = getRouteApi("/_authenticated/subscription/");
 
@@ -36,7 +30,7 @@ const plans: Plan[] = [
     id: "STARTER",
     name: "Starter",
     price: "$0/month",
-    tagline: "Perfect for getting started with essential screenshot workflows.",
+    tagline: "Perfect for individual developers",
     icon: <Sparkles size={16} />,
     rank: 1,
   },
@@ -44,7 +38,7 @@ const plans: Plan[] = [
     id: "GROWTH",
     name: "Growth",
     price: "$8/month",
-    tagline: "Built for growing teams that need automation and higher limits.",
+    tagline: "Perfect for growing businesses",
     icon: <Zap size={16} />,
     rank: 2,
   },
@@ -52,7 +46,7 @@ const plans: Plan[] = [
     id: "ENTERPRISE",
     name: "Enterprise",
     price: "$15/month",
-    tagline: "Advanced controls and scale for production-grade workloads.",
+    tagline: "Perfect for large scale businesses",
     icon: <Crown size={16} />,
     rank: 3,
   },
@@ -109,14 +103,12 @@ export function SubscriptionPlans() {
 
   const { data: subscription, isLoading } = useSubscription();
   const { mutate: startCheckout, isPending: isCheckingOut } = useStartCheckout();
-  const { mutate: fetchSwitchPreview, isPending: isFetchingPreview } = useSwitchPreview();
   const { mutate: confirmSwitch, isPending: isConfirmingSwitch } = useConfirmSwitch();
   const { mutate: cancelSubscription, isPending: isCancelling } = useCancelSubscription();
 
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [switchDialogOpen, setSwitchDialogOpen] = useState(false);
   const [targetSwitchPlan, setTargetSwitchPlan] = useState<Plan | null>(null);
-  const [switchPreview, setSwitchPreview] = useState<SwitchPreviewResponse | null>(null);
   const [pendingPlanId, setPendingPlanId] = useState<PlanId | null>(null);
 
   const activePlanId = subscription?.plan ?? "STARTER";
@@ -126,7 +118,7 @@ export function SubscriptionPlans() {
   );
   const isOnPaidPlan = activePlan.id !== "STARTER";
 
-  const isBusy = isLoading || isCheckingOut || isFetchingPreview || isConfirmingSwitch || isCancelling;
+  const isBusy = isLoading || isCheckingOut || isConfirmingSwitch || isCancelling;
 
   const getCta = (plan: Plan) => {
     if (plan.id === activePlanId) {
@@ -157,18 +149,7 @@ export function SubscriptionPlans() {
 
     setTargetSwitchPlan(targetPlan);
     setPendingPlanId(targetPlan.id);
-    fetchSwitchPreview(
-      { plan: targetPlan.id },
-      {
-        onSuccess: (preview) => {
-          setSwitchPreview(preview ?? null);
-          setSwitchDialogOpen(true);
-        },
-        onError: () => {
-          setPendingPlanId(null);
-        },
-      }
-    );
+    setSwitchDialogOpen(true);
   };
 
   const handleConfirmCancel = () => {
@@ -185,7 +166,6 @@ export function SubscriptionPlans() {
         onSuccess: () => {
           setSwitchDialogOpen(false);
           setTargetSwitchPlan(null);
-          setSwitchPreview(null);
           setPendingPlanId(null);
         },
         onError: () => {
@@ -195,24 +175,19 @@ export function SubscriptionPlans() {
     );
   };
 
-  const previewTitle = switchPreview?.title ?? "Confirm plan switch";
-  const previewDescription =
-    switchPreview?.description ?? "Your subscription will switch to the selected paid plan on confirmation.";
-  const previewLines = Array.isArray(switchPreview?.lines) ? switchPreview.lines : [];
-  const previewAmount =
-    typeof switchPreview?.amount === "number"
-      ? `${switchPreview.currency ?? "USD"} ${switchPreview.amount.toFixed(2)}`
-      : null;
-
   return (
-    <ContentSection title="Plans" desc="Choose a plan that fits your usage now and scale when you need more.">
+    <ContentSection
+      title="Plans"
+      desc="Choose a plan that fits your usage now and scale when you need more."
+      header={false}
+    >
       <>
         <div className="space-y-6">
-          <Card className="gap-4">
-            <CardHeader>
+          <Card className="overflow-hidden border-muted/60 pb-0 shadow-sm">
+            <CardHeader className="pb-3">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <CardTitle className="mb-1">Active Subscription</CardTitle>
+                  <CardTitle className="text-base font-semibold">Active Subscription</CardTitle>
                   <CardDescription>Current subscription details and upcoming billing timeline.</CardDescription>
                 </div>
                 {isLoading ? (
@@ -223,20 +198,20 @@ export function SubscriptionPlans() {
               </div>
             </CardHeader>
 
-            <CardContent className="space-y-4">
-              {isCancellationScheduled && (
-                <div className="rounded-md border border-amber-200/70 bg-amber-50/60 px-3 py-2 text-sm text-amber-900 dark:border-amber-900/70 dark:bg-amber-950/30 dark:text-amber-200">
-                  Cancellation has been scheduled. Your current plan will remain active until the next billing date.
-                </div>
-              )}
-
+            <CardContent className={cn(activePlan.id === "STARTER" && "pb-6")}>
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <div>
-                  <p className="pb-1 text-xs text-muted-foreground">Subscription</p>
+                  <div className="flex items-center gap-1 pb-1">
+                    <Package className="size-3.5 text-muted-foreground" />
+                    <p className="text-xs text-muted-foreground">Subscription</p>
+                  </div>
                   <p className="text-sm font-medium">{activePlan.name}</p>
                 </div>
                 <div>
-                  <p className="pb-1 text-xs text-muted-foreground">Cycle</p>
+                  <div className="flex items-center gap-1 pb-1">
+                    <RefreshCw className="size-3.5 text-muted-foreground" />
+                    <p className="text-xs text-muted-foreground">Cycle</p>
+                  </div>
                   {isLoading ? (
                     <Skeleton className="mt-1 h-4 w-16" />
                   ) : (
@@ -244,7 +219,10 @@ export function SubscriptionPlans() {
                   )}
                 </div>
                 <div>
-                  <p className="pb-1 text-xs text-muted-foreground">Upcoming Date</p>
+                  <div className="flex items-center gap-1 pb-1">
+                    <Calendar className="size-3.5 text-muted-foreground" />
+                    <p className="text-xs text-muted-foreground">Upcoming</p>
+                  </div>
                   {isLoading ? (
                     <Skeleton className="mt-1 h-4 w-24" />
                   ) : (
@@ -252,22 +230,39 @@ export function SubscriptionPlans() {
                   )}
                 </div>
                 <div>
-                  <p className="pb-1 text-xs text-muted-foreground">Provider</p>
+                  <div className="flex items-center gap-1 pb-1">
+                    <Building2 className="size-3.5 text-muted-foreground" />
+                    <p className="text-xs text-muted-foreground">Provider</p>
+                  </div>
                   <p className="text-sm font-medium">{activePlan.id === "STARTER" ? "-" : "Dodo Payments"}</p>
                 </div>
               </div>
             </CardContent>
 
-            {!isLoading && activePlan.id !== "STARTER" && !isCancellationScheduled && (
-              <CardFooter>
-                <Button
-                  variant="outline"
-                  className="text-sm text-destructive hover:text-destructive"
-                  onClick={() => setCancelDialogOpen(true)}
-                  disabled={isBusy || subscription?.status === "cancelled"}
-                >
-                  {isCancelling ? "Cancelling..." : "Cancel Subscription"}
-                </Button>
+            {!isLoading && activePlan.id !== "STARTER" && (
+              <CardFooter
+                className={
+                  isCancellationScheduled
+                    ? "bg-amber-100/80 px-6 py-2.5 dark:bg-amber-950/30"
+                    : "border-t px-6 py-4 pt-4!"
+                }
+              >
+                {isCancellationScheduled ? (
+                  <div className="flex w-full items-center gap-2 text-sm text-amber-900 dark:text-amber-200">
+                    <Clock className="size-4 shrink-0" />
+                    <span className="font-medium">NOTE: </span>
+                    <span>Your current plan will remain active until the next billing date.</span>
+                  </div>
+                ) : (
+                  <Button
+                    variant="outline"
+                    className="ml-auto text-destructive hover:text-destructive"
+                    onClick={() => setCancelDialogOpen(true)}
+                    disabled={isBusy || subscription?.status === "cancelled"}
+                  >
+                    {isCancelling ? "Cancelling..." : "Cancel Subscription"}
+                  </Button>
+                )}
               </CardFooter>
             )}
           </Card>
@@ -278,23 +273,102 @@ export function SubscriptionPlans() {
               const isCurrent = plan.id === activePlanId;
 
               return (
+                // <Card
+                //   key={plan.id}
+                //   className={`flex h-full flex-col overflow-hidden border-muted/60 shadow-sm transition-shadow hover:shadow-md ${isCurrent ? "border-primary ring-1 ring-primary/30" : ""}`}
+                // >
+                //   <CardHeader>
+                //     <div className="flex items-center justify-between gap-3">
+                //       <div className="flex items-center gap-2">
+                //         <div className="flex size-8 items-center justify-center rounded-md bg-primary/5 text-primary">
+                //           {plan.icon}
+                //         </div>
+                //         <CardTitle className="text-base font-semibold">{plan.name}</CardTitle>
+                //       </div>
+                //       {/*{isCurrent ? (
+                //         <Badge
+                //           variant="secondary"
+                //           className="gap-2 border-0 bg-orange-100 text-orange-900 dark:bg-orange-500/10 dark:text-orange-200"
+                //         >
+                //           <span className="relative flex size-2">
+                //             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75 dark:bg-orange-300" />
+
+                //             <span className="relative inline-flex size-2 rounded-full bg-orange-500 dark:bg-orange-200" />
+                //           </span>
+                //         </Badge>
+                //       ) : null}*/}
+
+                //       {isCurrent ? (
+                //         <Badge
+                //           variant="secondary"
+                //           className="flex h-6 w-6 items-center justify-center rounded-full border-0 bg-orange-100 p-0 dark:bg-orange-500/10"
+                //         >
+                //           <span className="relative flex size-2">
+                //             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75 dark:bg-orange-300" />
+
+                //             <span className="relative inline-flex size-2 rounded-full bg-orange-500 dark:bg-orange-200" />
+                //           </span>
+                //         </Badge>
+                //       ) : null}
+                //     </div>
+                //   </CardHeader>
+
+                //   <CardContent>
+                //     <div className="space-y-1">
+                //       <p className="text-2xl font-bold text-foreground">{plan.price}</p>
+                //       <p className="text-sm text-muted-foreground">{plan.tagline}</p>
+                //     </div>
+                //   </CardContent>
+
+                //   <CardFooter className="pt-0">
+                //     <Button
+                //       variant={cta.variant}
+                //       className="w-full"
+                //       disabled={cta.disabled || isBusy}
+                //       onClick={() => handleSelectPlan(plan)}
+                //     >
+                //       {isBusy && pendingPlanId === plan.id ? "Updating..." : cta.label}
+                //     </Button>
+                //   </CardFooter>
+                // </Card>
+                //
                 <Card
                   key={plan.id}
-                  className={`flex h-full flex-col justify-between gap-5 ${isCurrent ? "border-primary ring-1 ring-primary/30" : ""}`}
+                  className={cn(
+                    "relative flex h-full flex-col gap-3 overflow-hidden border-muted/60 shadow-sm transition-shadow hover:shadow-md",
+                    isCurrent && "border-primary ring-1 ring-primary/30"
+                  )}
                 >
-                  <CardHeader className="space-y-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <CardTitle className="flex items-center gap-2 text-base font-semibold">
+                  {isCurrent ? (
+                    <Badge
+                      variant="default"
+                      className="absolute top-6 right-0 z-10 rounded-none border-0 px-2 py-1 text-[0.6rem] font-bold tracking-[0.25em] shadow-sm"
+                      style={{
+                        writingMode: "vertical-rl",
+                        textOrientation: "mixed",
+                      }}
+                    >
+                      CURRENT
+                    </Badge>
+                  ) : null}
+
+                  <CardHeader>
+                    <div className="flex items-center gap-2 pr-8">
+                      <div className="flex size-8 items-center justify-center rounded-md bg-primary/5 text-primary">
                         {plan.icon}
-                        <span>{plan.name}</span>
-                      </CardTitle>
-                      {isCurrent ? <Badge>Current</Badge> : null}
-                    </div>
-                    <div className="space-y-1">
-                      <CardDescription className="text-2xl font-bold text-foreground">{plan.price}</CardDescription>
-                      <p className="text-sm text-muted-foreground">{plan.tagline}</p>
+                      </div>
+
+                      <CardTitle className="text-base font-semibold">{plan.name}</CardTitle>
                     </div>
                   </CardHeader>
+
+                  <CardContent>
+                    <div className="space-y-1">
+                      <p className="text-2xl font-bold text-foreground">{plan.price}</p>
+
+                      <p className="text-sm text-muted-foreground">{plan.tagline}</p>
+                    </div>
+                  </CardContent>
 
                   <CardFooter className="pt-0">
                     <Button
@@ -332,26 +406,14 @@ export function SubscriptionPlans() {
               setPendingPlanId(null);
             }
           }}
-          title={previewTitle}
+          title="Confirm plan switch"
           desc={
             <div className="space-y-2">
-              <p>{previewDescription}</p>
+              <p>Your subscription will switch to the selected paid plan on confirmation.</p>
               {targetSwitchPlan ? (
                 <p>
                   Target plan: <span className="font-medium">{targetSwitchPlan.name}</span>
                 </p>
-              ) : null}
-              {previewAmount ? (
-                <p>
-                  Charge preview: <span className="font-medium">{previewAmount}</span>
-                </p>
-              ) : null}
-              {previewLines.length > 0 ? (
-                <ul className="list-disc space-y-1 ps-5">
-                  {previewLines.map((line) => (
-                    <li key={line}>{line}</li>
-                  ))}
-                </ul>
               ) : null}
             </div>
           }

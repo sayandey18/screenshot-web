@@ -28,7 +28,7 @@ const queryClient = new QueryClient({
         return !(error instanceof AxiosError && [401, 403].includes(error.response?.status ?? 0));
       },
       refetchOnWindowFocus: import.meta.env.PROD,
-      staleTime: 10 * 1000, // 10s
+      staleTime: 1000 * 60 * 2, // 2 minutes
     },
     mutations: {
       onError: (error) => {

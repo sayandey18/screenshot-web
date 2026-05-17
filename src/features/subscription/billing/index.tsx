@@ -1,12 +1,11 @@
-import { useMemo, useState } from "react";
-import { Country, State } from "country-state-city";
-import { Check, ChevronsUpDown, CreditCard, MapPin, Plus, ExternalLink, Loader2, Landmark } from "lucide-react";
+import { useState } from "react";
+import { CreditCard, MapPin, Plus, ExternalLink, Loader2, Landmark } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
-import { cn } from "@/lib/utils";
+import { cn, lowerCase } from "@/lib/utils";
+import { useLocationStore } from "@/stores/location-store";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import {
   Dialog,
   DialogContent,
@@ -17,9 +16,11 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CountryDropdown } from "@/components/dropdown/countries";
+import { StateDropdown } from "@/components/dropdown/states";
 import { ContentSection } from "../components/content-section";
+import statesData from "@/data/states.json";
 import {
   usePaymentMethods,
   useBillingAddress,
@@ -27,37 +28,7 @@ import {
   type BillingAddressInput,
 } from "../hooks/use-subscription";
 
-type CountryOption = {
-  isoCode: string;
-  name: string;
-};
-
-type StateOption = {
-  isoCode: string;
-  name: string;
-};
-
-function getCountries(): CountryOption[] {
-  return Country.getAllCountries()
-    .map((country) => ({
-      isoCode: country.isoCode,
-      name: country.name,
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name));
-}
-
-function getStates(countryCode: string): StateOption[] {
-  return State.getStatesOfCountry(countryCode)
-    .map((state) => ({
-      isoCode: state.isoCode,
-      name: state.name,
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name));
-}
-
 export function SubscriptionBilling() {
-  const countries = useMemo(() => getCountries(), []);
-
   const { data: pmData, isLoading: isLoadingPM } = usePaymentMethods();
   const { data: addressData, isLoading: isLoadingAddress } = useBillingAddress();
   const updateAddress = useUpdateBillingAddress();
@@ -68,65 +39,27 @@ export function SubscriptionBilling() {
   // Address form state
   const [fullName, setFullName] = useState("");
   const [addressLine1, setAddressLine1] = useState("");
-  const [addressLine2, setAddressLine2] = useState("");
-  const [countryCode, setCountryCode] = useState("");
-  const [stateCode, setStateCode] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
 
-  const [countryPopoverOpen, setCountryPopoverOpen] = useState(false);
-  const [statePopoverOpen, setStatePopoverOpen] = useState(false);
-
-  // useEffect(() => {
-  //   if (addressData) {
-  //     setFullName(addressData.fullName);
-  //     setAddressLine1(addressData.addressLine1);
-  //     setAddressLine2(addressData.addressLine2 || "");
-  //     setCountryCode(addressData.countryCode);
-  //     setStateCode(addressData.stateCode);
-  //     setCity(addressData.city);
-  //     setPostalCode(addressData.postalCode);
-  //   }
-  // }, [addressData]);
-
-  const states = useMemo(() => {
-    if (!countryCode) return [];
-    return getStates(countryCode);
-  }, [countryCode]);
-
-  const selectedCountry = useMemo(
-    () => countries.find((country) => country.isoCode === countryCode),
-    [countries, countryCode]
-  );
-
-  const selectedState = useMemo(() => states.find((state) => state.isoCode === stateCode), [states, stateCode]);
-
   const openAddressDialog = () => {
     if (addressData) {
+      const { setCountryValue, setStateValue, setStateCode } = useLocationStore.getState();
       setFullName(addressData.fullName);
       setAddressLine1(addressData.addressLine1);
-      setAddressLine2(addressData.addressLine2 || "");
-      setCountryCode(addressData.countryCode);
-      setStateCode(addressData.stateCode);
       setCity(addressData.city);
       setPostalCode(addressData.postalCode);
+      setCountryValue(addressData.countryCode);
+      setStateCode(addressData.stateCode);
+      const match = statesData.find((s) => s.state_code === addressData.stateCode);
+      setStateValue(match ? lowerCase(match.name) : "");
     }
     setAddressDialogOpen(true);
   };
 
-  const handleCountryChange = (nextCountryCode: string) => {
-    setCountryCode(nextCountryCode);
-    setStateCode("");
-    setCountryPopoverOpen(false);
-  };
-
-  const handleStateChange = (nextStateCode: string) => {
-    setStateCode(nextStateCode);
-    setStatePopoverOpen(false);
-  };
-
   const handleSaveAddress = async () => {
-    if (!fullName || !addressLine1 || !countryCode || !stateCode || !city || !postalCode) {
+    const { countryValue, stateCode } = useLocationStore.getState();
+    if (!fullName || !addressLine1 || !countryValue || !stateCode || !city || !postalCode) {
       toast.error("Please complete all required address fields.");
       return;
     }
@@ -134,11 +67,10 @@ export function SubscriptionBilling() {
     const payload: BillingAddressInput = {
       fullName,
       addressLine1,
-      addressLine2,
-      countryCode,
-      stateCode,
       city,
+      stateCode,
       postalCode,
+      countryCode: countryValue,
     };
 
     updateAddress.mutate(payload, {
@@ -174,9 +106,10 @@ export function SubscriptionBilling() {
     <ContentSection
       title="Billing"
       desc="Manage your payment methods and billing information. Securely processed by Dodo Payments."
+      header={false}
     >
       <div className="space-y-6">
-        <Card className="overflow-hidden border-muted/60 shadow-sm">
+        <Card className="gap-4 overflow-hidden border-muted/60 shadow-sm">
           <CardHeader className="pb-3">
             <CardAction>
               <Button
@@ -191,7 +124,7 @@ export function SubscriptionBilling() {
                 ) : (
                   <ExternalLink className="size-3.5" />
                 )}
-                Manage in Dodo
+                Manage
               </Button>
             </CardAction>
             <CardTitle className="text-base font-semibold">Payment Methods</CardTitle>
@@ -235,8 +168,8 @@ export function SubscriptionBilling() {
                           {pm.payment_method === "card"
                             ? `Expires ${pm.card?.expiry_month}/${pm.card?.expiry_year}`
                             : pm.recurring_enabled
-                              ? "Auto-renewal active"
-                              : "Single use"}
+                              ? "Autopay"
+                              : "One-time"}
                         </p>
                       </div>
                     </div>
@@ -260,7 +193,7 @@ export function SubscriptionBilling() {
           </CardContent>
         </Card>
 
-        <Card className="border-muted/60 shadow-sm">
+        <Card className="gap-4 border-muted/60 shadow-sm">
           <CardHeader className="pb-3">
             <CardAction>
               <Button variant="outline" size="sm" onClick={openAddressDialog} className="h-8">
@@ -292,9 +225,6 @@ export function SubscriptionBilling() {
                   </Label>
                   <p className="text-sm font-medium">{addressData.fullName}</p>
                   <p className="text-sm text-muted-foreground">{addressData.addressLine1}</p>
-                  {addressData.addressLine2 && (
-                    <p className="text-sm text-muted-foreground">{addressData.addressLine2}</p>
-                  )}
                 </div>
                 <div className="space-y-1">
                   <Label className="text-[10px] tracking-wider text-muted-foreground/70 uppercase">Location</Label>
@@ -346,109 +276,15 @@ export function SubscriptionBilling() {
                 />
               </div>
 
-              <div className="grid gap-2">
-                <Label htmlFor="address-line-2">Address Line 2 (optional)</Label>
-                <Input
-                  id="address-line-2"
-                  value={addressLine2}
-                  onChange={(event) => setAddressLine2(event.target.value)}
-                  placeholder="Address line 2"
-                  className="h-9"
-                />
-              </div>
-
               <div className="grid grid-cols-2 gap-3">
                 <div className="grid gap-2">
-                  <Label htmlFor="country-combobox">Country</Label>
-                  <Popover open={countryPopoverOpen} onOpenChange={setCountryPopoverOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        id="country-combobox"
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={countryPopoverOpen}
-                        className="h-9 w-full min-w-0 justify-between gap-2 overflow-hidden font-normal"
-                      >
-                        <span className="min-w-0 flex-1 truncate text-left">
-                          {selectedCountry?.name ?? "Select country"}
-                        </span>
-                        <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-(--radix-popover-trigger-width) min-w-0 p-0" align="start">
-                      <Command className="w-full">
-                        <CommandInput placeholder="Search country..." className="h-9" />
-                        <CommandList className="max-h-64 overflow-x-hidden overflow-y-auto overscroll-contain">
-                          <CommandEmpty>No country found.</CommandEmpty>
-                          <CommandGroup>
-                            {countries.map((country) => (
-                              <CommandItem
-                                key={country.isoCode}
-                                value={`${country.name} ${country.isoCode}`}
-                                onSelect={() => handleCountryChange(country.isoCode)}
-                                className="min-w-0"
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 size-4 shrink-0",
-                                    countryCode === country.isoCode ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                                <span className="min-w-0 flex-1 truncate">{country.name}</span>
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                  <Label>Country</Label>
+                  <CountryDropdown />
                 </div>
 
                 <div className="grid gap-2">
-                  <Label htmlFor="state-combobox">State/Province</Label>
-                  <Popover open={statePopoverOpen} onOpenChange={setStatePopoverOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        id="state-combobox"
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={statePopoverOpen}
-                        className="h-9 w-full min-w-0 justify-between gap-2 overflow-hidden font-normal"
-                        disabled={!countryCode}
-                      >
-                        <span className="min-w-0 flex-1 truncate text-left">
-                          {selectedState?.name ?? (countryCode ? "Select state" : "Select country first")}
-                        </span>
-                        <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-(--radix-popover-trigger-width) min-w-0 p-0" align="start">
-                      <Command className="w-full">
-                        <CommandInput placeholder="Search state..." className="h-9" />
-                        <CommandList className="max-h-64 overflow-x-hidden overflow-y-auto overscroll-contain">
-                          <CommandEmpty>No state found.</CommandEmpty>
-                          <CommandGroup>
-                            {states.map((state) => (
-                              <CommandItem
-                                key={state.isoCode}
-                                value={`${state.name} ${state.isoCode}`}
-                                onSelect={() => handleStateChange(state.isoCode)}
-                                className="min-w-0"
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 size-4 shrink-0",
-                                    stateCode === state.isoCode ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                                <span className="min-w-0 flex-1 truncate">{state.name}</span>
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                  <Label>State/Province</Label>
+                  <StateDropdown />
                 </div>
               </div>
 

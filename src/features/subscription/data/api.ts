@@ -12,13 +12,9 @@ import {
 
 export type PlanId = "STARTER" | "GROWTH" | "ENTERPRISE";
 
-export type SwitchPreviewResponse = {
-  title?: string;
-  description?: string;
-  lines?: string[];
-  amount?: number;
-  currency?: string;
-  [key: string]: unknown;
+const planToSlug: Record<Exclude<PlanId, "STARTER">, "growth-plan" | "enterprise-plan"> = {
+  GROWTH: "growth-plan",
+  ENTERPRISE: "enterprise-plan",
 };
 
 // ─── Payment Method Types ─────────────────────────────────────────────────────
@@ -71,17 +67,16 @@ export async function fetchSubscription(): Promise<SubscriptionInfo> {
 }
 
 export async function startCheckout(plan: Exclude<PlanId, "STARTER">): Promise<{ checkoutUrl: string }> {
-  const { data } = await api.post<{ checkoutUrl: string }>("/billing/checkout", { plan });
-  return data;
-}
-
-export async function fetchSwitchPreview(plan: PlanId): Promise<SwitchPreviewResponse> {
-  const { data } = await api.post<SwitchPreviewResponse>("/billing/switch/preview", { plan });
+  const { data } = await api.post<{ checkoutUrl: string }>("/billing/checkout", { slug: planToSlug[plan] });
   return data;
 }
 
 export async function confirmSwitch(plan: Exclude<PlanId, "STARTER">): Promise<void> {
-  await api.post("/billing/switch", { plan });
+  await api.post("/billing/switch", {
+    slug: planToSlug[plan],
+    billingMode: "prorated_immediately",
+    quantity: 1,
+  });
 }
 
 export async function cancelSubscription(): Promise<void> {

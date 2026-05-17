@@ -173,7 +173,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
           >
             <IconGithub className="h-4 w-4" /> GitHub
             {lastLoginMethod === "github" && (
-              <Badge className="absolute -top-2 -right-2 h-4 border-none bg-amber-500 px-1 text-[10px] tracking-wider text-white uppercase shadow-sm transition-transform group-hover:scale-105">
+              <Badge className="absolute -top-2 -right-2 h-4 border-none bg-zinc-800 px-1 text-[10px] tracking-wider text-white uppercase shadow-sm transition-transform group-hover:scale-105">
                 Last used
               </Badge>
             )}
@@ -192,7 +192,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
           >
             <IconGoogle className="h-4 w-4" /> Google
             {lastLoginMethod === "google" && (
-              <Badge className="absolute -top-2 -right-2 h-4 border-none bg-amber-500 px-1 text-[10px] tracking-wider text-white uppercase shadow-sm transition-transform group-hover:scale-105">
+              <Badge className="absolute -top-2 -right-2 h-4 border-none bg-zinc-800 px-1 text-[10px] tracking-wider text-white uppercase shadow-sm transition-transform group-hover:scale-105">
                 Last used
               </Badge>
             )}

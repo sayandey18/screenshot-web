@@ -4,11 +4,10 @@ import { z } from "zod";
 export const billingAddressSchema = z.object({
   fullName: z.string().min(1, "Name is required"),
   addressLine1: z.string().min(1, "Address is required"),
-  addressLine2: z.string().optional().default(""),
-  countryCode: z.string().length(2, "Invalid country code"),
-  stateCode: z.string().min(1, "State is required"),
   city: z.string().min(1, "City is required"),
+  stateCode: z.string().min(1, "State is required"),
   postalCode: z.string().min(1, "Postal code is required"),
+  countryCode: z.string().length(2, "Invalid country code"),
 });
 
 export type BillingAddress = z.infer<typeof billingAddressSchema>;

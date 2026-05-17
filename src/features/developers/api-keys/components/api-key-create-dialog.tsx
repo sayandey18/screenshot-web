@@ -105,8 +105,8 @@ export function ApiKeyCreateDialog({ open, onOpenChange, onCreate, isLoading = f
           <DialogTitle>{isCreatedStep ? "API Key Created" : "Create API Key"}</DialogTitle>
           <DialogDescription>
             {isCreatedStep
-              ? "This is the only time you can view this API key. Copy and store it securely."
-              : "Create a new API key for integrations. Keep it secure and rotate keys regularly."}
+              ? "One time view, copy this API key and store it securely."
+              : "Keep the API key secure and rotate keys periodically."}
           </DialogDescription>
         </DialogHeader>
 

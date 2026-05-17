@@ -62,6 +62,9 @@ export function getPageNumbers(currentPage: number, totalPages: number) {
 /**
  * Initials from a display name: first character of the first word + first
  * character of the last word. One word only: first two characters. Empty: `?`.
+ *
+ * @param displayName The display name to extract initials from.
+ * @returns The initials of the display name.
  */
 export function getDisplayNameInitials(displayName: string): string {
   const parts = displayName.trim().split(/\s+/).filter(Boolean);
@@ -72,4 +75,36 @@ export function getDisplayNameInitials(displayName: string): string {
   const first = parts[0][0] ?? "";
   const last = parts[parts.length - 1]?.[0] ?? "";
   return (first + last).toUpperCase();
+}
+
+/**
+ * String formatting utility functions for transforming text
+ * into different casing styles such as capitalize, lowercase,
+ * sentence case, and title case.
+ *
+ * @param string The string to format.
+ * @returns The respective casing style of the string.
+ */
+export function capitalizeFirstLetter(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function lowercaseFirstLetter(string: string): string {
+  return string.charAt(0).toLowerCase() + string.slice(1);
+}
+
+export function sentenceCase(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+export function lowerCase(str: string): string {
+  return str.charAt(0).toLowerCase() + str.slice(1).toLowerCase();
+}
+
+export function titleCase(str: string): string {
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }

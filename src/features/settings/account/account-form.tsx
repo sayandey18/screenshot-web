@@ -3,13 +3,13 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { useSession } from "@/hooks/api/use-session";
 import { useAccounts } from "@/hooks/api/use-accounts";
-import { useChangePassword, useRevokeOtherSessions } from "@/features/settings/hooks/use-auth-mutations";
+import { useSession } from "@/hooks/api/use-session";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { PasswordInput } from "@/components/password-input";
+import { useChangePassword, useRevokeOtherSessions } from "@/features/settings/hooks/use-auth-mutations";
 import { ActionDialog } from "./components/action-dialog";
 
 const accountFormSchema = z
@@ -150,7 +150,7 @@ export function AccountForm() {
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
-                    <FormLabel className="text-base">Two-Factor Authentication</FormLabel>
+                    <p className="text-base font-medium">Two-Factor Authentication</p>
                     <FormDescription>Add an extra layer of security to your account during sign in.</FormDescription>
                   </div>
                   <FormControl>
@@ -167,7 +167,7 @@ export function AccountForm() {
           <div className="space-y-4">
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 font-normal">
               <div className="space-y-0.5">
-                <FormLabel className="text-base">Log out all devices</FormLabel>
+                <p className="text-base font-medium">Log out all devices</p>
                 <FormDescription>This will terminate all your sessions except for the current one.</FormDescription>
               </div>
               <FormControl>
@@ -185,7 +185,7 @@ export function AccountForm() {
 
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
-                <FormLabel className="text-base">Delete account</FormLabel>
+                <p className="text-base font-medium">Delete account</p>
                 <FormDescription>This will permanently delete your account and all your data.</FormDescription>
               </div>
               <FormControl>

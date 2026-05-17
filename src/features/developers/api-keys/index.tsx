@@ -1,9 +1,10 @@
-﻿﻿import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { getRouteApi } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { useCreateApiKey, useApiKeys, useDeleteApiKey, useUpdateApiKey } from "@/features/developers/api-keys/hooks/use-api-keys";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { ContentSection } from "../components/content-section";
 import { ApiKeyCreateDialog } from "./components/api-key-create-dialog";
 import { ApiKeyDeleteDialog } from "./components/api-key-delete-dialog";
@@ -111,17 +112,19 @@ export function DevelopersApiKeys() {
   };
 
   return (
-    <ContentSection title="API Keys" desc="Create, manage, and delete API keys for your integrations.">
+    <ContentSection title="API Keys" desc="Create, manage, and delete API keys for your integrations." header={false}>
       <>
-        <div className="flex flex-1 flex-col gap-4">
-          <div className="flex justify-end">
-            <Button className="space-x-1" onClick={() => setOpenCreate(true)}>
-              <span>Create</span>
-              <Plus size={18} />
-            </Button>
-          </div>
+        <Card className="overflow-hidden border-muted/60 shadow-sm">
+          <CardContent className="p-6">
+            <div className="flex flex-1 flex-col gap-4">
+              <div className="flex justify-end">
+                <Button className="space-x-1" onClick={() => setOpenCreate(true)}>
+                  <span>Create</span>
+                  <Plus size={18} />
+                </Button>
+              </div>
 
-          <ApiKeysTable
+              <ApiKeysTable
             data={apiKeys}
             total={total}
             isLoading={isLoading}
@@ -138,7 +141,9 @@ export function DevelopersApiKeys() {
             }}
             onBulkDelete={handleBulkDelete}
           />
-        </div>
+            </div>
+          </CardContent>
+        </Card>
 
         <ApiKeyCreateDialog
           open={openCreate}

@@ -1,4 +1,5 @@
 import { getRouteApi } from "@tanstack/react-router";
+import { Card, CardContent } from "@/components/ui/card";
 import { ContentSection } from "../components/content-section";
 import { useInvoices } from "../hooks/use-invoices";
 import { InvoicesTable } from "./components/invoices-table";
@@ -21,17 +22,21 @@ export function SubscriptionInvoices() {
   const total = data?.total ?? 0;
 
   return (
-    <ContentSection title="Invoices" desc="Review your billing history and download past invoices.">
-      <InvoicesTable
-        data={invoices}
-        total={total}
-        page={page}
-        pageSize={pageSize}
-        isLoading={isLoading}
-        isFetching={isPlaceholderData}
-        search={search}
-        navigate={navigate}
-      />
+    <ContentSection title="Invoices" desc="Review your billing history and download past invoices." header={false}>
+      <Card className="overflow-hidden border-muted/60 shadow-sm">
+        <CardContent className="p-6">
+          <InvoicesTable
+            data={invoices}
+            total={total}
+            page={page}
+            pageSize={pageSize}
+            isLoading={isLoading}
+            isFetching={isPlaceholderData}
+            search={search}
+            navigate={navigate}
+          />
+        </CardContent>
+      </Card>
     </ContentSection>
   );
 }
