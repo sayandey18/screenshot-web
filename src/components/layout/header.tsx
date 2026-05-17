@@ -33,11 +33,7 @@ export function Header({ className, fixed, children, ...props }: HeaderProps) {
       )}
       {...props}
     >
-      <div
-        className={cn(
-          "relative flex h-full items-center gap-4 px-4 md:px-8"
-        )}
-      >
+      <div className={cn("relative flex h-full items-center gap-4 px-4 md:px-8")}>
         <SidebarTrigger variant="outline" className="h-8 w-8" />
         <Separator orientation="vertical" className="mx-2 h-4" />
         {children}

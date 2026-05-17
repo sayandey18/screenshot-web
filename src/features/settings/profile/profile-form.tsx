@@ -5,12 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera, Loader, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useSession } from "@/hooks/api/use-session";
-import { useDeleteAvatar, useUpdateProfile, useUploadAvatar } from "@/features/settings/hooks/use-auth-mutations";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useDeleteAvatar, useUpdateProfile, useUploadAvatar } from "@/features/settings/hooks/use-auth-mutations";
 
 const profileFormSchema = z.object({
   image: z.string().nullable().optional(),

@@ -1,11 +1,7 @@
 import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { billingKeys } from "@/hooks/api/query-keys";
-import {
-  fetchBillingAddress,
-  updateBillingAddress,
-  openBillingPortal,
-} from "../data/api";
+import { fetchBillingAddress, updateBillingAddress, openBillingPortal } from "../data/api";
 import type { BillingAddress } from "../data/schema";
 
 // ─── Billing Address — Fetch ─────────────────────────────────────────────────

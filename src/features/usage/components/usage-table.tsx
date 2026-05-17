@@ -102,12 +102,7 @@ export function UsageTable({ data, totalPages, total }: DataTableProps) {
   }, [totalPages, ensurePageInRange]);
 
   return (
-    <div
-      className={cn(
-        'max-sm:has-[div[role="toolbar"]]:mb-16',
-        "flex flex-1 flex-col gap-4"
-      )}
-    >
+    <div className={cn('max-sm:has-[div[role="toolbar"]]:mb-16', "flex flex-1 flex-col gap-4")}>
       <DataTableToolbar
         table={table}
         searchPlaceholder="Filter by URL..."

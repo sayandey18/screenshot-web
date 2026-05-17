@@ -1,9 +1,10 @@
 import { useState } from "react";
+import statesData from "@/data/states.json";
 import { CreditCard, MapPin, Plus, ExternalLink, Loader2, Landmark } from "lucide-react";
 import { toast } from "sonner";
+import { useLocationStore } from "@/stores/location-store";
 import { api } from "@/lib/api";
 import { cn, lowerCase } from "@/lib/utils";
-import { useLocationStore } from "@/stores/location-store";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -20,7 +21,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CountryDropdown } from "@/components/dropdown/countries";
 import { StateDropdown } from "@/components/dropdown/states";
 import { ContentSection } from "../components/content-section";
-import statesData from "@/data/states.json";
 import {
   usePaymentMethods,
   useBillingAddress,

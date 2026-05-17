@@ -14,7 +14,10 @@ const usageSearchSchema = z.object({
     .array(z.enum(browsers.map((browser) => browser.value)))
     .optional()
     .catch([]),
-  range: z.enum(ranges.map((range) => range.value)).optional().catch("all"),
+  range: z
+    .enum(ranges.map((range) => range.value))
+    .optional()
+    .catch("all"),
   filter: z.string().optional().catch(""),
 });
 

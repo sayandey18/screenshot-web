@@ -6,11 +6,11 @@ import { Main } from "@/components/layout/main";
 import { ProfileDropdown } from "@/components/profile-dropdown";
 import { Search } from "@/components/search";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { useUsageLogs } from "./hooks/use-usage";
 import { UsageDialogs } from "./components/usage-dialogs";
 import { UsageProvider } from "./components/usage-provider";
 import { UsageTable } from "./components/usage-table";
 import type { UsageLogsQuery } from "./data/schema";
+import { useUsageLogs } from "./hooks/use-usage";
 
 const route = getRouteApi("/_authenticated/usage/");
 

@@ -2,9 +2,14 @@
 import { getRouteApi } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
-import { useCreateApiKey, useApiKeys, useDeleteApiKey, useUpdateApiKey } from "@/features/developers/api-keys/hooks/use-api-keys";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  useCreateApiKey,
+  useApiKeys,
+  useDeleteApiKey,
+  useUpdateApiKey,
+} from "@/features/developers/api-keys/hooks/use-api-keys";
 import { ContentSection } from "../components/content-section";
 import { ApiKeyCreateDialog } from "./components/api-key-create-dialog";
 import { ApiKeyDeleteDialog } from "./components/api-key-delete-dialog";
@@ -125,22 +130,22 @@ export function DevelopersApiKeys() {
               </div>
 
               <ApiKeysTable
-            data={apiKeys}
-            total={total}
-            isLoading={isLoading}
-            search={search}
-            navigate={navigate}
-            onManage={(row) => {
-              setCurrentRow(row);
-              setOpenManage(true);
-            }}
-            onToggleStatus={handleToggleStatus}
-            onDelete={(row) => {
-              setCurrentRow(row);
-              setOpenDelete(true);
-            }}
-            onBulkDelete={handleBulkDelete}
-          />
+                data={apiKeys}
+                total={total}
+                isLoading={isLoading}
+                search={search}
+                navigate={navigate}
+                onManage={(row) => {
+                  setCurrentRow(row);
+                  setOpenManage(true);
+                }}
+                onToggleStatus={handleToggleStatus}
+                onDelete={(row) => {
+                  setCurrentRow(row);
+                  setOpenDelete(true);
+                }}
+                onBulkDelete={handleBulkDelete}
+              />
             </div>
           </CardContent>
         </Card>
