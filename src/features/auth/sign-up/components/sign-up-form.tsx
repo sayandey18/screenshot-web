@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/password-input";
+import { useSignUpEmail } from "@/features/auth/hooks/use-auth-mutations";
 
 const formSchema = z
   .object({
@@ -31,7 +31,7 @@ interface SignUpFormProps extends React.HTMLAttributes<HTMLFormElement> {
 }
 
 export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) {
-  const [isLoading, setIsLoading] = useState(false);
+  const signUp = useSignUpEmail();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,35 +43,28 @@ export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) 
     },
   });
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-
-    const signUpPayload: Parameters<typeof authClient.signUp.email>[0] = {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      callbackURL: `${window.location.origin}/dashboard`,
-    };
-
-    const { error: signUpError } = await authClient.signUp.email(signUpPayload);
-
-    if (signUpError) {
-      const msg = signUpError.message || "";
-      if (
-        signUpError.code === "USER_ALREADY_EXISTS" ||
-        msg.toLowerCase().includes("already exists") ||
-        msg.toLowerCase().includes("already registered")
-      ) {
-        toast.error("Account already registered. Please sign in to verify your email.");
-      } else {
-        toast.error(msg || "An error occurred during sign up.");
+  function onSubmit(data: z.infer<typeof formSchema>) {
+    signUp.mutate(
+      { name: data.name, email: data.email, password: data.password, callbackURL: `${window.location.origin}/dashboard` },
+      {
+        onSuccess: () => {
+          onSuccess(data.email);
+        },
+        onError: (error) => {
+          const code = (error as { code?: string }).code;
+          const msg = error.message || "";
+          if (
+            code === "USER_ALREADY_EXISTS" ||
+            msg.toLowerCase().includes("already exists") ||
+            msg.toLowerCase().includes("already registered")
+          ) {
+            toast.error("Account already registered. Please sign in to verify your email.");
+          } else {
+            toast.error(msg || "An error occurred during sign up.");
+          }
+        },
       }
-      setIsLoading(false);
-      return;
-    }
-
-    setIsLoading(false);
-    onSuccess(data.email);
+    );
   }
 
   return (
@@ -129,8 +122,8 @@ export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) 
             </FormItem>
           )}
         />
-        <Button className="mt-2" disabled={isLoading}>
-          {isLoading && <Loader2 className="mr-2 animate-spin" />}
+        <Button className="mt-2" disabled={signUp.isPending}>
+          {signUp.isPending && <Loader2 className="mr-2 animate-spin" />}
           Create Account
         </Button>
 
@@ -148,7 +141,7 @@ export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) 
             variant="outline"
             className="w-full"
             type="button"
-            disabled={isLoading}
+            disabled={signUp.isPending}
             onClick={() => {
               authClient.signIn.social({
                 provider: "github",
@@ -162,7 +155,7 @@ export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) 
             variant="outline"
             className="w-full"
             type="button"
-            disabled={isLoading}
+            disabled={signUp.isPending}
             onClick={() => {
               authClient.signIn.social({
                 provider: "google",

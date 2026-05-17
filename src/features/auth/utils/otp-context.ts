@@ -11,7 +11,7 @@ export interface OtpContextData {
   timestamp: number;
 }
 
-const EXPIRY_MS = 15 * 60 * 1000; // 15 minutes
+const EXPIRY_MS = 5 * 60 * 1000; // 5 minutes — matches backend OTP expiresIn
 
 export const otpContext = {
   set(flow: OtpFlowType, data: Omit<OtpContextData, "timestamp">) {

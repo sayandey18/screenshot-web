@@ -17,7 +17,8 @@ export const authClient = createAuthClient({
     emailOTPClient(),
     lastLoginMethodClient(),
     twoFactorClient({
-      onTwoFactorRedirect() {
+      onTwoFactorRedirect({ twoFactorMethods }) {
+        sessionStorage.setItem("2fa-methods", JSON.stringify(twoFactorMethods));
         window.location.replace("/sign-in/2fa");
       },
     }),

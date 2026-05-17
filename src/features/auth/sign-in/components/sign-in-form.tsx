@@ -1,5 +1,4 @@
-﻿import { useState } from "react";
-import { z } from "zod";
+﻿import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -15,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/password-input";
+import { useSignInEmail } from "@/features/auth/hooks/use-auth-mutations";
 import { otpContext } from "../../utils/otp-context";
 
 const formSchema = z.object({
@@ -30,10 +30,10 @@ interface SignInFormProps extends React.HTMLAttributes<HTMLFormElement> {
 }
 
 export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...props }: SignInFormProps) {
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const lastLoginMethod = authClient.getLastUsedLoginMethod();
+  const signIn = useSignInEmail();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,15 +43,12 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
     },
   });
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-
-    await authClient.signIn.email(
+  function onSubmit(data: z.infer<typeof formSchema>) {
+    signIn.mutate(
       { email: data.email, password: data.password },
       {
-        async onSuccess(ctx) {
-          if (ctx.data.user && !ctx.data.user.emailVerified) {
-            setIsLoading(false);
+        onSuccess: (result) => {
+          if (result.data.user && !result.data.user.emailVerified) {
             toast.error("Please verify your email to continue.");
             authClient.emailOtp.sendVerificationOtp({
               email: data.email,
@@ -66,25 +63,20 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
             return;
           }
 
-          if (ctx.data.twoFactorRedirect) {
-            setIsLoading(false);
+          if ("twoFactorRedirect" in result.data && result.data.twoFactorRedirect) {
             authClient.twoFactor.sendOtp();
             onTwoFactorRequired(data.email);
           } else {
-            try {
-              await queryClient.invalidateQueries({ queryKey: sessionQueryOptions().queryKey });
-              await queryClient.ensureQueryData(sessionQueryOptions());
-              navigate({ to: redirectTo ?? "/", replace: true });
-            } catch (_error) {
-              setIsLoading(false);
-              toast.error("Failed to initialize session. Please try again.");
-            }
+            void queryClient.invalidateQueries({ queryKey: sessionQueryOptions().queryKey });
+            void queryClient.ensureQueryData(sessionQueryOptions());
+            navigate({ to: redirectTo ?? "/", replace: true });
           }
         },
-        onError(ctx) {
-          setIsLoading(false);
-
-          if (ctx.error.code === "EMAIL_NOT_VERIFIED" || ctx.error.status === 403) {
+        onError: (error) => {
+          const code = (error as { code?: string }).code;
+          const status = (error as { status?: number }).status;
+          const message = error.message;
+          if (code === "EMAIL_NOT_VERIFIED" || status === 403) {
             toast.error("Please verify your email to continue.");
             authClient.emailOtp.sendVerificationOtp({
               email: data.email,
@@ -99,7 +91,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
             return;
           }
 
-          toast.error(ctx.error.message);
+          toast.error(message);
         },
       }
     );
@@ -140,8 +132,8 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
             </FormItem>
           )}
         />
-        <Button className="relative mt-2" disabled={isLoading}>
-          {isLoading && <Loader2 className="animate-spin" />}
+        <Button className="relative mt-2" disabled={signIn.isPending}>
+          {signIn.isPending && <Loader2 className="animate-spin" />}
           Sign in
           {lastLoginMethod === "email" && (
             <Badge className="absolute -top-2 -right-2 h-4 border-none bg-zinc-800 px-1 text-[10px] tracking-wider text-white uppercase shadow-sm transition-transform group-hover:scale-105">
@@ -163,7 +155,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
             variant="outline"
             type="button"
             className="group relative"
-            disabled={isLoading}
+            disabled={signIn.isPending}
             onClick={() => {
               authClient.signIn.social({
                 provider: "github",
@@ -182,7 +174,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
             variant="outline"
             type="button"
             className="group relative"
-            disabled={isLoading}
+            disabled={signIn.isPending}
             onClick={() => {
               authClient.signIn.social({
                 provider: "google",
