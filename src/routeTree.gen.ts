@@ -31,6 +31,7 @@ import { Route as AuthenticatedDevelopersIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
 import { Route as authSignUpIndexRouteImport } from './routes/(auth)/sign-up/index'
 import { Route as authSignInIndexRouteImport } from './routes/(auth)/sign-in/index'
+import { Route as authResetPasswordIndexRouteImport } from './routes/(auth)/reset-password/index'
 import { Route as authForgotIndexRouteImport } from './routes/(auth)/forgot/index'
 import { Route as AuthenticatedSubscriptionInvoicesRouteImport } from './routes/_authenticated/subscription/invoices'
 import { Route as AuthenticatedSubscriptionBillingRouteImport } from './routes/_authenticated/subscription/billing'
@@ -159,6 +160,11 @@ const authSignInIndexRoute = authSignInIndexRouteImport.update({
   path: '/sign-in/',
   getParentRoute: () => authRouteRoute,
 } as any)
+const authResetPasswordIndexRoute = authResetPasswordIndexRouteImport.update({
+  id: '/reset-password/',
+  path: '/reset-password/',
+  getParentRoute: () => authRouteRoute,
+} as any)
 const authForgotIndexRoute = authForgotIndexRouteImport.update({
   id: '/forgot/',
   path: '/forgot/',
@@ -244,6 +250,7 @@ export interface FileRoutesByFullPath {
   '/subscription/billing': typeof AuthenticatedSubscriptionBillingRoute
   '/subscription/invoices': typeof AuthenticatedSubscriptionInvoicesRoute
   '/forgot/': typeof authForgotIndexRoute
+  '/reset-password/': typeof authResetPasswordIndexRoute
   '/sign-in/': typeof authSignInIndexRoute
   '/sign-up/': typeof authSignUpIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
@@ -274,6 +281,7 @@ export interface FileRoutesByTo {
   '/subscription/billing': typeof AuthenticatedSubscriptionBillingRoute
   '/subscription/invoices': typeof AuthenticatedSubscriptionInvoicesRoute
   '/forgot': typeof authForgotIndexRoute
+  '/reset-password': typeof authResetPasswordIndexRoute
   '/sign-in': typeof authSignInIndexRoute
   '/sign-up': typeof authSignUpIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
@@ -310,6 +318,7 @@ export interface FileRoutesById {
   '/_authenticated/subscription/billing': typeof AuthenticatedSubscriptionBillingRoute
   '/_authenticated/subscription/invoices': typeof AuthenticatedSubscriptionInvoicesRoute
   '/(auth)/forgot/': typeof authForgotIndexRoute
+  '/(auth)/reset-password/': typeof authResetPasswordIndexRoute
   '/(auth)/sign-in/': typeof authSignInIndexRoute
   '/(auth)/sign-up/': typeof authSignUpIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
@@ -345,6 +354,7 @@ export interface FileRouteTypes {
     | '/subscription/billing'
     | '/subscription/invoices'
     | '/forgot/'
+    | '/reset-password/'
     | '/sign-in/'
     | '/sign-up/'
     | '/dashboard/'
@@ -375,6 +385,7 @@ export interface FileRouteTypes {
     | '/subscription/billing'
     | '/subscription/invoices'
     | '/forgot'
+    | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/dashboard'
@@ -410,6 +421,7 @@ export interface FileRouteTypes {
     | '/_authenticated/subscription/billing'
     | '/_authenticated/subscription/invoices'
     | '/(auth)/forgot/'
+    | '/(auth)/reset-password/'
     | '/(auth)/sign-in/'
     | '/(auth)/sign-up/'
     | '/_authenticated/dashboard/'
@@ -591,6 +603,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSignInIndexRouteImport
       parentRoute: typeof authRouteRoute
     }
+    '/(auth)/reset-password/': {
+      id: '/(auth)/reset-password/'
+      path: '/reset-password'
+      fullPath: '/reset-password/'
+      preLoaderRoute: typeof authResetPasswordIndexRouteImport
+      parentRoute: typeof authRouteRoute
+    }
     '/(auth)/forgot/': {
       id: '/(auth)/forgot/'
       path: '/forgot'
@@ -675,6 +694,7 @@ interface authRouteRouteChildren {
   authSignIn2faRoute: typeof authSignIn2faRoute
   authSignUpVerifyRoute: typeof authSignUpVerifyRoute
   authForgotIndexRoute: typeof authForgotIndexRoute
+  authResetPasswordIndexRoute: typeof authResetPasswordIndexRoute
   authSignInIndexRoute: typeof authSignInIndexRoute
   authSignUpIndexRoute: typeof authSignUpIndexRoute
 }
@@ -683,6 +703,7 @@ const authRouteRouteChildren: authRouteRouteChildren = {
   authSignIn2faRoute: authSignIn2faRoute,
   authSignUpVerifyRoute: authSignUpVerifyRoute,
   authForgotIndexRoute: authForgotIndexRoute,
+  authResetPasswordIndexRoute: authResetPasswordIndexRoute,
   authSignInIndexRoute: authSignInIndexRoute,
   authSignUpIndexRoute: authSignUpIndexRoute,
 }

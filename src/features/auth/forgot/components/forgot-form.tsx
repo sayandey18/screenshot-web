@@ -1,14 +1,14 @@
-import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { sleep, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useForgotPassword } from "@/features/auth/hooks/use-auth-mutations";
 
 const formSchema = z.object({
   email: z.email({
@@ -18,7 +18,7 @@ const formSchema = z.object({
 
 export function ForgotPasswordForm({ className, ...props }: React.HTMLAttributes<HTMLFormElement>) {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const forgotPassword = useForgotPassword();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -26,20 +26,19 @@ export function ForgotPasswordForm({ className, ...props }: React.HTMLAttributes
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    // eslint-disable-next-line no-console
-    console.log(data);
-
-    toast.promise(sleep(2000), {
-      loading: "Sending email...",
-      success: () => {
-        setIsLoading(false);
-        form.reset();
-        navigate({ to: "/sign-in" });
-        return `Email sent to ${data.email}`;
-      },
-      error: "Error",
-    });
+    forgotPassword.mutate(
+      { email: data.email, redirectTo: `${window.location.origin}/reset-password` },
+      {
+        onSuccess: () => {
+          toast.success(`Password reset link sent to ${data.email}`);
+          form.reset();
+          navigate({ to: "/sign-in" });
+        },
+        onError: (error) => {
+          toast.error(error.message || "Failed to send reset email.");
+        },
+      }
+    );
   }
 
   return (
@@ -58,9 +57,9 @@ export function ForgotPasswordForm({ className, ...props }: React.HTMLAttributes
             </FormItem>
           )}
         />
-        <Button className="mt-2" disabled={isLoading}>
+        <Button className="mt-2" disabled={forgotPassword.isPending}>
           Continue
-          {isLoading ? <Loader2 className="animate-spin" /> : <ArrowRight />}
+          {forgotPassword.isPending ? <Loader2 className="animate-spin" /> : <ArrowRight />}
         </Button>
       </form>
     </Form>

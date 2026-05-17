@@ -26,7 +26,7 @@ export function getCookie(name: string): string | undefined {
 export function setCookie(name: string, value: string, maxAge: number = DEFAULT_MAX_AGE): void {
   if (typeof document === "undefined") return;
 
-  document.cookie = `${name}=${value}; path=/; max-age=${maxAge}`;
+  document.cookie = `${name}=${value}; path=/; max-age=${maxAge}; SameSite=Lax${import.meta.env.PROD ? "; Secure" : ""}`;
 }
 
 /**
