@@ -3,7 +3,6 @@ import statesData from "@/data/states.json";
 import { CreditCard, MapPin, Plus, ExternalLink, Loader2, Landmark } from "lucide-react";
 import { toast } from "sonner";
 import { useLocationStore } from "@/stores/location-store";
-import { api } from "@/lib/api";
 import { cn, lowerCase } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,20 +20,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CountryDropdown } from "@/components/dropdown/countries";
 import { StateDropdown } from "@/components/dropdown/states";
 import { ContentSection } from "../components/content-section";
-import {
-  usePaymentMethods,
-  useBillingAddress,
-  useUpdateBillingAddress,
-  type BillingAddressInput,
-} from "../hooks/use-subscription";
+import { usePaymentMethods, type BillingAddressInput } from "../hooks/use-subscription";
+import { useBillingAddress, useUpdateBillingAddress, useOpenBillingPortal } from "../hooks/use-billing";
 
 export function SubscriptionBilling() {
   const { data: pmData, isLoading: isLoadingPM } = usePaymentMethods();
   const { data: addressData, isLoading: isLoadingAddress } = useBillingAddress();
   const updateAddress = useUpdateBillingAddress();
+  const openPortal = useOpenBillingPortal();
 
   const [addressDialogOpen, setAddressDialogOpen] = useState(false);
-  const [isPortalLoading, setIsPortalLoading] = useState(false);
 
   // Address form state
   const [fullName, setFullName] = useState("");
@@ -78,15 +73,8 @@ export function SubscriptionBilling() {
     });
   };
 
-  const handleManagePaymentMethods = async () => {
-    setIsPortalLoading(true);
-    try {
-      const { data } = await api.post<{ url: string }>("/billing/portal");
-      window.location.href = data.url;
-    } catch (_err) {
-      toast.error("Unable to open customer portal. Please try again.");
-      setIsPortalLoading(false);
-    }
+  const handleManagePaymentMethods = () => {
+    openPortal.mutate();
   };
 
   const renderPaymentMethodIcon = (type: string) => {
@@ -116,10 +104,10 @@ export function SubscriptionBilling() {
                 variant="outline"
                 size="sm"
                 onClick={handleManagePaymentMethods}
-                disabled={isPortalLoading}
+                disabled={openPortal.isPending}
                 className="h-8 gap-2"
               >
-                {isPortalLoading ? (
+                {openPortal.isPending ? (
                   <Loader2 className="size-3.5 animate-spin" />
                 ) : (
                   <ExternalLink className="size-3.5" />

@@ -55,28 +55,19 @@ export function DevelopersApiKeys() {
   const isLoading = apiKeysQuery.isLoading;
 
   const handleCreate = async (values: CreateApiKeyValues): Promise<CreatedApiKeyResult | null> => {
-    try {
-      const result = await createApiKey.mutateAsync(values);
-      const key =
-        result && typeof result === "object" && "key" in result && typeof result.key === "string" ? result.key : null;
+    const result = await createApiKey.mutateAsync(values);
+    const key =
+      result && typeof result === "object" && "key" in result && typeof result.key === "string" ? result.key : null;
 
-      toast.success("API key created successfully.");
-      return key ? { key } : null;
-    } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to create API key."));
-      return null;
-    }
+    toast.success("API key created successfully.");
+    return key ? { key } : null;
   };
 
   const handleManage = async (id: string, name: string) => {
-    try {
-      await updateApiKeyForManage.mutateAsync({ keyId: id, name });
-      toast.success("API key updated successfully.");
-      setOpenManage(false);
-      setCurrentRow(null);
-    } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to update API key."));
-    }
+    await updateApiKeyForManage.mutateAsync({ keyId: id, name });
+    toast.success("API key updated successfully.");
+    setOpenManage(false);
+    setCurrentRow(null);
   };
 
   const handleToggleStatus = async (row: ApiKeyItem) => {
@@ -85,23 +76,15 @@ export function DevelopersApiKeys() {
 
     const nextEnabled = row.enabled === false;
 
-    try {
-      await updateApiKeyForStatus.mutateAsync({ keyId: row.id, enabled: nextEnabled });
-      toast.success(nextEnabled ? "API key enabled successfully." : "API key disabled successfully.");
-    } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to update API key status."));
-    }
+    await updateApiKeyForStatus.mutateAsync({ keyId: row.id, enabled: nextEnabled });
+    toast.success(nextEnabled ? "API key enabled successfully." : "API key disabled successfully.");
   };
 
   const handleDelete = async (id: string) => {
-    try {
-      await deleteApiKey.mutateAsync(id);
-      toast.success("API key deleted successfully.");
-      setOpenDelete(false);
-      setCurrentRow(null);
-    } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to delete API key."));
-    }
+    await deleteApiKey.mutateAsync(id);
+    toast.success("API key deleted successfully.");
+    setOpenDelete(false);
+    setCurrentRow(null);
   };
 
   const handleBulkDelete = async (rows: ApiKeyItem[]) => {

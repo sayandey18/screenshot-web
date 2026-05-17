@@ -1,12 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { usageKeys } from "@/hooks/api/query-keys";
 import { fetchUsageLogs } from "../data/api";
 import type { UsageLogsQuery } from "../data/schema";
-
-export const usageKeys = {
-  all: ["usage"] as const,
-  logs: () => [...usageKeys.all, "logs"] as const,
-  log: (params: UsageLogsQuery) => [...usageKeys.logs(), params] as const,
-};
 
 export function useUsageLogs(params: UsageLogsQuery) {
   return useQuery({

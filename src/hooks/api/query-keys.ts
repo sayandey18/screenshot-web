@@ -31,3 +31,9 @@ export const invoiceKeys = {
   all: ["invoices"] as const,
   list: (page: number, pageSize: number) => [...invoiceKeys.all, "list", page, pageSize] as const,
 };
+
+export const usageKeys = {
+  all: ["usage"] as const,
+  logs: () => [...usageKeys.all, "logs"] as const,
+  log: (params: Record<string, unknown>) => [...usageKeys.logs(), params] as const,
+};

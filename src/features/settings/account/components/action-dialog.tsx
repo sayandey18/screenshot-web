@@ -6,7 +6,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Download, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
-import { authClient } from "@/lib/auth-client";
 import { sessionKeys } from "@/hooks/api/query-keys";
 import { useAccounts } from "@/hooks/api/use-accounts";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { PasswordInput } from "@/components/password-input";
-import { useDisableTwoFactor, useEnableTwoFactor } from "@/features/settings/hooks/use-auth-mutations";
+import { useDisableTwoFactor, useEnableTwoFactor, useDeleteAccount } from "@/features/settings/hooks/use-auth-mutations";
 
 interface ActionDialogProps {
   open: boolean;
@@ -50,6 +49,7 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
   const queryClient = useQueryClient();
   const enableTwoFactor = useEnableTwoFactor();
   const disableTwoFactor = useDisableTwoFactor();
+  const deleteAccount = useDeleteAccount();
   const { data: accounts } = useAccounts();
   const hasCredentialAccount = accounts?.some((account) => account.providerId === "credential");
 
@@ -92,17 +92,10 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
           await queryClient.invalidateQueries({ queryKey: sessionKeys.current });
         }
       } else if (type === "delete-account") {
-        const { error } = await authClient.deleteUser({
-          password: values.password,
-        });
-        if (error) throw error;
-        queryClient.setQueryData(sessionKeys.current, null);
+        await deleteAccount.mutateAsync(values.password ?? "");
         toast.success("Account successfully deleted.");
         navigate({ to: "/sign-in", replace: true });
       }
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "An error occurred. Please try again.";
-      toast.error(message);
     } finally {
       setIsLoading(false);
     }

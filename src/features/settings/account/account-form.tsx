@@ -53,24 +53,19 @@ export function AccountForm() {
   }, [session?.user?.twoFactorEnabled]);
 
   async function onUpdatePassword(data: AccountFormValues) {
-    try {
-      await changePassword.mutateAsync({
-        currentPassword: data.currentPassword,
-        newPassword: data.newPassword,
-        revokeOtherSessions: true,
-      });
+    await changePassword.mutateAsync({
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+      revokeOtherSessions: true,
+    });
 
-      toast.success("Password updated successfully.");
-      form.reset({
-        ...form.getValues(),
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      });
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Failed to update password.";
-      toast.error(message);
-    }
+    toast.success("Password updated successfully.");
+    form.reset({
+      ...form.getValues(),
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
   }
 
   const handleRevokeOtherSessions = async () => {

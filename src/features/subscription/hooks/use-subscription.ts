@@ -7,8 +7,6 @@ import {
   confirmSwitch,
   cancelSubscription,
   fetchPaymentMethods,
-  fetchBillingAddress,
-  updateBillingAddress,
   type PlanId,
   type PaymentMethodItem,
   type BillingAddressInput,
@@ -90,27 +88,3 @@ export const usePaymentMethods = () =>
     queryFn: fetchPaymentMethods,
     staleTime: 1000 * 60 * 10,
   });
-
-// ─── Billing Address ──────────────────────────────────────────────────────────
-
-export const useBillingAddress = () =>
-  useQuery({
-    queryKey: billingKeys.address(),
-    queryFn: fetchBillingAddress,
-    staleTime: 1000 * 60 * 60,
-  });
-
-export const useUpdateBillingAddress = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (address: BillingAddressInput) => updateBillingAddress(address),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: billingKeys.address() });
-      toast.success("Billing address updated.");
-    },
-    onError: () => {
-      toast.error("Unable to update billing address. Please try again.");
-    },
-  });
-};

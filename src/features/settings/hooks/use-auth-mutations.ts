@@ -107,3 +107,29 @@ export const useDisableTwoFactor = () => {
     },
   });
 };
+
+export const useSignOut = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      const result = await authClient.signOut();
+      return unwrapAuthResult(result as { data: typeof result.data; error: unknown });
+    },
+    onSuccess: () => {
+      queryClient.clear();
+    },
+  });
+};
+
+export const useDeleteAccount = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (password: string) => {
+      const result = await authClient.deleteUser({ password });
+      return unwrapAuthResult(result as { data: typeof result.data; error: unknown });
+    },
+    onSuccess: () => {
+      queryClient.clear();
+    },
+  });
+};

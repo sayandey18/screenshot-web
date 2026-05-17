@@ -1,8 +1,6 @@
-﻿import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { authClient } from "@/lib/auth-client";
-import { sessionKeys } from "@/hooks/api/query-keys";
+﻿import { useNavigate } from "@tanstack/react-router";
 import { ConfirmDialog } from "@/components/confirm-dialog";
+import { useSignOut } from "@/features/settings/hooks/use-auth-mutations";
 
 interface SignOutDialogProps {
   open: boolean;
@@ -11,14 +9,13 @@ interface SignOutDialogProps {
 
 export function SignOutDialog({ open, onOpenChange }: SignOutDialogProps) {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const signOut = useSignOut();
 
-  const handleSignOut = async () => {
-    await authClient.signOut();
-    queryClient.setQueryData(sessionKeys.current, null);
-    navigate({
-      to: "/sign-in",
-      replace: true,
+  const handleSignOut = () => {
+    signOut.mutate(undefined, {
+      onSuccess: () => {
+        navigate({ to: "/sign-in", replace: true });
+      },
     });
   };
 
@@ -30,9 +27,8 @@ export function SignOutDialog({ open, onOpenChange }: SignOutDialogProps) {
       desc="Are you sure you want to sign out? You will need to sign in again to access your account."
       confirmText="Sign out"
       destructive
-      handleConfirm={() => {
-        void handleSignOut();
-      }}
+      handleConfirm={handleSignOut}
+      isLoading={signOut.isPending}
       className="sm:max-w-sm"
     />
   );

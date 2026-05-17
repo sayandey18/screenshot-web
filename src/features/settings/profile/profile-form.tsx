@@ -51,17 +51,12 @@ export function ProfileForm() {
   }, [session?.user?.image]);
 
   async function onSubmit(data: ProfileFormValues) {
-    try {
-      await updateProfile.mutateAsync({
-        name: data.name,
-        company: data.company,
-        bio: data.bio,
-      });
-      toast.success("Profile updated successfully.");
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Failed to update profile. Please try again.";
-      toast.error(message);
-    }
+    await updateProfile.mutateAsync({
+      name: data.name,
+      company: data.company,
+      bio: data.bio,
+    });
+    toast.success("Profile updated successfully.");
   }
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,9 +65,6 @@ export function ProfileForm() {
 
     try {
       await uploadAvatar.mutateAsync(file);
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Failed to upload avatar.";
-      toast.error(message);
     } finally {
       if (avatarInputRef.current) {
         avatarInputRef.current.value = "";
@@ -81,13 +73,8 @@ export function ProfileForm() {
   };
 
   const deleteAvatar = async () => {
-    try {
-      await deleteAvatarMutation.mutateAsync();
-      form.setValue("image", null, { shouldDirty: true });
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Failed to remove avatar.";
-      toast.error(message);
-    }
+    await deleteAvatarMutation.mutateAsync();
+    form.setValue("image", null, { shouldDirty: true });
   };
 
   return (
