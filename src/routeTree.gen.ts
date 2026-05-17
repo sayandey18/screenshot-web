@@ -43,6 +43,7 @@ import { Route as AuthenticatedDevelopersWebhookRouteImport } from './routes/_au
 import { Route as publicBlogSlugRouteImport } from './routes/(public)/blog/$slug'
 import { Route as authSignUpVerifyRouteImport } from './routes/(auth)/sign-up/verify'
 import { Route as authSignIn2faRouteImport } from './routes/(auth)/sign-in/2fa'
+import { Route as authForgotVerifyRouteImport } from './routes/(auth)/forgot/verify'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -227,6 +228,11 @@ const authSignIn2faRoute = authSignIn2faRouteImport.update({
   path: '/sign-in/2fa',
   getParentRoute: () => authRouteRoute,
 } as any)
+const authForgotVerifyRoute = authForgotVerifyRouteImport.update({
+  id: '/forgot/verify',
+  path: '/forgot/verify',
+  getParentRoute: () => authRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof publicIndexRoute
@@ -239,6 +245,7 @@ export interface FileRoutesByFullPath {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/$slug': typeof publicSlugRoute
+  '/forgot/verify': typeof authForgotVerifyRoute
   '/sign-in/2fa': typeof authSignIn2faRoute
   '/sign-up/verify': typeof authSignUpVerifyRoute
   '/blog/$slug': typeof publicBlogSlugRoute
@@ -270,6 +277,7 @@ export interface FileRoutesByTo {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/$slug': typeof publicSlugRoute
+  '/forgot/verify': typeof authForgotVerifyRoute
   '/sign-in/2fa': typeof authSignIn2faRoute
   '/sign-up/verify': typeof authSignUpVerifyRoute
   '/blog/$slug': typeof publicBlogSlugRoute
@@ -307,6 +315,7 @@ export interface FileRoutesById {
   '/(errors)/503': typeof errors503Route
   '/(public)/$slug': typeof publicSlugRoute
   '/(public)/': typeof publicIndexRoute
+  '/(auth)/forgot/verify': typeof authForgotVerifyRoute
   '/(auth)/sign-in/2fa': typeof authSignIn2faRoute
   '/(auth)/sign-up/verify': typeof authSignUpVerifyRoute
   '/(public)/blog/$slug': typeof publicBlogSlugRoute
@@ -343,6 +352,7 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/$slug'
+    | '/forgot/verify'
     | '/sign-in/2fa'
     | '/sign-up/verify'
     | '/blog/$slug'
@@ -374,6 +384,7 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/$slug'
+    | '/forgot/verify'
     | '/sign-in/2fa'
     | '/sign-up/verify'
     | '/blog/$slug'
@@ -410,6 +421,7 @@ export interface FileRouteTypes {
     | '/(errors)/503'
     | '/(public)/$slug'
     | '/(public)/'
+    | '/(auth)/forgot/verify'
     | '/(auth)/sign-in/2fa'
     | '/(auth)/sign-up/verify'
     | '/(public)/blog/$slug'
@@ -687,10 +699,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSignIn2faRouteImport
       parentRoute: typeof authRouteRoute
     }
+    '/(auth)/forgot/verify': {
+      id: '/(auth)/forgot/verify'
+      path: '/forgot/verify'
+      fullPath: '/forgot/verify'
+      preLoaderRoute: typeof authForgotVerifyRouteImport
+      parentRoute: typeof authRouteRoute
+    }
   }
 }
 
 interface authRouteRouteChildren {
+  authForgotVerifyRoute: typeof authForgotVerifyRoute
   authSignIn2faRoute: typeof authSignIn2faRoute
   authSignUpVerifyRoute: typeof authSignUpVerifyRoute
   authForgotIndexRoute: typeof authForgotIndexRoute
@@ -700,6 +720,7 @@ interface authRouteRouteChildren {
 }
 
 const authRouteRouteChildren: authRouteRouteChildren = {
+  authForgotVerifyRoute: authForgotVerifyRoute,
   authSignIn2faRoute: authSignIn2faRoute,
   authSignUpVerifyRoute: authSignUpVerifyRoute,
   authForgotIndexRoute: authForgotIndexRoute,

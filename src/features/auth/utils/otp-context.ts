@@ -1,10 +1,11 @@
 import { redirect } from "@tanstack/react-router";
 import { toast } from "sonner";
 
-export type OtpFlowType = "otp:signup" | "otp:login-2fa" | "otp:sensitive-action";
+export type OtpFlowType = "otp:signup" | "otp:login-2fa" | "otp:sensitive-action" | "otp:reset-password";
 
 export interface OtpContextData {
   email?: string;
+  otp?: string;
   intent: string;
   redirect?: string;
   timestamp: number;

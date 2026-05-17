@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useForgotPassword } from "@/features/auth/hooks/use-auth-mutations";
+import { useRequestPasswordResetOTP } from "@/features/auth/hooks/use-auth-mutations";
+import { otpContext } from "@/features/auth/utils/otp-context";
 
 const formSchema = z.object({
   email: z.email({
@@ -18,7 +19,7 @@ const formSchema = z.object({
 
 export function ForgotPasswordForm({ className, ...props }: React.HTMLAttributes<HTMLFormElement>) {
   const navigate = useNavigate();
-  const forgotPassword = useForgotPassword();
+  const requestOTP = useRequestPasswordResetOTP();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -26,19 +27,21 @@ export function ForgotPasswordForm({ className, ...props }: React.HTMLAttributes
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    forgotPassword.mutate(
-      { email: data.email, redirectTo: `${window.location.origin}/reset-password` },
-      {
-        onSuccess: () => {
-          toast.success(`Password reset link sent to ${data.email}`);
-          form.reset();
-          navigate({ to: "/sign-in" });
-        },
-        onError: (error) => {
-          toast.error(error.message || "Failed to send reset email.");
-        },
-      }
-    );
+    requestOTP.mutate(data.email, {
+      onSuccess: () => {
+        otpContext.set("otp:reset-password", {
+          email: data.email,
+          intent: "reset_password_verify",
+          redirect: "/dashboard",
+        });
+        toast.success(`Verification code sent to ${data.email}`);
+        form.reset();
+        navigate({ to: "/forgot/verify" });
+      },
+      onError: (error) => {
+        toast.error(error.message || "Failed to send verification code.");
+      },
+    });
   }
 
   return (
@@ -57,9 +60,9 @@ export function ForgotPasswordForm({ className, ...props }: React.HTMLAttributes
             </FormItem>
           )}
         />
-        <Button className="mt-2" disabled={forgotPassword.isPending}>
+        <Button className="mt-2" disabled={requestOTP.isPending}>
           Continue
-          {forgotPassword.isPending ? <Loader2 className="animate-spin" /> : <ArrowRight />}
+          {requestOTP.isPending ? <Loader2 className="animate-spin" /> : <ArrowRight />}
         </Button>
       </form>
     </Form>
