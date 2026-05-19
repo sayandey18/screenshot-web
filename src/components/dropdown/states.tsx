@@ -15,7 +15,13 @@ interface StateDropdownProps {
   onOpenChange?: (open: boolean) => void;
 }
 
-export function StateDropdown({ countryCode = "", value = "", onChange, open: controlledOpen, onOpenChange: onControlledOpenChange }: StateDropdownProps) {
+export function StateDropdown({
+  countryCode = "",
+  value = "",
+  onChange,
+  open: controlledOpen,
+  onOpenChange: onControlledOpenChange,
+}: StateDropdownProps) {
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledOpen !== undefined && onControlledOpenChange !== undefined;
   const openDropdown = isControlled ? controlledOpen : internalOpen;
@@ -61,10 +67,7 @@ export function StateDropdown({ countryCode = "", value = "", onChange, open: co
                 >
                   <span className="min-w-0 flex-1 truncate">{state.name}</span>
                   <Check
-                    className={cn(
-                      "size-4 shrink-0",
-                      value === lowerCase(state.name) ? "opacity-100" : "opacity-0"
-                    )}
+                    className={cn("size-4 shrink-0", value === lowerCase(state.name) ? "opacity-100" : "opacity-0")}
                   />
                 </CommandItem>
               ))}

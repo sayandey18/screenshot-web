@@ -216,7 +216,12 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={updateProfile.isPending} aria-busy={updateProfile.isPending} className="self-start">
+        <Button
+          type="submit"
+          disabled={updateProfile.isPending}
+          aria-busy={updateProfile.isPending}
+          className="self-start"
+        >
           Update profile
         </Button>
       </form>

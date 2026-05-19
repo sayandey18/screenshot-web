@@ -18,7 +18,17 @@ export const useSignInEmail = () => {
 
 export const useSignUpEmail = () =>
   useMutation({
-    mutationFn: async ({ name, email, password, callbackURL }: { name: string; email: string; password: string; callbackURL: string }) => {
+    mutationFn: async ({
+      name,
+      email,
+      password,
+      callbackURL,
+    }: {
+      name: string;
+      email: string;
+      password: string;
+      callbackURL: string;
+    }) => {
       const result = await authClient.signUp.email({ name, email, password, callbackURL });
       if (result.error) throw result.error;
       return result;

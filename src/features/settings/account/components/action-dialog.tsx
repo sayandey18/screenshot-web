@@ -14,7 +14,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { PasswordInput } from "@/components/password-input";
-import { useDisableTwoFactor, useEnableTwoFactor, useDeleteAccount } from "@/features/settings/hooks/use-auth-mutations";
+import {
+  useDisableTwoFactor,
+  useEnableTwoFactor,
+  useDeleteAccount,
+} from "@/features/settings/hooks/use-auth-mutations";
 
 interface ActionDialogProps {
   open: boolean;
@@ -238,7 +242,7 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
               <div className="grid gap-1.5 leading-none">
                 <label
                   htmlFor="saved-codes"
-                  className="text-sm leading-none font-medium cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="cursor-pointer text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   I have saved my backup codes securely.
                 </label>

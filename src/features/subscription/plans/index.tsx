@@ -1,4 +1,3 @@
-
 import { useEffect, useMemo, useState } from "react";
 import { getRouteApi } from "@tanstack/react-router";
 import { Building2, Calendar, Clock, Crown, Package, RefreshCw, Sparkles, Zap } from "lucide-react";
@@ -255,15 +254,15 @@ export function SubscriptionPlans() {
                     <span>Your current plan will remain active until the next billing date.</span>
                   </div>
                 ) : (
-                    <Button
-                      variant="outline"
-                      className="ml-auto text-destructive hover:text-destructive"
-                      onClick={() => setCancelDialogOpen(true)}
-                      disabled={isBusy || subscription?.status === "cancelled"}
-                      aria-busy={isCancelling}
-                    >
-                      {isCancelling ? "Cancelling..." : "Cancel Subscription"}
-                    </Button>
+                  <Button
+                    variant="outline"
+                    className="ml-auto text-destructive hover:text-destructive"
+                    onClick={() => setCancelDialogOpen(true)}
+                    disabled={isBusy || subscription?.status === "cancelled"}
+                    aria-busy={isCancelling}
+                  >
+                    {isCancelling ? "Cancelling..." : "Cancel Subscription"}
+                  </Button>
                 )}
               </CardFooter>
             )}

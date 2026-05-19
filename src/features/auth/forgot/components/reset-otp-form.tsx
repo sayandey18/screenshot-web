@@ -31,7 +31,14 @@ export function ResetPasswordOTP() {
   });
 
   return (
-    <AuthLayout title="Reset Password" description={<>Enter the 6-digit code we sent to <span className="font-medium text-foreground">{email}</span></>}>
+    <AuthLayout
+      title="Reset Password"
+      description={
+        <>
+          Enter the 6-digit code we sent to <span className="font-medium text-foreground">{email}</span>
+        </>
+      }
+    >
       <VerifyForm {...baseFlow} />
     </AuthLayout>
   );

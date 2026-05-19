@@ -15,7 +15,13 @@ interface CountryDropdownProps {
   onOpenChange?: (open: boolean) => void;
 }
 
-export function CountryDropdown({ disabled, value = "", onChange, open: controlledOpen, onOpenChange: onControlledOpenChange }: CountryDropdownProps) {
+export function CountryDropdown({
+  disabled,
+  value = "",
+  onChange,
+  open: controlledOpen,
+  onOpenChange: onControlledOpenChange,
+}: CountryDropdownProps) {
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledOpen !== undefined && onControlledOpenChange !== undefined;
   const openDropdown = isControlled ? controlledOpen : internalOpen;
@@ -69,9 +75,7 @@ export function CountryDropdown({ disabled, value = "", onChange, open: controll
                     <span>{country.emoji}</span>
                     <span>{country.name}</span>
                   </div>
-                  <Check
-                    className={cn("size-4 shrink-0", value === country.iso2 ? "opacity-100" : "opacity-0")}
-                  />
+                  <Check className={cn("size-4 shrink-0", value === country.iso2 ? "opacity-100" : "opacity-0")} />
                 </CommandItem>
               ))}
             </CommandGroup>

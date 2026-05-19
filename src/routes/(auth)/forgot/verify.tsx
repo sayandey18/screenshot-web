@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { otpContext } from "@/features/auth/utils/otp-context";
 import { ResetPasswordOTP } from "@/features/auth/forgot/components/reset-otp-form";
+import { otpContext } from "@/features/auth/utils/otp-context";
 
 export const Route = createFileRoute("/(auth)/forgot/verify")({
   beforeLoad: () => {

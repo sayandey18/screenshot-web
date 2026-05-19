@@ -19,8 +19,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CountryDropdown } from "@/components/dropdown/countries";
 import { StateDropdown } from "@/components/dropdown/states";
 import { ContentSection } from "../components/content-section";
-import { usePaymentMethods, type BillingAddressInput } from "../hooks/use-subscription";
 import { useBillingAddress, useUpdateBillingAddress, useOpenBillingPortal } from "../hooks/use-billing";
+import { usePaymentMethods, type BillingAddressInput } from "../hooks/use-subscription";
 
 export function SubscriptionBilling() {
   const { data: pmData, isLoading: isLoadingPM } = usePaymentMethods();
@@ -328,7 +328,11 @@ export function SubscriptionBilling() {
               <Button variant="outline" onClick={() => setAddressDialogOpen(false)} disabled={updateAddress.isPending}>
                 Cancel
               </Button>
-              <Button onClick={handleSaveAddress} disabled={updateAddress.isPending} aria-busy={updateAddress.isPending}>
+              <Button
+                onClick={handleSaveAddress}
+                disabled={updateAddress.isPending}
+                aria-busy={updateAddress.isPending}
+              >
                 {updateAddress.isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
                 Save Address
               </Button>
