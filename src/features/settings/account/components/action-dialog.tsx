@@ -238,7 +238,7 @@ export function ActionDialog({ open, onOpenChange, type, enabled, onSuccess }: A
               <div className="grid gap-1.5 leading-none">
                 <label
                   htmlFor="saved-codes"
-                  className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm leading-none font-medium cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   I have saved my backup codes securely.
                 </label>

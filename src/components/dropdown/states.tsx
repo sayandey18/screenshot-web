@@ -1,34 +1,44 @@
+import { useState } from "react";
 import states from "@/data/states.json";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { useLocationStore } from "@/stores/location-store";
 import { cn, lowerCase } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { type StateProps } from "./types";
 
-export function StateDropdown() {
-  const { countryValue, stateValue, openStateDropdown, setOpenStateDropdown, setStateValue, setStateCode } =
-    useLocationStore();
+interface StateDropdownProps {
+  countryCode?: string;
+  value?: string;
+  onChange?: (displayValue: string, code: string) => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export function StateDropdown({ countryCode = "", value = "", onChange, open: controlledOpen, onOpenChange: onControlledOpenChange }: StateDropdownProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined && onControlledOpenChange !== undefined;
+  const openDropdown = isControlled ? controlledOpen : internalOpen;
+  const setOpenDropdown = isControlled ? onControlledOpenChange! : setInternalOpen;
 
   const stateData = states as StateProps[];
-  const filtered = stateData.filter((state) => state.country_code === countryValue);
+  const filtered = stateData.filter((state) => state.country_code === countryCode);
 
-  const selectedState = filtered.find((s) => lowerCase(s.name) === stateValue);
+  const selectedState = filtered.find((s) => lowerCase(s.name) === value);
 
   return (
-    <Popover open={openStateDropdown} onOpenChange={setOpenStateDropdown}>
+    <Popover open={openDropdown} onOpenChange={setOpenDropdown}>
       <PopoverTrigger asChild>
         <Button
           id="state-combobox"
           variant="outline"
           role="combobox"
-          aria-expanded={openStateDropdown}
+          aria-expanded={openDropdown}
           className="h-9 w-full min-w-0 justify-between gap-2 overflow-hidden font-normal"
-          disabled={!countryValue || filtered.length === 0}
+          disabled={!countryCode || filtered.length === 0}
         >
           <span className="min-w-0 flex-1 truncate text-left">
-            {selectedState?.name ?? (countryValue ? "Select state" : "Select country first")}
+            {selectedState?.name ?? (countryCode ? "Select state" : "Select country first")}
           </span>
           <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
         </Button>
@@ -44,9 +54,8 @@ export function StateDropdown() {
                   key={state.id}
                   value={state.name}
                   onSelect={() => {
-                    setStateValue(lowerCase(state.name));
-                    setStateCode(state.state_code);
-                    setOpenStateDropdown(false);
+                    onChange?.(lowerCase(state.name), state.state_code);
+                    setOpenDropdown(false);
                   }}
                   className="w-full justify-between"
                 >
@@ -54,7 +63,7 @@ export function StateDropdown() {
                   <Check
                     className={cn(
                       "size-4 shrink-0",
-                      stateValue === lowerCase(state.name) ? "opacity-100" : "opacity-0"
+                      value === lowerCase(state.name) ? "opacity-100" : "opacity-0"
                     )}
                   />
                 </CommandItem>

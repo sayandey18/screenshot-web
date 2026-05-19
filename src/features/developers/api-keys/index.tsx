@@ -1,7 +1,8 @@
-﻿import { useMemo, useState } from "react";
+﻿import { useState } from "react";
 import { getRouteApi } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -9,6 +10,7 @@ import {
   useApiKeys,
   useDeleteApiKey,
   useUpdateApiKey,
+  type CreatedApiKeyResult,
 } from "@/features/developers/api-keys/hooks/use-api-keys";
 import { ContentSection } from "../components/content-section";
 import { ApiKeyCreateDialog } from "./components/api-key-create-dialog";
@@ -24,15 +26,6 @@ type CreateApiKeyValues = {
   expiresIn?: number;
 };
 
-type CreatedApiKeyResult = {
-  key: string;
-};
-
-function getErrorMessage(error: unknown, fallback: string) {
-  if (error instanceof Error && error.message) return error.message;
-  return fallback;
-}
-
 export function DevelopersApiKeys() {
   const search = route.useSearch();
   const navigate = route.useNavigate();
@@ -46,11 +39,10 @@ export function DevelopersApiKeys() {
 
   const apiKeysQuery = useApiKeys(currentPage);
   const createApiKey = useCreateApiKey();
-  const updateApiKeyForManage = useUpdateApiKey();
-  const updateApiKeyForStatus = useUpdateApiKey();
+  const updateApiKey = useUpdateApiKey();
   const deleteApiKey = useDeleteApiKey();
 
-  const apiKeys = useMemo(() => apiKeysQuery.data?.items ?? [], [apiKeysQuery.data?.items]);
+  const apiKeys = apiKeysQuery.data?.items ?? [];
   const total = apiKeysQuery.data?.total ?? 0;
   const isLoading = apiKeysQuery.isLoading;
 
@@ -64,7 +56,7 @@ export function DevelopersApiKeys() {
   };
 
   const handleManage = async (id: string, name: string) => {
-    await updateApiKeyForManage.mutateAsync({ keyId: id, name });
+    await updateApiKey.mutateAsync({ keyId: id, name });
     toast.success("API key updated successfully.");
     setOpenManage(false);
     setCurrentRow(null);
@@ -76,7 +68,7 @@ export function DevelopersApiKeys() {
 
     const nextEnabled = row.enabled === false;
 
-    await updateApiKeyForStatus.mutateAsync({ keyId: row.id, enabled: nextEnabled });
+    await updateApiKey.mutateAsync({ keyId: row.id, enabled: nextEnabled });
     toast.success(nextEnabled ? "API key enabled successfully." : "API key disabled successfully.");
   };
 
@@ -106,7 +98,7 @@ export function DevelopersApiKeys() {
           <CardContent className="p-6">
             <div className="flex flex-1 flex-col gap-4">
               <div className="flex justify-end">
-                <Button className="space-x-1" onClick={() => setOpenCreate(true)}>
+                <Button className="space-x-1" onClick={() => setOpenCreate(true)} aria-busy={createApiKey.isPending}>
                   <span>Create</span>
                   <Plus size={18} />
                 </Button>
@@ -148,7 +140,7 @@ export function DevelopersApiKeys() {
             if (!open) setCurrentRow(null);
           }}
           onSave={handleManage}
-          isLoading={updateApiKeyForManage.isPending}
+          isLoading={updateApiKey.isPending}
         />
 
         <ApiKeyDeleteDialog

@@ -37,25 +37,20 @@ export function VerifyForm({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <InputOTP
-                    maxLength={6}
-                    autoFocus
-                    {...field}
-                    containerClassName='justify-between sm:[&>[data-slot="input-otp-group"]>div]:w-12'
-                  >
-                    <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
+                  <InputOTP maxLength={6} autoFocus {...field} containerClassName="w-full justify-between">
+                    <InputOTPGroup className="flex-1">
+                      <InputOTPSlot index={0} className="w-full" />
+                      <InputOTPSlot index={1} className="w-full" />
                     </InputOTPGroup>
                     <InputOTPSeparator />
-                    <InputOTPGroup>
-                      <InputOTPSlot index={2} />
-                      <InputOTPSlot index={3} />
+                    <InputOTPGroup className="flex-1">
+                      <InputOTPSlot index={2} className="w-full" />
+                      <InputOTPSlot index={3} className="w-full" />
                     </InputOTPGroup>
                     <InputOTPSeparator />
-                    <InputOTPGroup>
-                      <InputOTPSlot index={4} />
-                      <InputOTPSlot index={5} />
+                    <InputOTPGroup className="flex-1">
+                      <InputOTPSlot index={4} className="w-full" />
+                      <InputOTPSlot index={5} className="w-full" />
                     </InputOTPGroup>
                   </InputOTP>
                 </FormControl>

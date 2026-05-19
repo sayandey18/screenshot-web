@@ -46,9 +46,17 @@ export function ProfileForm() {
   });
 
   useEffect(() => {
-    form.setValue("image", session?.user?.image || null);
+    if (session?.user) {
+      form.reset({
+        name: session.user.name ?? "",
+        image: session.user.image ?? null,
+        email: session.user.email ?? "",
+        company: session.user.company ?? "",
+        bio: session.user.bio ?? "",
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session?.user?.image]);
+  }, [session?.user]);
 
   async function onSubmit(data: ProfileFormValues) {
     await updateProfile.mutateAsync({
@@ -208,7 +216,7 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={updateProfile.isPending}>
+        <Button type="submit" disabled={updateProfile.isPending} aria-busy={updateProfile.isPending} className="self-start">
           Update profile
         </Button>
       </form>

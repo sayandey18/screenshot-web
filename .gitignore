@@ -29,6 +29,7 @@ dist-ssr
 # Agents
 .agents
 .claude
+.opencode
 skills-lock.json
 CLAUDE.md
 AGENTS.md
@@ -36,3 +37,6 @@ OVERVIEW.md
 
 # CodeRabbit
 .coderabbit.yaml
+
+# Tests
+/coverage

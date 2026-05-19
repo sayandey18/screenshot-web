@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useState } from "react";
 import { getRouteApi } from "@tanstack/react-router";
 import { Building2, Calendar, Clock, Crown, Package, RefreshCw, Sparkles, Zap } from "lucide-react";
@@ -254,14 +255,15 @@ export function SubscriptionPlans() {
                     <span>Your current plan will remain active until the next billing date.</span>
                   </div>
                 ) : (
-                  <Button
-                    variant="outline"
-                    className="ml-auto text-destructive hover:text-destructive"
-                    onClick={() => setCancelDialogOpen(true)}
-                    disabled={isBusy || subscription?.status === "cancelled"}
-                  >
-                    {isCancelling ? "Cancelling..." : "Cancel Subscription"}
-                  </Button>
+                    <Button
+                      variant="outline"
+                      className="ml-auto text-destructive hover:text-destructive"
+                      onClick={() => setCancelDialogOpen(true)}
+                      disabled={isBusy || subscription?.status === "cancelled"}
+                      aria-busy={isCancelling}
+                    >
+                      {isCancelling ? "Cancelling..." : "Cancel Subscription"}
+                    </Button>
                 )}
               </CardFooter>
             )}
@@ -273,65 +275,6 @@ export function SubscriptionPlans() {
               const isCurrent = plan.id === activePlanId;
 
               return (
-                // <Card
-                //   key={plan.id}
-                //   className={`flex h-full flex-col overflow-hidden border-muted/60 shadow-sm transition-shadow hover:shadow-md ${isCurrent ? "border-primary ring-1 ring-primary/30" : ""}`}
-                // >
-                //   <CardHeader>
-                //     <div className="flex items-center justify-between gap-3">
-                //       <div className="flex items-center gap-2">
-                //         <div className="flex size-8 items-center justify-center rounded-md bg-primary/5 text-primary">
-                //           {plan.icon}
-                //         </div>
-                //         <CardTitle className="text-base font-semibold">{plan.name}</CardTitle>
-                //       </div>
-                //       {/*{isCurrent ? (
-                //         <Badge
-                //           variant="secondary"
-                //           className="gap-2 border-0 bg-orange-100 text-orange-900 dark:bg-orange-500/10 dark:text-orange-200"
-                //         >
-                //           <span className="relative flex size-2">
-                //             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75 dark:bg-orange-300" />
-
-                //             <span className="relative inline-flex size-2 rounded-full bg-orange-500 dark:bg-orange-200" />
-                //           </span>
-                //         </Badge>
-                //       ) : null}*/}
-
-                //       {isCurrent ? (
-                //         <Badge
-                //           variant="secondary"
-                //           className="flex h-6 w-6 items-center justify-center rounded-full border-0 bg-orange-100 p-0 dark:bg-orange-500/10"
-                //         >
-                //           <span className="relative flex size-2">
-                //             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75 dark:bg-orange-300" />
-
-                //             <span className="relative inline-flex size-2 rounded-full bg-orange-500 dark:bg-orange-200" />
-                //           </span>
-                //         </Badge>
-                //       ) : null}
-                //     </div>
-                //   </CardHeader>
-
-                //   <CardContent>
-                //     <div className="space-y-1">
-                //       <p className="text-2xl font-bold text-foreground">{plan.price}</p>
-                //       <p className="text-sm text-muted-foreground">{plan.tagline}</p>
-                //     </div>
-                //   </CardContent>
-
-                //   <CardFooter className="pt-0">
-                //     <Button
-                //       variant={cta.variant}
-                //       className="w-full"
-                //       disabled={cta.disabled || isBusy}
-                //       onClick={() => handleSelectPlan(plan)}
-                //     >
-                //       {isBusy && pendingPlanId === plan.id ? "Updating..." : cta.label}
-                //     </Button>
-                //   </CardFooter>
-                // </Card>
-                //
                 <Card
                   key={plan.id}
                   className={cn(
@@ -376,6 +319,7 @@ export function SubscriptionPlans() {
                       className="w-full"
                       disabled={cta.disabled || isBusy}
                       onClick={() => handleSelectPlan(plan)}
+                      aria-busy={isCheckingOut}
                     >
                       {isBusy && pendingPlanId === plan.id ? "Updating..." : cta.label}
                     </Button>

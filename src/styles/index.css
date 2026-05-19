@@ -51,7 +51,7 @@
     overflow: unset !important;
   }
 
-  input[class],
+  input[class]:not(.otp-input),
   textarea[class] {
     @apply bg-white! dark:bg-input/30!;
   }

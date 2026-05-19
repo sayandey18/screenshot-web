@@ -16,12 +16,7 @@ export const authClient = createAuthClient({
     apiKeyClient(),
     emailOTPClient(),
     lastLoginMethodClient(),
-    twoFactorClient({
-      onTwoFactorRedirect({ twoFactorMethods }) {
-        sessionStorage.setItem("2fa-methods", JSON.stringify(twoFactorMethods));
-        window.location.replace("/sign-in/2fa");
-      },
-    }),
+    twoFactorClient(),
     inferAdditionalFields({
       user: {
         plan: { type: "string", required: false },

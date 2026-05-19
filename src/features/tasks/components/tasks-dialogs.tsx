@@ -1,4 +1,4 @@
-import { showSubmittedData } from "@/lib/show-data";
+import { showSubmittedData } from "@/lib/dev/show-data";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { TasksImportDialog } from "./tasks-import-dialog";
 import { TasksMutateDrawer } from "./tasks-mutate-drawer";

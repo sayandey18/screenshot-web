@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fonts } from "@/config/fonts";
-import { showSubmittedData } from "@/lib/show-data";
+import { showSubmittedData } from "@/lib/dev/show-data";
 import { cn } from "@/lib/utils";
 import { useFont } from "@/context/font-provider";
 import { useTheme } from "@/context/theme-provider";

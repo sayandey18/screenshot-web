@@ -2,14 +2,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
 import { sessionKeys } from "@/hooks/api/query-keys";
 
-export const useSignInEmail = () =>
-  useMutation({
+export const useSignInEmail = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationFn: async ({ email, password }: { email: string; password: string }) => {
       const result = await authClient.signIn.email({ email, password });
       if (result.error) throw new Error(result.error.message);
       return result;
     },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: sessionKeys.current });
+    },
   });
+};
 
 export const useSignUpEmail = () =>
   useMutation({

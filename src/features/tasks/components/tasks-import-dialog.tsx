@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { showSubmittedData } from "@/lib/show-data";
+import { showSubmittedData } from "@/lib/dev/show-data";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

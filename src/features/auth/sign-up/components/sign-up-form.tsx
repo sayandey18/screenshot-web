@@ -45,22 +45,24 @@ export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) 
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     signUp.mutate(
-      { name: data.name, email: data.email, password: data.password, callbackURL: `${window.location.origin}/dashboard` },
+      {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        callbackURL: `${window.location.origin}/dashboard`,
+      },
       {
         onSuccess: () => {
           onSuccess(data.email);
         },
         onError: (error) => {
           const code = (error as { code?: string }).code;
-          const msg = error.message || "";
-          if (
-            code === "USER_ALREADY_EXISTS" ||
-            msg.toLowerCase().includes("already exists") ||
-            msg.toLowerCase().includes("already registered")
-          ) {
+          const status = (error as { status?: number }).status;
+          const message = error.message;
+          if (code === "USER_ALREADY_EXISTS" || status === 422) {
             toast.error("Account already registered. Please sign in to verify your email.");
           } else {
-            toast.error(msg || "An error occurred during sign up.");
+            toast.error(message || "An error occurred during sign up.");
           }
         },
       }
@@ -122,7 +124,7 @@ export function SignUpForm({ className, onSuccess, ...props }: SignUpFormProps) 
             </FormItem>
           )}
         />
-        <Button className="mt-2" disabled={signUp.isPending}>
+        <Button className="mt-2" disabled={signUp.isPending} aria-busy={signUp.isPending}>
           {signUp.isPending && <Loader2 className="mr-2 animate-spin" />}
           Create Account
         </Button>

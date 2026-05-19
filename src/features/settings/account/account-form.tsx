@@ -46,11 +46,16 @@ export function AccountForm() {
   });
 
   useEffect(() => {
-    if (session) {
-      form.setValue("twoFactorEnabled", !!session.user.twoFactorEnabled);
+    if (session?.user) {
+      form.reset({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+        twoFactorEnabled: !!session.user.twoFactorEnabled,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session?.user?.twoFactorEnabled]);
+  }, [session?.user]);
 
   async function onUpdatePassword(data: AccountFormValues) {
     await changePassword.mutateAsync({
@@ -129,7 +134,7 @@ export function AccountForm() {
                   )}
                 />
               </div>
-              <Button type="submit" disabled={changePassword.isPending}>
+              <Button type="submit" disabled={changePassword.isPending} aria-busy={changePassword.isPending}>
                 Update password
               </Button>
             </div>

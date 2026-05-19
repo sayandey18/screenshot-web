@@ -2,7 +2,6 @@ import { useState } from "react";
 import statesData from "@/data/states.json";
 import { CreditCard, MapPin, Plus, ExternalLink, Loader2, Landmark } from "lucide-react";
 import { toast } from "sonner";
-import { useLocationStore } from "@/stores/location-store";
 import { cn, lowerCase } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,10 +35,14 @@ export function SubscriptionBilling() {
   const [addressLine1, setAddressLine1] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
+  const [countryValue, setCountryValue] = useState("");
+  const [stateValue, setStateValue] = useState("");
+  const [stateCode, setStateCode] = useState("");
+  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
+  const [stateDropdownOpen, setStateDropdownOpen] = useState(false);
 
   const openAddressDialog = () => {
     if (addressData) {
-      const { setCountryValue, setStateValue, setStateCode } = useLocationStore.getState();
       setFullName(addressData.fullName);
       setAddressLine1(addressData.addressLine1);
       setCity(addressData.city);
@@ -49,11 +52,12 @@ export function SubscriptionBilling() {
       const match = statesData.find((s) => s.state_code === addressData.stateCode);
       setStateValue(match ? lowerCase(match.name) : "");
     }
+    setCountryDropdownOpen(false);
+    setStateDropdownOpen(false);
     setAddressDialogOpen(true);
   };
 
   const handleSaveAddress = async () => {
-    const { countryValue, stateCode } = useLocationStore.getState();
     if (!fullName || !addressLine1 || !countryValue || !stateCode || !city || !postalCode) {
       toast.error("Please complete all required address fields.");
       return;
@@ -105,6 +109,7 @@ export function SubscriptionBilling() {
                 size="sm"
                 onClick={handleManagePaymentMethods}
                 disabled={openPortal.isPending}
+                aria-busy={openPortal.isPending}
                 className="h-8 gap-2"
               >
                 {openPortal.isPending ? (
@@ -267,12 +272,30 @@ export function SubscriptionBilling() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="grid gap-2">
                   <Label>Country</Label>
-                  <CountryDropdown />
+                  <CountryDropdown
+                    value={countryValue}
+                    onChange={(code) => {
+                      setCountryValue(code);
+                      setStateValue("");
+                      setStateCode("");
+                    }}
+                    open={countryDropdownOpen}
+                    onOpenChange={setCountryDropdownOpen}
+                  />
                 </div>
 
                 <div className="grid gap-2">
                   <Label>State/Province</Label>
-                  <StateDropdown />
+                  <StateDropdown
+                    countryCode={countryValue}
+                    value={stateValue}
+                    onChange={(display, code) => {
+                      setStateValue(display);
+                      setStateCode(code);
+                    }}
+                    open={stateDropdownOpen}
+                    onOpenChange={setStateDropdownOpen}
+                  />
                 </div>
               </div>
 
@@ -305,7 +328,7 @@ export function SubscriptionBilling() {
               <Button variant="outline" onClick={() => setAddressDialogOpen(false)} disabled={updateAddress.isPending}>
                 Cancel
               </Button>
-              <Button onClick={handleSaveAddress} disabled={updateAddress.isPending}>
+              <Button onClick={handleSaveAddress} disabled={updateAddress.isPending} aria-busy={updateAddress.isPending}>
                 {updateAddress.isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
                 Save Address
               </Button>

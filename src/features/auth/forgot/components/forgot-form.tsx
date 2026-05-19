@@ -60,7 +60,7 @@ export function ForgotPasswordForm({ className, ...props }: React.HTMLAttributes
             </FormItem>
           )}
         />
-        <Button className="mt-2" disabled={requestOTP.isPending}>
+        <Button className="mt-2" disabled={requestOTP.isPending} aria-busy={requestOTP.isPending}>
           Continue
           {requestOTP.isPending ? <Loader2 className="animate-spin" /> : <ArrowRight />}
         </Button>

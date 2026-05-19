@@ -1,20 +1,18 @@
 ﻿import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { IconGithub, IconGoogle } from "@/assets/brand-icons";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-import { sessionQueryOptions } from "@/hooks/api/use-session";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/password-input";
-import { useSignInEmail } from "@/features/auth/hooks/use-auth-mutations";
+import { useSend2FAOTP, useSignInEmail } from "@/features/auth/hooks/use-auth-mutations";
 import { otpContext } from "../../utils/otp-context";
 
 const formSchema = z.object({
@@ -31,9 +29,9 @@ interface SignInFormProps extends React.HTMLAttributes<HTMLFormElement> {
 
 export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...props }: SignInFormProps) {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const lastLoginMethod = authClient.getLastUsedLoginMethod();
   const signIn = useSignInEmail();
+  const send2FAOTP = useSend2FAOTP();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,32 +41,40 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
     },
   });
 
+  function handleEmailNotVerified(email: string) {
+    toast.error("Please verify your email to continue.");
+    authClient.emailOtp.sendVerificationOtp({
+      email,
+      type: "email-verification",
+    });
+    otpContext.set("otp:signup", {
+      intent: "sign_up_verify",
+      email,
+      redirect: redirectTo ?? "/",
+    });
+    navigate({ to: "/sign-up/verify" });
+  }
+
   function onSubmit(data: z.infer<typeof formSchema>) {
     signIn.mutate(
       { email: data.email, password: data.password },
       {
         onSuccess: (result) => {
           if (result.data.user && !result.data.user.emailVerified) {
-            toast.error("Please verify your email to continue.");
-            authClient.emailOtp.sendVerificationOtp({
-              email: data.email,
-              type: "email-verification",
-            });
-            otpContext.set("otp:signup", {
-              intent: "sign_up_verify",
-              email: data.email,
-              redirect: redirectTo ?? "/",
-            });
-            navigate({ to: "/sign-up/verify" });
+            handleEmailNotVerified(data.email);
             return;
           }
 
           if ("twoFactorRedirect" in result.data && result.data.twoFactorRedirect) {
-            authClient.twoFactor.sendOtp();
-            onTwoFactorRequired(data.email);
+            send2FAOTP.mutate(undefined, {
+              onSuccess: () => {
+                onTwoFactorRequired(data.email);
+              },
+              onError: () => {
+                toast.error("Failed to send verification code. Please try again.");
+              },
+            });
           } else {
-            void queryClient.invalidateQueries({ queryKey: sessionQueryOptions().queryKey });
-            void queryClient.ensureQueryData(sessionQueryOptions());
             navigate({ to: redirectTo ?? "/", replace: true });
           }
         },
@@ -77,17 +83,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
           const status = (error as { status?: number }).status;
           const message = error.message;
           if (code === "EMAIL_NOT_VERIFIED" || status === 403) {
-            toast.error("Please verify your email to continue.");
-            authClient.emailOtp.sendVerificationOtp({
-              email: data.email,
-              type: "email-verification",
-            });
-            otpContext.set("otp:signup", {
-              intent: "sign_up_verify",
-              email: data.email,
-              redirect: redirectTo ?? "/",
-            });
-            navigate({ to: "/sign-up/verify" });
+            handleEmailNotVerified(data.email);
             return;
           }
 
@@ -132,7 +128,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
             </FormItem>
           )}
         />
-        <Button className="relative mt-2" disabled={signIn.isPending}>
+        <Button className="relative mt-2" disabled={signIn.isPending} aria-busy={signIn.isPending}>
           {signIn.isPending && <Loader2 className="animate-spin" />}
           Sign in
           {lastLoginMethod === "email" && (

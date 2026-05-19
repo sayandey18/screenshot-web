@@ -5,8 +5,8 @@ import { apiKeySchema, type ApiKeyItem } from "../data/schema";
 import { apiKeyKeys } from "./query-keys";
 
 type ApiKeyListPayload = {
-  apiKeys?: unknown;
-  total?: unknown;
+  apiKeys: Record<string, unknown>[];
+  total: number;
 };
 
 type CreateApiKeyInput = {
@@ -20,9 +20,13 @@ type UpdateApiKeyInput = {
   enabled?: boolean;
 };
 
-const parseApiKeys = (input: unknown): ApiKeyItem[] => {
-  if (!Array.isArray(input)) return [];
+export type { CreatedApiKeyResult };
 
+type CreatedApiKeyResult = {
+  key: string;
+};
+
+const parseApiKeys = (input: Record<string, unknown>[]): ApiKeyItem[] => {
   return input
     .map((item) => apiKeySchema.safeParse(item))
     .filter((item) => item.success)
@@ -45,7 +49,7 @@ export const useApiKeys = (page: number) =>
 
       const payload = unwrapAuthResult(result as { data: ApiKeyListPayload; error: unknown });
       const items = parseApiKeys(payload.apiKeys);
-      const total = typeof payload.total === "number" ? payload.total : items.length;
+      const total = payload.total;
 
       return { items, total };
     },

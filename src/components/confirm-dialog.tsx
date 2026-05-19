@@ -59,6 +59,7 @@ export function ConfirmDialog(props: ConfirmDialogProps) {
             onClick={handleConfirm}
             variant={destructive ? "destructive" : "default"}
             disabled={disabled || isLoading}
+            aria-busy={isLoading}
           >
             {confirmText ?? "Continue"}
           </Button>

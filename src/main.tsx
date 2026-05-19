@@ -3,9 +3,11 @@ import ReactDOM from "react-dom/client";
 import { AxiosError } from "axios";
 import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { ErrorBoundary } from "react-error-boundary";
 import { toast } from "sonner";
 import { useAuthStore } from "@/stores/auth-store";
 import { handleServerError } from "@/lib/handle-error";
+import { GeneralError } from "@/features/errors/general-error";
 import { NotFoundError } from "@/features/errors/not-found-error";
 import { DirectionProvider } from "./context/direction-provider";
 import { FontProvider } from "./context/font-provider";
@@ -47,13 +49,13 @@ const queryClient = new QueryClient({
         }
         if (error.response?.status === 500) {
           toast.error("Internal Server Error!");
-          // Only navigate to error page in production to avoid disrupting HMR in development
+          // Only navigate to error page in production
           if (import.meta.env.PROD) {
             router.navigate({ to: "/500" });
           }
         }
         if (error.response?.status === 403) {
-          // router.navigate("/forbidden", { replace: true });
+          router.navigate({ to: "/403" });
         }
       }
     },
@@ -83,13 +85,15 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <FontProvider>
-            <DirectionProvider>
-              <RouterProvider router={router} />
-            </DirectionProvider>
-          </FontProvider>
-        </ThemeProvider>
+        <ErrorBoundary FallbackComponent={GeneralError}>
+          <ThemeProvider>
+            <FontProvider>
+              <DirectionProvider>
+                <RouterProvider router={router} />
+              </DirectionProvider>
+            </FontProvider>
+          </ThemeProvider>
+        </ErrorBoundary>
       </QueryClientProvider>
     </StrictMode>
   );
