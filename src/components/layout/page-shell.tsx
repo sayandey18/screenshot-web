@@ -62,7 +62,7 @@ export function PageShell({ title, description, tabs }: PageShellProps) {
 
       <Main>
         <div className="space-y-0.5">
-          <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{title}</h1>
+          <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
           <p className="text-muted-foreground">{description}</p>
         </div>
 
