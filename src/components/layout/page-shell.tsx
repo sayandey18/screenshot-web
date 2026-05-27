@@ -67,7 +67,7 @@ export function PageShell({ title, description, tabs }: PageShellProps) {
         </div>
 
         {tabs.length > 1 && (
-          <div className="mt-4 border-b">
+          <div className="mt-4">
             <SecondaryNav tabs={tabs} />
           </div>
         )}
