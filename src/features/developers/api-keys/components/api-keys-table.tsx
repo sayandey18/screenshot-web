@@ -10,7 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { type NavigateFn, useTableUrlState } from "@/hooks/use-table-url-state";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DataTablePagination } from "@/components/data-table";
+import { DataTableCards, DataTablePagination } from "@/components/data-table";
 import { type ApiKeyItem } from "../data/schema";
 import { getApiKeysColumns } from "./api-keys-columns";
 import { DataTableBulkActions } from "./data-table-bulk-actions";
@@ -106,7 +106,8 @@ export function ApiKeysTable({
         "flex flex-1 flex-col gap-4"
       )}
     >
-      <div className="overflow-hidden rounded-md border">
+      <DataTableCards table={table} />
+      <div className="hidden overflow-hidden rounded-md border md:block">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
