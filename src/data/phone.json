@@ -1,0 +1,1478 @@
+[
+  {
+    "name": "Afghanistan",
+    "iso2": "AF",
+    "dialCode": "+93",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/af.svg"
+  },
+  {
+    "name": "Åland Islands",
+    "iso2": "AX",
+    "dialCode": "+358",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ax.svg"
+  },
+  {
+    "name": "Albania",
+    "iso2": "AL",
+    "dialCode": "+355",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/al.svg"
+  },
+  {
+    "name": "Algeria",
+    "iso2": "DZ",
+    "dialCode": "+213",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/dz.svg"
+  },
+  {
+    "name": "American Samoa",
+    "iso2": "AS",
+    "dialCode": "+1684",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/as.svg"
+  },
+  {
+    "name": "Andorra",
+    "iso2": "AD",
+    "dialCode": "+376",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ad.svg"
+  },
+  {
+    "name": "Angola",
+    "iso2": "AO",
+    "dialCode": "+244",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ao.svg"
+  },
+  {
+    "name": "Anguilla",
+    "iso2": "AI",
+    "dialCode": "+1264",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ai.svg"
+  },
+  {
+    "name": "Antarctica",
+    "iso2": "AQ",
+    "dialCode": "+672",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/aq.svg"
+  },
+  {
+    "name": "Antigua and Barbuda",
+    "iso2": "AG",
+    "dialCode": "+1268",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ag.svg"
+  },
+  {
+    "name": "Argentina",
+    "iso2": "AR",
+    "dialCode": "+54",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ar.svg"
+  },
+  {
+    "name": "Armenia",
+    "iso2": "AM",
+    "dialCode": "+374",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/am.svg"
+  },
+  {
+    "name": "Aruba",
+    "iso2": "AW",
+    "dialCode": "+297",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/aw.svg"
+  },
+  {
+    "name": "Australia",
+    "iso2": "AU",
+    "dialCode": "+61",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/au.svg"
+  },
+  {
+    "name": "Austria",
+    "iso2": "AT",
+    "dialCode": "+43",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/at.svg"
+  },
+  {
+    "name": "Azerbaijan",
+    "iso2": "AZ",
+    "dialCode": "+994",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/az.svg"
+  },
+  {
+    "name": "Bahamas",
+    "iso2": "BS",
+    "dialCode": "+1242",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bs.svg"
+  },
+  {
+    "name": "Bahrain",
+    "iso2": "BH",
+    "dialCode": "+973",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bh.svg"
+  },
+  {
+    "name": "Bangladesh",
+    "iso2": "BD",
+    "dialCode": "+880",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bd.svg"
+  },
+  {
+    "name": "Barbados",
+    "iso2": "BB",
+    "dialCode": "+1246",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bb.svg"
+  },
+  {
+    "name": "Belarus",
+    "iso2": "BY",
+    "dialCode": "+375",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/by.svg"
+  },
+  {
+    "name": "Belgium",
+    "iso2": "BE",
+    "dialCode": "+32",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/be.svg"
+  },
+  {
+    "name": "Belize",
+    "iso2": "BZ",
+    "dialCode": "+501",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bz.svg"
+  },
+  {
+    "name": "Benin",
+    "iso2": "BJ",
+    "dialCode": "+229",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bj.svg"
+  },
+  {
+    "name": "Bermuda",
+    "iso2": "BM",
+    "dialCode": "+1441",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bm.svg"
+  },
+  {
+    "name": "Bhutan",
+    "iso2": "BT",
+    "dialCode": "+975",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bt.svg"
+  },
+  {
+    "name": "Bolivia, Plurinational State of bolivia",
+    "iso2": "BO",
+    "dialCode": "+591",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bo.svg"
+  },
+  {
+    "name": "Bosnia and Herzegovina",
+    "iso2": "BA",
+    "dialCode": "+387",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ba.svg"
+  },
+  {
+    "name": "Botswana",
+    "iso2": "BW",
+    "dialCode": "+267",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bw.svg"
+  },
+  {
+    "name": "Bouvet Island",
+    "iso2": "BV",
+    "dialCode": "+47",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bv.svg"
+  },
+  {
+    "name": "Brazil",
+    "iso2": "BR",
+    "dialCode": "+55",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/br.svg"
+  },
+  {
+    "name": "British Indian Ocean Territory",
+    "iso2": "IO",
+    "dialCode": "+246",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/io.svg"
+  },
+  {
+    "name": "Brunei Darussalam",
+    "iso2": "BN",
+    "dialCode": "+673",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bn.svg"
+  },
+  {
+    "name": "Bulgaria",
+    "iso2": "BG",
+    "dialCode": "+359",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bg.svg"
+  },
+  {
+    "name": "Burkina Faso",
+    "iso2": "BF",
+    "dialCode": "+226",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bf.svg"
+  },
+  {
+    "name": "Burundi",
+    "iso2": "BI",
+    "dialCode": "+257",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bi.svg"
+  },
+  {
+    "name": "Cambodia",
+    "iso2": "KH",
+    "dialCode": "+855",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/kh.svg"
+  },
+  {
+    "name": "Cameroon",
+    "iso2": "CM",
+    "dialCode": "+237",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cm.svg"
+  },
+  {
+    "name": "Canada",
+    "iso2": "CA",
+    "dialCode": "+1",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ca.svg"
+  },
+  {
+    "name": "Cape Verde",
+    "iso2": "CV",
+    "dialCode": "+238",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cv.svg"
+  },
+  {
+    "name": "Cayman Islands",
+    "iso2": "KY",
+    "dialCode": "+345",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ky.svg"
+  },
+  {
+    "name": "Central African Republic",
+    "iso2": "CF",
+    "dialCode": "+236",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cf.svg"
+  },
+  {
+    "name": "Chad",
+    "iso2": "TD",
+    "dialCode": "+235",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/td.svg"
+  },
+  {
+    "name": "Chile",
+    "iso2": "CL",
+    "dialCode": "+56",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cl.svg"
+  },
+  {
+    "name": "China",
+    "iso2": "CN",
+    "dialCode": "+86",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cn.svg"
+  },
+  {
+    "name": "Christmas Island",
+    "iso2": "CX",
+    "dialCode": "+61",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cx.svg"
+  },
+  {
+    "name": "Cocos (Keeling) Islands",
+    "iso2": "CC",
+    "dialCode": "+61",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cc.svg"
+  },
+  {
+    "name": "Colombia",
+    "iso2": "CO",
+    "dialCode": "+57",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/co.svg"
+  },
+  {
+    "name": "Comoros",
+    "iso2": "KM",
+    "dialCode": "+269",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/km.svg"
+  },
+  {
+    "name": "Congo",
+    "iso2": "CG",
+    "dialCode": "+242",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cg.svg"
+  },
+  {
+    "name": "Congo, The Democratic Republic of the Congo",
+    "iso2": "CD",
+    "dialCode": "+243",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cd.svg"
+  },
+  {
+    "name": "Cook Islands",
+    "iso2": "CK",
+    "dialCode": "+682",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ck.svg"
+  },
+  {
+    "name": "Costa Rica",
+    "iso2": "CR",
+    "dialCode": "+506",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cr.svg"
+  },
+  {
+    "name": "Cote d'Ivoire",
+    "iso2": "CI",
+    "dialCode": "+225",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ci.svg"
+  },
+  {
+    "name": "Croatia",
+    "iso2": "HR",
+    "dialCode": "+385",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/hr.svg"
+  },
+  {
+    "name": "Cuba",
+    "iso2": "CU",
+    "dialCode": "+53",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cu.svg"
+  },
+  {
+    "name": "Cyprus",
+    "iso2": "CY",
+    "dialCode": "+357",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cy.svg"
+  },
+  {
+    "name": "Czech Republic",
+    "iso2": "CZ",
+    "dialCode": "+420",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/cz.svg"
+  },
+  {
+    "name": "Denmark",
+    "iso2": "DK",
+    "dialCode": "+45",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/dk.svg"
+  },
+  {
+    "name": "Djibouti",
+    "iso2": "DJ",
+    "dialCode": "+253",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/dj.svg"
+  },
+  {
+    "name": "Dominica",
+    "iso2": "DM",
+    "dialCode": "+1767",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/dm.svg"
+  },
+  {
+    "name": "Dominican Republic",
+    "iso2": "DO",
+    "dialCode": "+1849",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/do.svg"
+  },
+  {
+    "name": "Ecuador",
+    "iso2": "EC",
+    "dialCode": "+593",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ec.svg"
+  },
+  {
+    "name": "Egypt",
+    "iso2": "EG",
+    "dialCode": "+20",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/eg.svg"
+  },
+  {
+    "name": "El Salvador",
+    "iso2": "SV",
+    "dialCode": "+503",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sv.svg"
+  },
+  {
+    "name": "Equatorial Guinea",
+    "iso2": "GQ",
+    "dialCode": "+240",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gq.svg"
+  },
+  {
+    "name": "Eritrea",
+    "iso2": "ER",
+    "dialCode": "+291",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/er.svg"
+  },
+  {
+    "name": "Estonia",
+    "iso2": "EE",
+    "dialCode": "+372",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ee.svg"
+  },
+  {
+    "name": "Ethiopia",
+    "iso2": "ET",
+    "dialCode": "+251",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/et.svg"
+  },
+  {
+    "name": "Falkland Islands (Malvinas)",
+    "iso2": "FK",
+    "dialCode": "+500",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/fk.svg"
+  },
+  {
+    "name": "Faroe Islands",
+    "iso2": "FO",
+    "dialCode": "+298",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/fo.svg"
+  },
+  {
+    "name": "Fiji",
+    "iso2": "FJ",
+    "dialCode": "+679",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/fj.svg"
+  },
+  {
+    "name": "Finland",
+    "iso2": "FI",
+    "dialCode": "+358",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/fi.svg"
+  },
+  {
+    "name": "France",
+    "iso2": "FR",
+    "dialCode": "+33",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/fr.svg"
+  },
+  {
+    "name": "French Guiana",
+    "iso2": "GF",
+    "dialCode": "+594",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gf.svg"
+  },
+  {
+    "name": "French Polynesia",
+    "iso2": "PF",
+    "dialCode": "+689",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/pf.svg"
+  },
+  {
+    "name": "French Southern Territories",
+    "iso2": "TF",
+    "dialCode": "+262",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tf.svg"
+  },
+  {
+    "name": "Gabon",
+    "iso2": "GA",
+    "dialCode": "+241",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ga.svg"
+  },
+  {
+    "name": "Gambia",
+    "iso2": "GM",
+    "dialCode": "+220",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gm.svg"
+  },
+  {
+    "name": "Georgia",
+    "iso2": "GE",
+    "dialCode": "+995",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ge.svg"
+  },
+  {
+    "name": "Germany",
+    "iso2": "DE",
+    "dialCode": "+49",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/de.svg"
+  },
+  {
+    "name": "Ghana",
+    "iso2": "GH",
+    "dialCode": "+233",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gh.svg"
+  },
+  {
+    "name": "Gibraltar",
+    "iso2": "GI",
+    "dialCode": "+350",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gi.svg"
+  },
+  {
+    "name": "Greece",
+    "iso2": "GR",
+    "dialCode": "+30",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gr.svg"
+  },
+  {
+    "name": "Greenland",
+    "iso2": "GL",
+    "dialCode": "+299",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gl.svg"
+  },
+  {
+    "name": "Grenada",
+    "iso2": "GD",
+    "dialCode": "+1473",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gd.svg"
+  },
+  {
+    "name": "Guadeloupe",
+    "iso2": "GP",
+    "dialCode": "+590",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gp.svg"
+  },
+  {
+    "name": "Guam",
+    "iso2": "GU",
+    "dialCode": "+1671",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gu.svg"
+  },
+  {
+    "name": "Guatemala",
+    "iso2": "GT",
+    "dialCode": "+502",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gt.svg"
+  },
+  {
+    "name": "Guernsey",
+    "iso2": "GG",
+    "dialCode": "+44",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gg.svg"
+  },
+  {
+    "name": "Guinea",
+    "iso2": "GN",
+    "dialCode": "+224",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gn.svg"
+  },
+  {
+    "name": "Guinea-Bissau",
+    "iso2": "GW",
+    "dialCode": "+245",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gw.svg"
+  },
+  {
+    "name": "Guyana",
+    "iso2": "GY",
+    "dialCode": "+592",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gy.svg"
+  },
+  {
+    "name": "Haiti",
+    "iso2": "HT",
+    "dialCode": "+509",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ht.svg"
+  },
+  {
+    "name": "Heard Island and Mcdonald Islands",
+    "iso2": "HM",
+    "dialCode": "+672",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/hm.svg"
+  },
+  {
+    "name": "Holy See (Vatican City State)",
+    "iso2": "VA",
+    "dialCode": "+379",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/va.svg"
+  },
+  {
+    "name": "Honduras",
+    "iso2": "HN",
+    "dialCode": "+504",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/hn.svg"
+  },
+  {
+    "name": "Hong Kong",
+    "iso2": "HK",
+    "dialCode": "+852",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/hk.svg"
+  },
+  {
+    "name": "Hungary",
+    "iso2": "HU",
+    "dialCode": "+36",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/hu.svg"
+  },
+  {
+    "name": "Iceland",
+    "iso2": "IS",
+    "dialCode": "+354",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/is.svg"
+  },
+  {
+    "name": "India",
+    "iso2": "IN",
+    "dialCode": "+91",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/in.svg"
+  },
+  {
+    "name": "Indonesia",
+    "iso2": "ID",
+    "dialCode": "+62",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/id.svg"
+  },
+  {
+    "name": "Iran, Islamic Republic of Persian Gulf",
+    "iso2": "IR",
+    "dialCode": "+98",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ir.svg"
+  },
+  {
+    "name": "Iraq",
+    "iso2": "IQ",
+    "dialCode": "+964",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/iq.svg"
+  },
+  {
+    "name": "Ireland",
+    "iso2": "IE",
+    "dialCode": "+353",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ie.svg"
+  },
+  {
+    "name": "Isle of Man",
+    "iso2": "IM",
+    "dialCode": "+44",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/im.svg"
+  },
+  {
+    "name": "Israel",
+    "iso2": "IL",
+    "dialCode": "+972",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/il.svg"
+  },
+  {
+    "name": "Italy",
+    "iso2": "IT",
+    "dialCode": "+39",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/it.svg"
+  },
+  {
+    "name": "Jamaica",
+    "iso2": "JM",
+    "dialCode": "+1876",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/jm.svg"
+  },
+  {
+    "name": "Japan",
+    "iso2": "JP",
+    "dialCode": "+81",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/jp.svg"
+  },
+  {
+    "name": "Jersey",
+    "iso2": "JE",
+    "dialCode": "+44",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/je.svg"
+  },
+  {
+    "name": "Jordan",
+    "iso2": "JO",
+    "dialCode": "+962",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/jo.svg"
+  },
+  {
+    "name": "Kazakhstan",
+    "iso2": "KZ",
+    "dialCode": "+7",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/kz.svg"
+  },
+  {
+    "name": "Kenya",
+    "iso2": "KE",
+    "dialCode": "+254",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ke.svg"
+  },
+  {
+    "name": "Kiribati",
+    "iso2": "KI",
+    "dialCode": "+686",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ki.svg"
+  },
+  {
+    "name": "Korea, Democratic People's Republic of Korea",
+    "iso2": "KP",
+    "dialCode": "+850",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/kp.svg"
+  },
+  {
+    "name": "Korea, Republic of South Korea",
+    "iso2": "KR",
+    "dialCode": "+82",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/kr.svg"
+  },
+  {
+    "name": "Kosovo",
+    "iso2": "XK",
+    "dialCode": "+383",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/xk.svg"
+  },
+  {
+    "name": "Kuwait",
+    "iso2": "KW",
+    "dialCode": "+965",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/kw.svg"
+  },
+  {
+    "name": "Kyrgyzstan",
+    "iso2": "KG",
+    "dialCode": "+996",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/kg.svg"
+  },
+  {
+    "name": "Laos",
+    "iso2": "LA",
+    "dialCode": "+856",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/la.svg"
+  },
+  {
+    "name": "Latvia",
+    "iso2": "LV",
+    "dialCode": "+371",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/lv.svg"
+  },
+  {
+    "name": "Lebanon",
+    "iso2": "LB",
+    "dialCode": "+961",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/lb.svg"
+  },
+  {
+    "name": "Lesotho",
+    "iso2": "LS",
+    "dialCode": "+266",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ls.svg"
+  },
+  {
+    "name": "Liberia",
+    "iso2": "LR",
+    "dialCode": "+231",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/lr.svg"
+  },
+  {
+    "name": "Libyan Arab Jamahiriya",
+    "iso2": "LY",
+    "dialCode": "+218",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ly.svg"
+  },
+  {
+    "name": "Liechtenstein",
+    "iso2": "LI",
+    "dialCode": "+423",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/li.svg"
+  },
+  {
+    "name": "Lithuania",
+    "iso2": "LT",
+    "dialCode": "+370",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/lt.svg"
+  },
+  {
+    "name": "Luxembourg",
+    "iso2": "LU",
+    "dialCode": "+352",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/lu.svg"
+  },
+  {
+    "name": "Macao",
+    "iso2": "MO",
+    "dialCode": "+853",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mo.svg"
+  },
+  {
+    "name": "Macedonia",
+    "iso2": "MK",
+    "dialCode": "+389",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mk.svg"
+  },
+  {
+    "name": "Madagascar",
+    "iso2": "MG",
+    "dialCode": "+261",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mg.svg"
+  },
+  {
+    "name": "Malawi",
+    "iso2": "MW",
+    "dialCode": "+265",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mw.svg"
+  },
+  {
+    "name": "Malaysia",
+    "iso2": "MY",
+    "dialCode": "+60",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/my.svg"
+  },
+  {
+    "name": "Maldives",
+    "iso2": "MV",
+    "dialCode": "+960",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mv.svg"
+  },
+  {
+    "name": "Mali",
+    "iso2": "ML",
+    "dialCode": "+223",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ml.svg"
+  },
+  {
+    "name": "Malta",
+    "iso2": "MT",
+    "dialCode": "+356",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mt.svg"
+  },
+  {
+    "name": "Marshall Islands",
+    "iso2": "MH",
+    "dialCode": "+692",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mh.svg"
+  },
+  {
+    "name": "Martinique",
+    "iso2": "MQ",
+    "dialCode": "+596",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mq.svg"
+  },
+  {
+    "name": "Mauritania",
+    "iso2": "MR",
+    "dialCode": "+222",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mr.svg"
+  },
+  {
+    "name": "Mauritius",
+    "iso2": "MU",
+    "dialCode": "+230",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mu.svg"
+  },
+  {
+    "name": "Mayotte",
+    "iso2": "YT",
+    "dialCode": "+262",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/yt.svg"
+  },
+  {
+    "name": "Mexico",
+    "iso2": "MX",
+    "dialCode": "+52",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mx.svg"
+  },
+  {
+    "name": "Micronesia, Federated States of Micronesia",
+    "iso2": "FM",
+    "dialCode": "+691",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/fm.svg"
+  },
+  {
+    "name": "Moldova",
+    "iso2": "MD",
+    "dialCode": "+373",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/md.svg"
+  },
+  {
+    "name": "Monaco",
+    "iso2": "MC",
+    "dialCode": "+377",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mc.svg"
+  },
+  {
+    "name": "Mongolia",
+    "iso2": "MN",
+    "dialCode": "+976",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mn.svg"
+  },
+  {
+    "name": "Montenegro",
+    "iso2": "ME",
+    "dialCode": "+382",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/me.svg"
+  },
+  {
+    "name": "Montserrat",
+    "iso2": "MS",
+    "dialCode": "+1664",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ms.svg"
+  },
+  {
+    "name": "Morocco",
+    "iso2": "MA",
+    "dialCode": "+212",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ma.svg"
+  },
+  {
+    "name": "Mozambique",
+    "iso2": "MZ",
+    "dialCode": "+258",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mz.svg"
+  },
+  {
+    "name": "Myanmar",
+    "iso2": "MM",
+    "dialCode": "+95",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mm.svg"
+  },
+  {
+    "name": "Namibia",
+    "iso2": "NA",
+    "dialCode": "+264",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/na.svg"
+  },
+  {
+    "name": "Nauru",
+    "iso2": "NR",
+    "dialCode": "+674",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/nr.svg"
+  },
+  {
+    "name": "Nepal",
+    "iso2": "NP",
+    "dialCode": "+977",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/np.svg"
+  },
+  {
+    "name": "Netherlands",
+    "iso2": "NL",
+    "dialCode": "+31",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/nl.svg"
+  },
+  {
+    "name": "Netherlands Antilles",
+    "iso2": "AN",
+    "dialCode": "+599",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/an.svg"
+  },
+  {
+    "name": "New Caledonia",
+    "iso2": "NC",
+    "dialCode": "+687",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/nc.svg"
+  },
+  {
+    "name": "New Zealand",
+    "iso2": "NZ",
+    "dialCode": "+64",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/nz.svg"
+  },
+  {
+    "name": "Nicaragua",
+    "iso2": "NI",
+    "dialCode": "+505",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ni.svg"
+  },
+  {
+    "name": "Niger",
+    "iso2": "NE",
+    "dialCode": "+227",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ne.svg"
+  },
+  {
+    "name": "Nigeria",
+    "iso2": "NG",
+    "dialCode": "+234",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ng.svg"
+  },
+  {
+    "name": "Niue",
+    "iso2": "NU",
+    "dialCode": "+683",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/nu.svg"
+  },
+  {
+    "name": "Norfolk Island",
+    "iso2": "NF",
+    "dialCode": "+672",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/nf.svg"
+  },
+  {
+    "name": "Northern Mariana Islands",
+    "iso2": "MP",
+    "dialCode": "+1670",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mp.svg"
+  },
+  {
+    "name": "Norway",
+    "iso2": "NO",
+    "dialCode": "+47",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/no.svg"
+  },
+  {
+    "name": "Oman",
+    "iso2": "OM",
+    "dialCode": "+968",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/om.svg"
+  },
+  {
+    "name": "Pakistan",
+    "iso2": "PK",
+    "dialCode": "+92",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/pk.svg"
+  },
+  {
+    "name": "Palau",
+    "iso2": "PW",
+    "dialCode": "+680",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/pw.svg"
+  },
+  {
+    "name": "Palestinian Territory, Occupied",
+    "iso2": "PS",
+    "dialCode": "+970",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ps.svg"
+  },
+  {
+    "name": "Panama",
+    "iso2": "PA",
+    "dialCode": "+507",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/pa.svg"
+  },
+  {
+    "name": "Papua New Guinea",
+    "iso2": "PG",
+    "dialCode": "+675",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/pg.svg"
+  },
+  {
+    "name": "Paraguay",
+    "iso2": "PY",
+    "dialCode": "+595",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/py.svg"
+  },
+  {
+    "name": "Peru",
+    "iso2": "PE",
+    "dialCode": "+51",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/pe.svg"
+  },
+  {
+    "name": "Philippines",
+    "iso2": "PH",
+    "dialCode": "+63",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ph.svg"
+  },
+  {
+    "name": "Pitcairn",
+    "iso2": "PN",
+    "dialCode": "+64",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/pn.svg"
+  },
+  {
+    "name": "Poland",
+    "iso2": "PL",
+    "dialCode": "+48",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/pl.svg"
+  },
+  {
+    "name": "Portugal",
+    "iso2": "PT",
+    "dialCode": "+351",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/pt.svg"
+  },
+  {
+    "name": "Puerto Rico",
+    "iso2": "PR",
+    "dialCode": "+1939",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/pr.svg"
+  },
+  {
+    "name": "Qatar",
+    "iso2": "QA",
+    "dialCode": "+974",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/qa.svg"
+  },
+  {
+    "name": "Romania",
+    "iso2": "RO",
+    "dialCode": "+40",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ro.svg"
+  },
+  {
+    "name": "Russia",
+    "iso2": "RU",
+    "dialCode": "+7",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ru.svg"
+  },
+  {
+    "name": "Rwanda",
+    "iso2": "RW",
+    "dialCode": "+250",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/rw.svg"
+  },
+  {
+    "name": "Reunion",
+    "iso2": "RE",
+    "dialCode": "+262",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/re.svg"
+  },
+  {
+    "name": "Saint Barthelemy",
+    "iso2": "BL",
+    "dialCode": "+590",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/bl.svg"
+  },
+  {
+    "name": "Saint Helena, Ascension and Tristan Da Cunha",
+    "iso2": "SH",
+    "dialCode": "+290",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sh.svg"
+  },
+  {
+    "name": "Saint Kitts and Nevis",
+    "iso2": "KN",
+    "dialCode": "+1869",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/kn.svg"
+  },
+  {
+    "name": "Saint Lucia",
+    "iso2": "LC",
+    "dialCode": "+1758",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/lc.svg"
+  },
+  {
+    "name": "Saint Martin",
+    "iso2": "MF",
+    "dialCode": "+590",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/mf.svg"
+  },
+  {
+    "name": "Saint Pierre and Miquelon",
+    "iso2": "PM",
+    "dialCode": "+508",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/pm.svg"
+  },
+  {
+    "name": "Saint Vincent and the Grenadines",
+    "iso2": "VC",
+    "dialCode": "+1784",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/vc.svg"
+  },
+  {
+    "name": "Samoa",
+    "iso2": "WS",
+    "dialCode": "+685",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ws.svg"
+  },
+  {
+    "name": "San Marino",
+    "iso2": "SM",
+    "dialCode": "+378",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sm.svg"
+  },
+  {
+    "name": "Sao Tome and Principe",
+    "iso2": "ST",
+    "dialCode": "+239",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/st.svg"
+  },
+  {
+    "name": "Saudi Arabia",
+    "iso2": "SA",
+    "dialCode": "+966",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sa.svg"
+  },
+  {
+    "name": "Senegal",
+    "iso2": "SN",
+    "dialCode": "+221",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sn.svg"
+  },
+  {
+    "name": "Serbia",
+    "iso2": "RS",
+    "dialCode": "+381",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/rs.svg"
+  },
+  {
+    "name": "Seychelles",
+    "iso2": "SC",
+    "dialCode": "+248",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sc.svg"
+  },
+  {
+    "name": "Sierra Leone",
+    "iso2": "SL",
+    "dialCode": "+232",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sl.svg"
+  },
+  {
+    "name": "Singapore",
+    "iso2": "SG",
+    "dialCode": "+65",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sg.svg"
+  },
+  {
+    "name": "Slovakia",
+    "iso2": "SK",
+    "dialCode": "+421",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sk.svg"
+  },
+  {
+    "name": "Slovenia",
+    "iso2": "SI",
+    "dialCode": "+386",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/si.svg"
+  },
+  {
+    "name": "Solomon Islands",
+    "iso2": "SB",
+    "dialCode": "+677",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sb.svg"
+  },
+  {
+    "name": "Somalia",
+    "iso2": "SO",
+    "dialCode": "+252",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/so.svg"
+  },
+  {
+    "name": "South Africa",
+    "iso2": "ZA",
+    "dialCode": "+27",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/za.svg"
+  },
+  {
+    "name": "South Sudan",
+    "iso2": "SS",
+    "dialCode": "+211",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ss.svg"
+  },
+  {
+    "name": "South Georgia and the South Sandwich Islands",
+    "iso2": "GS",
+    "dialCode": "+500",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gs.svg"
+  },
+  {
+    "name": "Spain",
+    "iso2": "ES",
+    "dialCode": "+34",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/es.svg"
+  },
+  {
+    "name": "Sri Lanka",
+    "iso2": "LK",
+    "dialCode": "+94",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/lk.svg"
+  },
+  {
+    "name": "Sudan",
+    "iso2": "SD",
+    "dialCode": "+249",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sd.svg"
+  },
+  {
+    "name": "Suriname",
+    "iso2": "SR",
+    "dialCode": "+597",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sr.svg"
+  },
+  {
+    "name": "Svalbard and Jan Mayen",
+    "iso2": "SJ",
+    "dialCode": "+47",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sj.svg"
+  },
+  {
+    "name": "Eswatini",
+    "iso2": "SZ",
+    "dialCode": "+268",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sz.svg"
+  },
+  {
+    "name": "Sweden",
+    "iso2": "SE",
+    "dialCode": "+46",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/se.svg"
+  },
+  {
+    "name": "Switzerland",
+    "iso2": "CH",
+    "dialCode": "+41",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ch.svg"
+  },
+  {
+    "name": "Syrian Arab Republic",
+    "iso2": "SY",
+    "dialCode": "+963",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/sy.svg"
+  },
+  {
+    "name": "Taiwan",
+    "iso2": "TW",
+    "dialCode": "+886",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tw.svg"
+  },
+  {
+    "name": "Tajikistan",
+    "iso2": "TJ",
+    "dialCode": "+992",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tj.svg"
+  },
+  {
+    "name": "Tanzania, United Republic of Tanzania",
+    "iso2": "TZ",
+    "dialCode": "+255",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tz.svg"
+  },
+  {
+    "name": "Thailand",
+    "iso2": "TH",
+    "dialCode": "+66",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/th.svg"
+  },
+  {
+    "name": "Timor-Leste",
+    "iso2": "TL",
+    "dialCode": "+670",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tl.svg"
+  },
+  {
+    "name": "Togo",
+    "iso2": "TG",
+    "dialCode": "+228",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tg.svg"
+  },
+  {
+    "name": "Tokelau",
+    "iso2": "TK",
+    "dialCode": "+690",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tk.svg"
+  },
+  {
+    "name": "Tonga",
+    "iso2": "TO",
+    "dialCode": "+676",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/to.svg"
+  },
+  {
+    "name": "Trinidad and Tobago",
+    "iso2": "TT",
+    "dialCode": "+1868",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tt.svg"
+  },
+  {
+    "name": "Tunisia",
+    "iso2": "TN",
+    "dialCode": "+216",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tn.svg"
+  },
+  {
+    "name": "Turkey",
+    "iso2": "TR",
+    "dialCode": "+90",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tr.svg"
+  },
+  {
+    "name": "Turkmenistan",
+    "iso2": "TM",
+    "dialCode": "+993",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tm.svg"
+  },
+  {
+    "name": "Turks and Caicos Islands",
+    "iso2": "TC",
+    "dialCode": "+1649",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tc.svg"
+  },
+  {
+    "name": "Tuvalu",
+    "iso2": "TV",
+    "dialCode": "+688",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/tv.svg"
+  },
+  {
+    "name": "Uganda",
+    "iso2": "UG",
+    "dialCode": "+256",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ug.svg"
+  },
+  {
+    "name": "Ukraine",
+    "iso2": "UA",
+    "dialCode": "+380",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ua.svg"
+  },
+  {
+    "name": "United Arab Emirates",
+    "iso2": "AE",
+    "dialCode": "+971",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ae.svg"
+  },
+  {
+    "name": "United Kingdom",
+    "iso2": "GB",
+    "dialCode": "+44",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/gb.svg"
+  },
+  {
+    "name": "United States",
+    "iso2": "US",
+    "dialCode": "+1",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/us.svg"
+  },
+  {
+    "name": "Uruguay",
+    "iso2": "UY",
+    "dialCode": "+598",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/uy.svg"
+  },
+  {
+    "name": "Uzbekistan",
+    "iso2": "UZ",
+    "dialCode": "+998",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/uz.svg"
+  },
+  {
+    "name": "Vanuatu",
+    "iso2": "VU",
+    "dialCode": "+678",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/vu.svg"
+  },
+  {
+    "name": "Venezuela, Bolivarian Republic of Venezuela",
+    "iso2": "VE",
+    "dialCode": "+58",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ve.svg"
+  },
+  {
+    "name": "Vietnam",
+    "iso2": "VN",
+    "dialCode": "+84",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/vn.svg"
+  },
+  {
+    "name": "Virgin Islands, British",
+    "iso2": "VG",
+    "dialCode": "+1284",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/vg.svg"
+  },
+  {
+    "name": "Virgin Islands, U.S.",
+    "iso2": "VI",
+    "dialCode": "+1340",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/vi.svg"
+  },
+  {
+    "name": "Wallis and Futuna",
+    "iso2": "WF",
+    "dialCode": "+681",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/wf.svg"
+  },
+  {
+    "name": "Yemen",
+    "iso2": "YE",
+    "dialCode": "+967",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/ye.svg"
+  },
+  {
+    "name": "Zambia",
+    "iso2": "ZM",
+    "dialCode": "+260",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/zm.svg"
+  },
+  {
+    "name": "Zimbabwe",
+    "iso2": "ZW",
+    "dialCode": "+263",
+    "flag": "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/flags/4x3/zw.svg"
+  }
+]

@@ -1,34 +1,35 @@
-import { redirect } from '@tanstack/react-router'
-import { toast } from 'sonner'
+import { redirect } from "@tanstack/react-router";
+import { toast } from "sonner";
 
-export type OtpFlowType = 'otp:signup' | 'otp:login-2fa' | 'otp:sensitive-action'
+export type OtpFlowType = "otp:signup" | "otp:login-2fa" | "otp:sensitive-action" | "otp:reset-password";
 
 export interface OtpContextData {
-  email?: string
-  intent: string
-  redirect?: string
-  timestamp: number
+  email?: string;
+  otp?: string;
+  intent: string;
+  redirect?: string;
+  timestamp: number;
 }
 
-const EXPIRY_MS = 15 * 60 * 1000 // 15 minutes
+const EXPIRY_MS = 5 * 60 * 1000; // 5 minutes — matches backend OTP expiresIn
 
 export const otpContext = {
-  set(flow: OtpFlowType, data: Omit<OtpContextData, 'timestamp'>) {
-    sessionStorage.setItem(flow, JSON.stringify({ ...data, timestamp: Date.now() }))
+  set(flow: OtpFlowType, data: Omit<OtpContextData, "timestamp">) {
+    sessionStorage.setItem(flow, JSON.stringify({ ...data, timestamp: Date.now() }));
   },
 
   get(flow: OtpFlowType): OtpContextData | null {
-    const raw = sessionStorage.getItem(flow)
-    if (!raw) return null
+    const raw = sessionStorage.getItem(flow);
+    if (!raw) return null;
     try {
-      return JSON.parse(raw) as OtpContextData
+      return JSON.parse(raw) as OtpContextData;
     } catch {
-      return null
+      return null;
     }
   },
 
   clear(flow: OtpFlowType) {
-    sessionStorage.removeItem(flow)
+    sessionStorage.removeItem(flow);
   },
 
   /**
@@ -36,33 +37,33 @@ export const otpContext = {
    * Designed to be used inside TanStack Router's `beforeLoad`.
    */
   validate(flow: OtpFlowType, expectedIntent: string, fallbackUrl: string): OtpContextData {
-    const ctx = this.get(flow)
-    
+    const ctx = this.get(flow);
+
     if (!ctx) {
-      throw redirect({ to: fallbackUrl, replace: true })
+      throw redirect({ to: fallbackUrl, replace: true });
     }
-    
+
     if (Date.now() - ctx.timestamp > EXPIRY_MS || ctx.intent !== expectedIntent) {
-      this.clear(flow)
-      throw redirect({ to: fallbackUrl, replace: true })
+      this.clear(flow);
+      throw redirect({ to: fallbackUrl, replace: true });
     }
-    
-    return ctx
+
+    return ctx;
   },
 
   /**
    * Centralized successful post-verification handler.
    */
   handleSuccess(flow: OtpFlowType, defaultRedirect: string, message?: string) {
-    const ctx = this.get(flow)
-    const destination = ctx?.redirect || defaultRedirect
-    
-    this.clear(flow)
-    
+    const ctx = this.get(flow);
+    const destination = ctx?.redirect || defaultRedirect;
+
+    this.clear(flow);
+
     if (message) {
-      toast.success(message)
+      toast.success(message);
     }
-    
-    return destination
-  }
-}
+
+    return destination;
+  },
+};

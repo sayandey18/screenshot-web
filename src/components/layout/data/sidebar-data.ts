@@ -1,149 +1,57 @@
-import {
-  Construction,
-  LayoutDashboard,
-  Monitor,
-  Bug,
-  ListTodo,
-  FileX,
-  HelpCircle,
-  Lock,
-  Bell,
-  Palette,
-  ServerOff,
-  Settings,
-  Wrench,
-  UserCog,
-  UserX,
-  Users,
-  ShieldCheck,
-} from 'lucide-react'
-import { type SidebarData } from '../types'
+import { SquareLibrary, ListTodo, Activity, HelpCircle, Settings, Users, Orbit, Terminal } from "lucide-react";
+import { type SidebarData } from "../types";
 
 export const sidebarData: SidebarData = {
   user: {
-    name: 'satnaing',
-    email: 'satnaingdev@gmail.com',
-    avatar: '/avatars/shadcn.jpg',
+    name: "satnaing",
+    email: "satnaingdev@gmail.com",
+    avatar: "/avatars/shadcn.jpg",
   },
   navGroups: [
     {
-      title: 'General',
+      title: "",
       items: [
         {
-          title: 'Dashboard',
-          url: '/dashboard',
-          icon: LayoutDashboard,
+          title: "Dashboard",
+          url: "/dashboard",
+          icon: SquareLibrary,
         },
         {
-          title: 'Tasks',
-          url: '/tasks',
+          title: "Usage",
+          url: "/usage",
+          icon: Activity,
+        },
+        {
+          title: "Tasks",
+          url: "/tasks",
           icon: ListTodo,
         },
         {
-          title: 'Users',
-          url: '/users',
+          title: "Users",
+          url: "/users",
           icon: Users,
         },
-      ],
-    },
-    {
-      title: 'Pages',
-      items: [
         {
-          title: 'Auth',
-          icon: ShieldCheck,
-          items: [
-            {
-              title: 'Sign In',
-              url: '/sign-in',
-            },
-            {
-              title: 'Sign Up',
-              url: '/sign-up',
-            },
-            {
-              title: 'Forgot Password',
-              url: '/forgot-password',
-            },
-            {
-              title: 'Two-factor',
-              url: '/two-factor',
-            },
-          ],
+          title: "Subscription",
+          url: "/subscription",
+          icon: Orbit,
         },
         {
-          title: 'Errors',
-          icon: Bug,
-          items: [
-            {
-              title: 'Unauthorized',
-              url: '/errors/unauthorized',
-              icon: Lock,
-            },
-            {
-              title: 'Forbidden',
-              url: '/errors/forbidden',
-              icon: UserX,
-            },
-            {
-              title: 'Not Found',
-              url: '/errors/not-found',
-              icon: FileX,
-            },
-            {
-              title: 'Internal Server Error',
-              url: '/errors/internal-server-error',
-              icon: ServerOff,
-            },
-            {
-              title: 'Maintenance Error',
-              url: '/errors/maintenance-error',
-              icon: Construction,
-            },
-          ],
+          title: "Developers",
+          url: "/developers",
+          icon: Terminal,
         },
-      ],
-    },
-    {
-      title: 'Other',
-      items: [
         {
-          title: 'Settings',
+          title: "Settings",
+          url: "/settings",
           icon: Settings,
-          items: [
-            {
-              title: 'Profile',
-              url: '/settings',
-              icon: UserCog,
-            },
-            {
-              title: 'Account',
-              url: '/settings/account',
-              icon: Wrench,
-            },
-            {
-              title: 'Appearance',
-              url: '/settings/appearance',
-              icon: Palette,
-            },
-            {
-              title: 'Notifications',
-              url: '/settings/notifications',
-              icon: Bell,
-            },
-            {
-              title: 'Display',
-              url: '/settings/display',
-              icon: Monitor,
-            },
-          ],
         },
         {
-          title: 'Help Center',
-          url: '/help-center',
+          title: "Support",
+          url: "/help-center",
           icon: HelpCircle,
         },
       ],
     },
   ],
-}
+};

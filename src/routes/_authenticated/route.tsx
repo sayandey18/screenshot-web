@@ -1,17 +1,19 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { authClient } from '@/lib/auth-client'
-import { AuthenticatedLayout } from '@/components/layout/authenticated-layout'
+﻿import { createFileRoute, redirect } from "@tanstack/react-router";
+import { sessionQueryOptions } from "@/hooks/api/use-session";
+import { AuthenticatedLayout } from "@/components/layout/authenticated-layout";
 
-export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: async ({ location }) => {
-    const { data: session } = await authClient.getSession()
+export const Route = createFileRoute("/_authenticated")({
+  beforeLoad: async ({ location, context }) => {
+    const session = await context.queryClient.ensureQueryData(sessionQueryOptions());
+
     if (!session) {
       throw redirect({
-        to: '/sign-in',
+        to: "/sign-in",
         search: { redirect: location.href },
-      })
+      });
     }
-    return { session }
+
+    return { session };
   },
   component: AuthenticatedLayout,
-})
+});

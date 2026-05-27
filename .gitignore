@@ -18,6 +18,7 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .idea
+.zed
 .DS_Store
 *.suo
 *.ntvs*
@@ -27,4 +28,17 @@ dist-ssr
 
 # Agents
 .agents
+.claude
+.opencode
+
+# .opencode
 skills-lock.json
+CLAUDE.md
+AGENTS.md
+OVERVIEW.md
+
+# CodeRabbit
+.coderabbit.yaml
+
+# Tests
+/coverage

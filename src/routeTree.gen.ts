@@ -10,35 +10,49 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as publicIndexRouteImport } from './routes/(public)/index'
+import { Route as authRouteRouteImport } from './routes/(auth)/route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
 import { Route as errors500RouteImport } from './routes/(errors)/500'
 import { Route as errors404RouteImport } from './routes/(errors)/404'
 import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
+import { Route as AuthenticatedSubscriptionRouteRouteImport } from './routes/_authenticated/subscription/route'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
+import { Route as AuthenticatedDevelopersRouteRouteImport } from './routes/_authenticated/developers/route'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
+import { Route as AuthenticatedUsageIndexRouteImport } from './routes/_authenticated/usage/index'
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
+import { Route as AuthenticatedSubscriptionIndexRouteImport } from './routes/_authenticated/subscription/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
+import { Route as AuthenticatedDevelopersIndexRouteImport } from './routes/_authenticated/developers/index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
 import { Route as authSignUpIndexRouteImport } from './routes/(auth)/sign-up/index'
 import { Route as authSignInIndexRouteImport } from './routes/(auth)/sign-in/index'
+import { Route as authResetPasswordIndexRouteImport } from './routes/(auth)/reset-password/index'
 import { Route as authForgotIndexRouteImport } from './routes/(auth)/forgot/index'
+import { Route as AuthenticatedSubscriptionInvoicesRouteImport } from './routes/_authenticated/subscription/invoices'
+import { Route as AuthenticatedSubscriptionBillingRouteImport } from './routes/_authenticated/subscription/billing'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings/notifications'
-import { Route as AuthenticatedSettingsDisplayRouteImport } from './routes/_authenticated/settings/display'
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
+import { Route as AuthenticatedDevelopersWebhookRouteImport } from './routes/_authenticated/developers/webhook'
 import { Route as authSignUpVerifyRouteImport } from './routes/(auth)/sign-up/verify'
 import { Route as authSignIn2faRouteImport } from './routes/(auth)/sign-in/2fa'
+import { Route as authForgotVerifyRouteImport } from './routes/(auth)/forgot/verify'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const publicIndexRoute = publicIndexRouteImport.update({
-  id: '/(public)/',
+const authRouteRoute = authRouteRouteImport.update({
+  id: '/(auth)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
@@ -67,10 +81,22 @@ const errors401Route = errors401RouteImport.update({
   path: '/401',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSubscriptionRouteRoute =
+  AuthenticatedSubscriptionRouteRouteImport.update({
+    id: '/subscription',
+    path: '/subscription',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsRouteRoute =
   AuthenticatedSettingsRouteRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDevelopersRouteRoute =
+  AuthenticatedDevelopersRouteRouteImport.update({
+    id: '/developers',
+    path: '/developers',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
@@ -78,11 +104,22 @@ const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
   path: '/users/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedUsageIndexRoute = AuthenticatedUsageIndexRouteImport.update({
+  id: '/usage/',
+  path: '/usage/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedTasksIndexRoute = AuthenticatedTasksIndexRouteImport.update({
   id: '/tasks/',
   path: '/tasks/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSubscriptionIndexRoute =
+  AuthenticatedSubscriptionIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedSubscriptionRouteRoute,
+  } as any)
 const AuthenticatedSettingsIndexRoute =
   AuthenticatedSettingsIndexRouteImport.update({
     id: '/',
@@ -95,6 +132,12 @@ const AuthenticatedHelpCenterIndexRoute =
     path: '/help-center/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDevelopersIndexRoute =
+  AuthenticatedDevelopersIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDevelopersRouteRoute,
+  } as any)
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexRouteImport.update({
     id: '/dashboard/',
@@ -102,30 +145,41 @@ const AuthenticatedDashboardIndexRoute =
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const authSignUpIndexRoute = authSignUpIndexRouteImport.update({
-  id: '/(auth)/sign-up/',
+  id: '/sign-up/',
   path: '/sign-up/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => authRouteRoute,
 } as any)
 const authSignInIndexRoute = authSignInIndexRouteImport.update({
-  id: '/(auth)/sign-in/',
+  id: '/sign-in/',
   path: '/sign-in/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => authRouteRoute,
+} as any)
+const authResetPasswordIndexRoute = authResetPasswordIndexRouteImport.update({
+  id: '/reset-password/',
+  path: '/reset-password/',
+  getParentRoute: () => authRouteRoute,
 } as any)
 const authForgotIndexRoute = authForgotIndexRouteImport.update({
-  id: '/(auth)/forgot/',
+  id: '/forgot/',
   path: '/forgot/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => authRouteRoute,
 } as any)
+const AuthenticatedSubscriptionInvoicesRoute =
+  AuthenticatedSubscriptionInvoicesRouteImport.update({
+    id: '/invoices',
+    path: '/invoices',
+    getParentRoute: () => AuthenticatedSubscriptionRouteRoute,
+  } as any)
+const AuthenticatedSubscriptionBillingRoute =
+  AuthenticatedSubscriptionBillingRouteImport.update({
+    id: '/billing',
+    path: '/billing',
+    getParentRoute: () => AuthenticatedSubscriptionRouteRoute,
+  } as any)
 const AuthenticatedSettingsNotificationsRoute =
   AuthenticatedSettingsNotificationsRouteImport.update({
     id: '/notifications',
     path: '/notifications',
-    getParentRoute: () => AuthenticatedSettingsRouteRoute,
-  } as any)
-const AuthenticatedSettingsDisplayRoute =
-  AuthenticatedSettingsDisplayRouteImport.update({
-    id: '/display',
-    path: '/display',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
 const AuthenticatedSettingsAppearanceRoute =
@@ -146,114 +200,160 @@ const AuthenticatedErrorsErrorRoute =
     path: '/errors/$error',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDevelopersWebhookRoute =
+  AuthenticatedDevelopersWebhookRouteImport.update({
+    id: '/webhook',
+    path: '/webhook',
+    getParentRoute: () => AuthenticatedDevelopersRouteRoute,
+  } as any)
 const authSignUpVerifyRoute = authSignUpVerifyRouteImport.update({
-  id: '/(auth)/sign-up/verify',
+  id: '/sign-up/verify',
   path: '/sign-up/verify',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => authRouteRoute,
 } as any)
 const authSignIn2faRoute = authSignIn2faRouteImport.update({
-  id: '/(auth)/sign-in/2fa',
+  id: '/sign-in/2fa',
   path: '/sign-in/2fa',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => authRouteRoute,
+} as any)
+const authForgotVerifyRoute = authForgotVerifyRouteImport.update({
+  id: '/forgot/verify',
+  path: '/forgot/verify',
+  getParentRoute: () => authRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof publicIndexRoute
+  '/': typeof IndexRoute
+  '/developers': typeof AuthenticatedDevelopersRouteRouteWithChildren
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
+  '/subscription': typeof AuthenticatedSubscriptionRouteRouteWithChildren
   '/401': typeof errors401Route
   '/403': typeof errors403Route
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/forgot/verify': typeof authForgotVerifyRoute
   '/sign-in/2fa': typeof authSignIn2faRoute
   '/sign-up/verify': typeof authSignUpVerifyRoute
+  '/developers/webhook': typeof AuthenticatedDevelopersWebhookRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
-  '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/subscription/billing': typeof AuthenticatedSubscriptionBillingRoute
+  '/subscription/invoices': typeof AuthenticatedSubscriptionInvoicesRoute
   '/forgot/': typeof authForgotIndexRoute
+  '/reset-password/': typeof authResetPasswordIndexRoute
   '/sign-in/': typeof authSignInIndexRoute
   '/sign-up/': typeof authSignUpIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/developers/': typeof AuthenticatedDevelopersIndexRoute
   '/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/subscription/': typeof AuthenticatedSubscriptionIndexRoute
   '/tasks/': typeof AuthenticatedTasksIndexRoute
+  '/usage/': typeof AuthenticatedUsageIndexRoute
   '/users/': typeof AuthenticatedUsersIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof publicIndexRoute
+  '/': typeof IndexRoute
   '/401': typeof errors401Route
   '/403': typeof errors403Route
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/forgot/verify': typeof authForgotVerifyRoute
   '/sign-in/2fa': typeof authSignIn2faRoute
   '/sign-up/verify': typeof authSignUpVerifyRoute
+  '/developers/webhook': typeof AuthenticatedDevelopersWebhookRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
-  '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/subscription/billing': typeof AuthenticatedSubscriptionBillingRoute
+  '/subscription/invoices': typeof AuthenticatedSubscriptionInvoicesRoute
   '/forgot': typeof authForgotIndexRoute
+  '/reset-password': typeof authResetPasswordIndexRoute
   '/sign-in': typeof authSignInIndexRoute
   '/sign-up': typeof authSignUpIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/developers': typeof AuthenticatedDevelopersIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/subscription': typeof AuthenticatedSubscriptionIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
+  '/usage': typeof AuthenticatedUsageIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/(auth)': typeof authRouteRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_authenticated/developers': typeof AuthenticatedDevelopersRouteRouteWithChildren
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
+  '/_authenticated/subscription': typeof AuthenticatedSubscriptionRouteRouteWithChildren
   '/(errors)/401': typeof errors401Route
   '/(errors)/403': typeof errors403Route
   '/(errors)/404': typeof errors404Route
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
-  '/(public)/': typeof publicIndexRoute
+  '/(auth)/forgot/verify': typeof authForgotVerifyRoute
   '/(auth)/sign-in/2fa': typeof authSignIn2faRoute
   '/(auth)/sign-up/verify': typeof authSignUpVerifyRoute
+  '/_authenticated/developers/webhook': typeof AuthenticatedDevelopersWebhookRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
-  '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/_authenticated/subscription/billing': typeof AuthenticatedSubscriptionBillingRoute
+  '/_authenticated/subscription/invoices': typeof AuthenticatedSubscriptionInvoicesRoute
   '/(auth)/forgot/': typeof authForgotIndexRoute
+  '/(auth)/reset-password/': typeof authResetPasswordIndexRoute
   '/(auth)/sign-in/': typeof authSignInIndexRoute
   '/(auth)/sign-up/': typeof authSignUpIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/developers/': typeof AuthenticatedDevelopersIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_authenticated/subscription/': typeof AuthenticatedSubscriptionIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
+  '/_authenticated/usage/': typeof AuthenticatedUsageIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/developers'
     | '/settings'
+    | '/subscription'
     | '/401'
     | '/403'
     | '/404'
     | '/500'
     | '/503'
+    | '/forgot/verify'
     | '/sign-in/2fa'
     | '/sign-up/verify'
+    | '/developers/webhook'
     | '/errors/$error'
     | '/settings/account'
     | '/settings/appearance'
-    | '/settings/display'
     | '/settings/notifications'
+    | '/subscription/billing'
+    | '/subscription/invoices'
     | '/forgot/'
+    | '/reset-password/'
     | '/sign-in/'
     | '/sign-up/'
     | '/dashboard/'
+    | '/developers/'
     | '/help-center/'
     | '/settings/'
+    | '/subscription/'
     | '/tasks/'
+    | '/usage/'
     | '/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -263,61 +363,74 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/forgot/verify'
     | '/sign-in/2fa'
     | '/sign-up/verify'
+    | '/developers/webhook'
     | '/errors/$error'
     | '/settings/account'
     | '/settings/appearance'
-    | '/settings/display'
     | '/settings/notifications'
+    | '/subscription/billing'
+    | '/subscription/invoices'
     | '/forgot'
+    | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/dashboard'
+    | '/developers'
     | '/help-center'
     | '/settings'
+    | '/subscription'
     | '/tasks'
+    | '/usage'
     | '/users'
   id:
     | '__root__'
+    | '/'
+    | '/(auth)'
     | '/_authenticated'
+    | '/_authenticated/developers'
     | '/_authenticated/settings'
+    | '/_authenticated/subscription'
     | '/(errors)/401'
     | '/(errors)/403'
     | '/(errors)/404'
     | '/(errors)/500'
     | '/(errors)/503'
-    | '/(public)/'
+    | '/(auth)/forgot/verify'
     | '/(auth)/sign-in/2fa'
     | '/(auth)/sign-up/verify'
+    | '/_authenticated/developers/webhook'
     | '/_authenticated/errors/$error'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
-    | '/_authenticated/settings/display'
     | '/_authenticated/settings/notifications'
+    | '/_authenticated/subscription/billing'
+    | '/_authenticated/subscription/invoices'
     | '/(auth)/forgot/'
+    | '/(auth)/reset-password/'
     | '/(auth)/sign-in/'
     | '/(auth)/sign-up/'
     | '/_authenticated/dashboard/'
+    | '/_authenticated/developers/'
     | '/_authenticated/help-center/'
     | '/_authenticated/settings/'
+    | '/_authenticated/subscription/'
     | '/_authenticated/tasks/'
+    | '/_authenticated/usage/'
     | '/_authenticated/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  authRouteRoute: typeof authRouteRouteWithChildren
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   errors401Route: typeof errors401Route
   errors403Route: typeof errors403Route
   errors404Route: typeof errors404Route
   errors500Route: typeof errors500Route
   errors503Route: typeof errors503Route
-  publicIndexRoute: typeof publicIndexRoute
-  authSignIn2faRoute: typeof authSignIn2faRoute
-  authSignUpVerifyRoute: typeof authSignUpVerifyRoute
-  authForgotIndexRoute: typeof authForgotIndexRoute
-  authSignInIndexRoute: typeof authSignInIndexRoute
-  authSignUpIndexRoute: typeof authSignUpIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -329,11 +442,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(public)/': {
-      id: '/(public)/'
+    '/(auth)': {
+      id: '/(auth)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof publicIndexRouteImport
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(errors)/503': {
@@ -371,11 +491,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof errors401RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/subscription': {
+      id: '/_authenticated/subscription'
+      path: '/subscription'
+      fullPath: '/subscription'
+      preLoaderRoute: typeof AuthenticatedSubscriptionRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/developers': {
+      id: '/_authenticated/developers'
+      path: '/developers'
+      fullPath: '/developers'
+      preLoaderRoute: typeof AuthenticatedDevelopersRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/users/': {
@@ -385,12 +519,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/usage/': {
+      id: '/_authenticated/usage/'
+      path: '/usage'
+      fullPath: '/usage/'
+      preLoaderRoute: typeof AuthenticatedUsageIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/tasks/': {
       id: '/_authenticated/tasks/'
       path: '/tasks'
       fullPath: '/tasks/'
       preLoaderRoute: typeof AuthenticatedTasksIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/subscription/': {
+      id: '/_authenticated/subscription/'
+      path: '/'
+      fullPath: '/subscription/'
+      preLoaderRoute: typeof AuthenticatedSubscriptionIndexRouteImport
+      parentRoute: typeof AuthenticatedSubscriptionRouteRoute
     }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
@@ -406,6 +554,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHelpCenterIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/developers/': {
+      id: '/_authenticated/developers/'
+      path: '/'
+      fullPath: '/developers/'
+      preLoaderRoute: typeof AuthenticatedDevelopersIndexRouteImport
+      parentRoute: typeof AuthenticatedDevelopersRouteRoute
+    }
     '/_authenticated/dashboard/': {
       id: '/_authenticated/dashboard/'
       path: '/dashboard'
@@ -418,34 +573,48 @@ declare module '@tanstack/react-router' {
       path: '/sign-up'
       fullPath: '/sign-up/'
       preLoaderRoute: typeof authSignUpIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof authRouteRoute
     }
     '/(auth)/sign-in/': {
       id: '/(auth)/sign-in/'
       path: '/sign-in'
       fullPath: '/sign-in/'
       preLoaderRoute: typeof authSignInIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(auth)/reset-password/': {
+      id: '/(auth)/reset-password/'
+      path: '/reset-password'
+      fullPath: '/reset-password/'
+      preLoaderRoute: typeof authResetPasswordIndexRouteImport
+      parentRoute: typeof authRouteRoute
     }
     '/(auth)/forgot/': {
       id: '/(auth)/forgot/'
       path: '/forgot'
       fullPath: '/forgot/'
       preLoaderRoute: typeof authForgotIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/_authenticated/subscription/invoices': {
+      id: '/_authenticated/subscription/invoices'
+      path: '/invoices'
+      fullPath: '/subscription/invoices'
+      preLoaderRoute: typeof AuthenticatedSubscriptionInvoicesRouteImport
+      parentRoute: typeof AuthenticatedSubscriptionRouteRoute
+    }
+    '/_authenticated/subscription/billing': {
+      id: '/_authenticated/subscription/billing'
+      path: '/billing'
+      fullPath: '/subscription/billing'
+      preLoaderRoute: typeof AuthenticatedSubscriptionBillingRouteImport
+      parentRoute: typeof AuthenticatedSubscriptionRouteRoute
     }
     '/_authenticated/settings/notifications': {
       id: '/_authenticated/settings/notifications'
       path: '/notifications'
       fullPath: '/settings/notifications'
       preLoaderRoute: typeof AuthenticatedSettingsNotificationsRouteImport
-      parentRoute: typeof AuthenticatedSettingsRouteRoute
-    }
-    '/_authenticated/settings/display': {
-      id: '/_authenticated/settings/display'
-      path: '/display'
-      fullPath: '/settings/display'
-      preLoaderRoute: typeof AuthenticatedSettingsDisplayRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
     '/_authenticated/settings/appearance': {
@@ -469,27 +638,80 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedErrorsErrorRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/developers/webhook': {
+      id: '/_authenticated/developers/webhook'
+      path: '/webhook'
+      fullPath: '/developers/webhook'
+      preLoaderRoute: typeof AuthenticatedDevelopersWebhookRouteImport
+      parentRoute: typeof AuthenticatedDevelopersRouteRoute
+    }
     '/(auth)/sign-up/verify': {
       id: '/(auth)/sign-up/verify'
       path: '/sign-up/verify'
       fullPath: '/sign-up/verify'
       preLoaderRoute: typeof authSignUpVerifyRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof authRouteRoute
     }
     '/(auth)/sign-in/2fa': {
       id: '/(auth)/sign-in/2fa'
       path: '/sign-in/2fa'
       fullPath: '/sign-in/2fa'
       preLoaderRoute: typeof authSignIn2faRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof authRouteRoute
+    }
+    '/(auth)/forgot/verify': {
+      id: '/(auth)/forgot/verify'
+      path: '/forgot/verify'
+      fullPath: '/forgot/verify'
+      preLoaderRoute: typeof authForgotVerifyRouteImport
+      parentRoute: typeof authRouteRoute
     }
   }
 }
 
+interface authRouteRouteChildren {
+  authForgotVerifyRoute: typeof authForgotVerifyRoute
+  authSignIn2faRoute: typeof authSignIn2faRoute
+  authSignUpVerifyRoute: typeof authSignUpVerifyRoute
+  authForgotIndexRoute: typeof authForgotIndexRoute
+  authResetPasswordIndexRoute: typeof authResetPasswordIndexRoute
+  authSignInIndexRoute: typeof authSignInIndexRoute
+  authSignUpIndexRoute: typeof authSignUpIndexRoute
+}
+
+const authRouteRouteChildren: authRouteRouteChildren = {
+  authForgotVerifyRoute: authForgotVerifyRoute,
+  authSignIn2faRoute: authSignIn2faRoute,
+  authSignUpVerifyRoute: authSignUpVerifyRoute,
+  authForgotIndexRoute: authForgotIndexRoute,
+  authResetPasswordIndexRoute: authResetPasswordIndexRoute,
+  authSignInIndexRoute: authSignInIndexRoute,
+  authSignUpIndexRoute: authSignUpIndexRoute,
+}
+
+const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
+  authRouteRouteChildren,
+)
+
+interface AuthenticatedDevelopersRouteRouteChildren {
+  AuthenticatedDevelopersWebhookRoute: typeof AuthenticatedDevelopersWebhookRoute
+  AuthenticatedDevelopersIndexRoute: typeof AuthenticatedDevelopersIndexRoute
+}
+
+const AuthenticatedDevelopersRouteRouteChildren: AuthenticatedDevelopersRouteRouteChildren =
+  {
+    AuthenticatedDevelopersWebhookRoute: AuthenticatedDevelopersWebhookRoute,
+    AuthenticatedDevelopersIndexRoute: AuthenticatedDevelopersIndexRoute,
+  }
+
+const AuthenticatedDevelopersRouteRouteWithChildren =
+  AuthenticatedDevelopersRouteRoute._addFileChildren(
+    AuthenticatedDevelopersRouteRouteChildren,
+  )
+
 interface AuthenticatedSettingsRouteRouteChildren {
   AuthenticatedSettingsAccountRoute: typeof AuthenticatedSettingsAccountRoute
   AuthenticatedSettingsAppearanceRoute: typeof AuthenticatedSettingsAppearanceRoute
-  AuthenticatedSettingsDisplayRoute: typeof AuthenticatedSettingsDisplayRoute
   AuthenticatedSettingsNotificationsRoute: typeof AuthenticatedSettingsNotificationsRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
 }
@@ -498,7 +720,6 @@ const AuthenticatedSettingsRouteRouteChildren: AuthenticatedSettingsRouteRouteCh
   {
     AuthenticatedSettingsAccountRoute: AuthenticatedSettingsAccountRoute,
     AuthenticatedSettingsAppearanceRoute: AuthenticatedSettingsAppearanceRoute,
-    AuthenticatedSettingsDisplayRoute: AuthenticatedSettingsDisplayRoute,
     AuthenticatedSettingsNotificationsRoute:
       AuthenticatedSettingsNotificationsRoute,
     AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
@@ -509,21 +730,49 @@ const AuthenticatedSettingsRouteRouteWithChildren =
     AuthenticatedSettingsRouteRouteChildren,
   )
 
+interface AuthenticatedSubscriptionRouteRouteChildren {
+  AuthenticatedSubscriptionBillingRoute: typeof AuthenticatedSubscriptionBillingRoute
+  AuthenticatedSubscriptionInvoicesRoute: typeof AuthenticatedSubscriptionInvoicesRoute
+  AuthenticatedSubscriptionIndexRoute: typeof AuthenticatedSubscriptionIndexRoute
+}
+
+const AuthenticatedSubscriptionRouteRouteChildren: AuthenticatedSubscriptionRouteRouteChildren =
+  {
+    AuthenticatedSubscriptionBillingRoute:
+      AuthenticatedSubscriptionBillingRoute,
+    AuthenticatedSubscriptionInvoicesRoute:
+      AuthenticatedSubscriptionInvoicesRoute,
+    AuthenticatedSubscriptionIndexRoute: AuthenticatedSubscriptionIndexRoute,
+  }
+
+const AuthenticatedSubscriptionRouteRouteWithChildren =
+  AuthenticatedSubscriptionRouteRoute._addFileChildren(
+    AuthenticatedSubscriptionRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDevelopersRouteRoute: typeof AuthenticatedDevelopersRouteRouteWithChildren
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
+  AuthenticatedSubscriptionRouteRoute: typeof AuthenticatedSubscriptionRouteRouteWithChildren
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
+  AuthenticatedUsageIndexRoute: typeof AuthenticatedUsageIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDevelopersRouteRoute:
+    AuthenticatedDevelopersRouteRouteWithChildren,
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
+  AuthenticatedSubscriptionRouteRoute:
+    AuthenticatedSubscriptionRouteRouteWithChildren,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
   AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
+  AuthenticatedUsageIndexRoute: AuthenticatedUsageIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
 }
 
@@ -531,18 +780,14 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  authRouteRoute: authRouteRouteWithChildren,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   errors401Route: errors401Route,
   errors403Route: errors403Route,
   errors404Route: errors404Route,
   errors500Route: errors500Route,
   errors503Route: errors503Route,
-  publicIndexRoute: publicIndexRoute,
-  authSignIn2faRoute: authSignIn2faRoute,
-  authSignUpVerifyRoute: authSignUpVerifyRoute,
-  authForgotIndexRoute: authForgotIndexRoute,
-  authSignInIndexRoute: authSignInIndexRoute,
-  authSignUpIndexRoute: authSignUpIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
