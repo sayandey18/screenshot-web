@@ -9,17 +9,19 @@
   padding-inline: 2rem;
 }
 
+@utility bg-grid-pattern {
+  background-image:
+    linear-gradient(to right, oklch(0 0 0 / 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0 0 0 / 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 @utility no-scrollbar {
-  /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
     display: none;
   }
-
-  /* Hide scrollbar for IE, Edge and Firefox */
   -ms-overflow-style: none;
-  /* IE and Edge */
   scrollbar-width: none;
-  /* Firefox */
 }
 
 @utility faded-bottom {
@@ -46,7 +48,6 @@
     @apply min-h-svh w-full bg-background text-foreground has-[div[data-variant='inset']]:bg-sidebar;
   }
 
-  /* Override Radix scroll locking for sticky headers */
   body[data-scroll-locked] {
     overflow: unset !important;
   }
@@ -56,13 +57,11 @@
     @apply bg-white! dark:bg-input/30!;
   }
 
-  /* Cursor pointer for buttons */
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
 
-  /* Prevent focus zoom on mobile devices */
   @media screen and (max-width: 767px) {
     input,
     select,
@@ -71,7 +70,6 @@
     }
   }
 
-  /* Mapping font variable here */
   html.font-inter {
     --font-sans: var(--font-inter);
   }
@@ -89,7 +87,6 @@
   }
 }
 
-/* styles.css */
 .CollapsibleContent {
   overflow: hidden;
 }
