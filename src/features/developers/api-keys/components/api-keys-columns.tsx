@@ -46,7 +46,7 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
       cell: ({ row }) => {
         const value = row.getValue("name");
         const name = typeof value === "string" && value.trim() !== "" ? value : "Untitled";
-        return <LongText className="w-48">{name}</LongText>;
+        return <LongText className="w-42">{name}</LongText>;
       },
       meta: {
         className: "w-42 md:w-65 ps-0.5",

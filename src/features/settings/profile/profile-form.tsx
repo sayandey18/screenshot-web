@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { PhoneInput } from "@/components/phone-input";
 import { useDeleteAvatar, useUpdateProfile, useUploadAvatar } from "@/features/settings/hooks/use-auth-mutations";
 
 const profileFormSchema = z.object({
@@ -19,6 +20,7 @@ const profileFormSchema = z.object({
     .min(3, "Name must be at least 3 characters.")
     .max(15, "Name must not be longer than 15 characters."),
   email: z.email("Please enter a valid email address."),
+  phone: z.string().optional(),
   company: z.string().optional(),
   bio: z.string().max(160).min(4).optional(),
 });
@@ -40,6 +42,7 @@ export function ProfileForm() {
       name: session?.user?.name || "",
       image: session?.user?.image || null,
       email: session?.user?.email || "",
+      phone: session?.user?.phone || "",
       company: session?.user?.company || "",
       bio: session?.user?.bio || "",
     },
@@ -51,6 +54,7 @@ export function ProfileForm() {
         name: session.user.name ?? "",
         image: session.user.image ?? null,
         email: session.user.email ?? "",
+        phone: session.user.phone ?? "",
         company: session.user.company ?? "",
         bio: session.user.bio ?? "",
       });
@@ -63,6 +67,7 @@ export function ProfileForm() {
       name: data.name,
       company: data.company,
       bio: data.bio,
+      phone: data.phone,
     });
     toast.success("Profile updated successfully.");
   }
@@ -184,6 +189,20 @@ export function ProfileForm() {
                 <Input placeholder="john@example.com" disabled {...field} />
               </FormControl>
               <FormDescription>Please contact support to change your email address.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone</FormLabel>
+              <FormControl>
+                <PhoneInput value={field.value ?? ""} onChange={field.onChange} disabled={form.formState.isSubmitting} />
+              </FormControl>
+              <FormDescription>Enter your phone number with country code.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

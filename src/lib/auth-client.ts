@@ -1,4 +1,5 @@
 import { apiKeyClient } from "@better-auth/api-key/client";
+import { dashClient } from "@better-auth/infra/client";
 import {
   inferAdditionalFields,
   emailOTPClient,
@@ -13,6 +14,7 @@ export const authClient = createAuthClient({
     credentials: "include",
   },
   plugins: [
+    dashClient(),
     apiKeyClient(),
     emailOTPClient(),
     lastLoginMethodClient(),
@@ -20,6 +22,7 @@ export const authClient = createAuthClient({
     inferAdditionalFields({
       user: {
         plan: { type: "string", required: false },
+        phone: { type: "string", required: false },
         company: { type: "string", required: false },
         bio: { type: "string", required: false },
       },

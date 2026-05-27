@@ -2,10 +2,11 @@
 import { api } from "@/lib/api";
 import { authClient } from "@/lib/auth-client";
 import { unwrapAuthResult } from "@/lib/auth-helpers";
-import { sessionKeys } from "@/hooks/api/query-keys";
+import { sessionKeys, accountKeys } from "@/hooks/api/query-keys";
 
 type UpdateProfileInput = {
   name: string;
+  phone?: string;
   company?: string;
   bio?: string;
 };
@@ -131,5 +132,33 @@ export const useDeleteAccount = () => {
     onSuccess: () => {
       queryClient.clear();
     },
+  });
+};
+
+export const useLinkSocial = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      provider,
+      callbackURL,
+    }: {
+      provider: "google" | "github";
+      callbackURL: string;
+    }) => {
+      const result = await authClient.linkSocial({ provider, callbackURL });
+      return unwrapAuthResult(result as { data: typeof result.data; error: unknown });
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: accountKeys.all }),
+  });
+};
+
+export const useUnlinkAccount = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ providerId }: { providerId: string }) => {
+      const result = await authClient.unlinkAccount({ providerId });
+      return unwrapAuthResult(result as { data: typeof result.data; error: unknown });
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: accountKeys.all }),
   });
 };

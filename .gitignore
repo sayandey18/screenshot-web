@@ -30,6 +30,8 @@ dist-ssr
 .agents
 .claude
 .opencode
+
+# .opencode
 skills-lock.json
 CLAUDE.md
 AGENTS.md

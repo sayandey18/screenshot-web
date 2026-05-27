@@ -95,7 +95,7 @@ export function DevelopersApiKeys() {
     <ContentSection title="API Keys" desc="Create, manage, and delete API keys for your integrations." header={false}>
       <>
         <Card className="overflow-hidden border-muted/60 shadow-sm">
-          <CardContent className="p-6">
+          <CardContent className="px-6">
             <div className="flex flex-1 flex-col gap-4">
               <div className="flex justify-end">
                 <Button className="space-x-1" onClick={() => setOpenCreate(true)} aria-busy={createApiKey.isPending}>

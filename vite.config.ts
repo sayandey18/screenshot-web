@@ -8,6 +8,7 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite";
 export default defineConfig({
   server: {
     port: 3000,
+    allowedHosts: ["localhost", "127.0.0.1", "app.screenshotapi.cc"],
   },
   plugins: [
     tanstackRouter({

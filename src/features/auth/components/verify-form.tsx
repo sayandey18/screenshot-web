@@ -37,20 +37,20 @@ export function VerifyForm({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <InputOTP maxLength={6} autoFocus {...field} containerClassName="w-full justify-between">
-                    <InputOTPGroup className="flex-1">
-                      <InputOTPSlot index={0} className="w-full" />
-                      <InputOTPSlot index={1} className="w-full" />
+                  <InputOTP maxLength={6} autoFocus {...field}>
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
                     </InputOTPGroup>
                     <InputOTPSeparator />
-                    <InputOTPGroup className="flex-1">
-                      <InputOTPSlot index={2} className="w-full" />
-                      <InputOTPSlot index={3} className="w-full" />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
                     </InputOTPGroup>
                     <InputOTPSeparator />
-                    <InputOTPGroup className="flex-1">
-                      <InputOTPSlot index={4} className="w-full" />
-                      <InputOTPSlot index={5} className="w-full" />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
                     </InputOTPGroup>
                   </InputOTP>
                 </FormControl>

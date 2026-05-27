@@ -11,8 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
-import { Route as publicIndexRouteImport } from './routes/(public)/index'
-import { Route as publicSlugRouteImport } from './routes/(public)/$slug'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
 import { Route as errors500RouteImport } from './routes/(errors)/500'
 import { Route as errors404RouteImport } from './routes/(errors)/404'
@@ -40,7 +39,6 @@ import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_a
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 import { Route as AuthenticatedDevelopersWebhookRouteImport } from './routes/_authenticated/developers/webhook'
-import { Route as publicBlogSlugRouteImport } from './routes/(public)/blog/$slug'
 import { Route as authSignUpVerifyRouteImport } from './routes/(auth)/sign-up/verify'
 import { Route as authSignIn2faRouteImport } from './routes/(auth)/sign-in/2fa'
 import { Route as authForgotVerifyRouteImport } from './routes/(auth)/forgot/verify'
@@ -53,14 +51,9 @@ const authRouteRoute = authRouteRouteImport.update({
   id: '/(auth)',
   getParentRoute: () => rootRouteImport,
 } as any)
-const publicIndexRoute = publicIndexRouteImport.update({
-  id: '/(public)/',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const publicSlugRoute = publicSlugRouteImport.update({
-  id: '/(public)/$slug',
-  path: '/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const errors503Route = errors503RouteImport.update({
@@ -213,11 +206,6 @@ const AuthenticatedDevelopersWebhookRoute =
     path: '/webhook',
     getParentRoute: () => AuthenticatedDevelopersRouteRoute,
   } as any)
-const publicBlogSlugRoute = publicBlogSlugRouteImport.update({
-  id: '/(public)/blog/$slug',
-  path: '/blog/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const authSignUpVerifyRoute = authSignUpVerifyRouteImport.update({
   id: '/sign-up/verify',
   path: '/sign-up/verify',
@@ -235,7 +223,7 @@ const authForgotVerifyRoute = authForgotVerifyRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof publicIndexRoute
+  '/': typeof IndexRoute
   '/developers': typeof AuthenticatedDevelopersRouteRouteWithChildren
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/subscription': typeof AuthenticatedSubscriptionRouteRouteWithChildren
@@ -244,11 +232,9 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
-  '/$slug': typeof publicSlugRoute
   '/forgot/verify': typeof authForgotVerifyRoute
   '/sign-in/2fa': typeof authSignIn2faRoute
   '/sign-up/verify': typeof authSignUpVerifyRoute
-  '/blog/$slug': typeof publicBlogSlugRoute
   '/developers/webhook': typeof AuthenticatedDevelopersWebhookRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
@@ -270,17 +256,15 @@ export interface FileRoutesByFullPath {
   '/users/': typeof AuthenticatedUsersIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof publicIndexRoute
+  '/': typeof IndexRoute
   '/401': typeof errors401Route
   '/403': typeof errors403Route
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
-  '/$slug': typeof publicSlugRoute
   '/forgot/verify': typeof authForgotVerifyRoute
   '/sign-in/2fa': typeof authSignIn2faRoute
   '/sign-up/verify': typeof authSignUpVerifyRoute
-  '/blog/$slug': typeof publicBlogSlugRoute
   '/developers/webhook': typeof AuthenticatedDevelopersWebhookRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
@@ -303,6 +287,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/(auth)': typeof authRouteRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/_authenticated/developers': typeof AuthenticatedDevelopersRouteRouteWithChildren
@@ -313,12 +298,9 @@ export interface FileRoutesById {
   '/(errors)/404': typeof errors404Route
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
-  '/(public)/$slug': typeof publicSlugRoute
-  '/(public)/': typeof publicIndexRoute
   '/(auth)/forgot/verify': typeof authForgotVerifyRoute
   '/(auth)/sign-in/2fa': typeof authSignIn2faRoute
   '/(auth)/sign-up/verify': typeof authSignUpVerifyRoute
-  '/(public)/blog/$slug': typeof publicBlogSlugRoute
   '/_authenticated/developers/webhook': typeof AuthenticatedDevelopersWebhookRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
@@ -351,11 +333,9 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
-    | '/$slug'
     | '/forgot/verify'
     | '/sign-in/2fa'
     | '/sign-up/verify'
-    | '/blog/$slug'
     | '/developers/webhook'
     | '/errors/$error'
     | '/settings/account'
@@ -383,11 +363,9 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
-    | '/$slug'
     | '/forgot/verify'
     | '/sign-in/2fa'
     | '/sign-up/verify'
-    | '/blog/$slug'
     | '/developers/webhook'
     | '/errors/$error'
     | '/settings/account'
@@ -409,6 +387,7 @@ export interface FileRouteTypes {
     | '/users'
   id:
     | '__root__'
+    | '/'
     | '/(auth)'
     | '/_authenticated'
     | '/_authenticated/developers'
@@ -419,12 +398,9 @@ export interface FileRouteTypes {
     | '/(errors)/404'
     | '/(errors)/500'
     | '/(errors)/503'
-    | '/(public)/$slug'
-    | '/(public)/'
     | '/(auth)/forgot/verify'
     | '/(auth)/sign-in/2fa'
     | '/(auth)/sign-up/verify'
-    | '/(public)/blog/$slug'
     | '/_authenticated/developers/webhook'
     | '/_authenticated/errors/$error'
     | '/_authenticated/settings/account'
@@ -447,6 +423,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   authRouteRoute: typeof authRouteRouteWithChildren
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   errors401Route: typeof errors401Route
@@ -454,9 +431,6 @@ export interface RootRouteChildren {
   errors404Route: typeof errors404Route
   errors500Route: typeof errors500Route
   errors503Route: typeof errors503Route
-  publicSlugRoute: typeof publicSlugRoute
-  publicIndexRoute: typeof publicIndexRoute
-  publicBlogSlugRoute: typeof publicBlogSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -475,18 +449,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(public)/': {
-      id: '/(public)/'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof publicIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(public)/$slug': {
-      id: '/(public)/$slug'
-      path: '/$slug'
-      fullPath: '/$slug'
-      preLoaderRoute: typeof publicSlugRouteImport
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(errors)/503': {
@@ -678,13 +645,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDevelopersWebhookRouteImport
       parentRoute: typeof AuthenticatedDevelopersRouteRoute
     }
-    '/(public)/blog/$slug': {
-      id: '/(public)/blog/$slug'
-      path: '/blog/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof publicBlogSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(auth)/sign-up/verify': {
       id: '/(auth)/sign-up/verify'
       path: '/sign-up/verify'
@@ -820,6 +780,7 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   authRouteRoute: authRouteRouteWithChildren,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   errors401Route: errors401Route,
@@ -827,9 +788,6 @@ const rootRouteChildren: RootRouteChildren = {
   errors404Route: errors404Route,
   errors500Route: errors500Route,
   errors503Route: errors503Route,
-  publicSlugRoute: publicSlugRoute,
-  publicIndexRoute: publicIndexRoute,
-  publicBlogSlugRoute: publicBlogSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

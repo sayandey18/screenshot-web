@@ -10,6 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Switch } from "@/components/ui/switch";
 import { PasswordInput } from "@/components/password-input";
 import { useChangePassword, useRevokeOtherSessions } from "@/features/settings/hooks/use-auth-mutations";
+import { AccountConnections } from "./components/account-connections";
 import { ActionDialog } from "./components/action-dialog";
 
 const accountFormSchema = z
@@ -140,6 +141,8 @@ export function AccountForm() {
             </div>
           </div>
         )}
+
+        <AccountConnections />
 
         <div className="relative">
           <h3 className="mb-4 text-lg font-medium">Two-Factor Authentication</h3>
