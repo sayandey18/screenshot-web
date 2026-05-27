@@ -15,7 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useTableUrlState } from "@/hooks/use-table-url-state";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DataTablePagination, DataTableToolbar } from "@/components/data-table";
+import { DataTableCards, DataTablePagination, DataTableToolbar } from "@/components/data-table";
 import { priorities, statuses } from "../data/data";
 import { type Task } from "../data/schema";
 import { DataTableBulkActions } from "./data-table-bulk-actions";
@@ -120,7 +120,8 @@ export function TasksTable({ data }: DataTableProps) {
           },
         ]}
       />
-      <div className="overflow-hidden rounded-md border">
+      <DataTableCards table={table} />
+      <div className="hidden overflow-hidden rounded-md border md:block">
         <Table className="min-w-xl">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
