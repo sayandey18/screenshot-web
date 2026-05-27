@@ -24,7 +24,7 @@ export function AppSidebar() {
       <SidebarHeader>
         <AppTitle />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="bg-grid-pattern [--pattern-fg:oklch(0.5_0.01_0_/_0.05)] dark:[--pattern-fg:oklch(0.8_0.01_0_/_0.04)]">
         {sidebarData.navGroups.map((props) => (
           <NavGroup key={props.title} {...props} />
         ))}
