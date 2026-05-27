@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ConfirmDialog } from "@/components/confirm-dialog";
-import { ContentSection } from "../components/content-section";
 import type { SubscriptionStatus } from "../data/schema";
 import { useCancelSubscription, useConfirmSwitch, useStartCheckout, useSubscription } from "../hooks/use-subscription";
 
@@ -176,196 +175,190 @@ export function SubscriptionPlans() {
   };
 
   return (
-    <ContentSection
-      title="Plans"
-      desc="Choose a plan that fits your usage now and scale when you need more."
-      header={false}
-    >
-      <>
-        <div className="space-y-6">
-          <Card className="overflow-hidden border-muted/60 pb-0 shadow-sm">
-            <CardHeader className="pb-3">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <CardTitle className="text-base font-semibold">Active Subscription</CardTitle>
-                  <CardDescription>Current subscription details and upcoming billing timeline.</CardDescription>
-                </div>
-                {isLoading ? (
-                  <Skeleton className="h-5 w-24 rounded-full" />
-                ) : subscription ? (
-                  <Badge variant={statusToBadgeVariant(subscription.status)}>{statusLabel(subscription.status)}</Badge>
-                ) : null}
+    <>
+      <div className="space-y-6">
+        <Card className="overflow-hidden border-muted/60 pb-0 shadow-sm">
+          <CardHeader className="pb-3">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <CardTitle className="text-base font-semibold">Active Subscription</CardTitle>
+                <CardDescription>Current subscription details and upcoming billing timeline.</CardDescription>
               </div>
-            </CardHeader>
-
-            <CardContent className={cn(activePlan.id === "STARTER" && "pb-6")}>
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                <div>
-                  <div className="flex items-center gap-1 pb-1">
-                    <Package className="size-3.5 text-muted-foreground" />
-                    <p className="text-xs text-muted-foreground">Subscription</p>
-                  </div>
-                  <p className="text-sm font-medium">{activePlan.name}</p>
-                </div>
-                <div>
-                  <div className="flex items-center gap-1 pb-1">
-                    <RefreshCw className="size-3.5 text-muted-foreground" />
-                    <p className="text-xs text-muted-foreground">Cycle</p>
-                  </div>
-                  {isLoading ? (
-                    <Skeleton className="mt-1 h-4 w-16" />
-                  ) : (
-                    <p className="text-sm font-medium capitalize">{subscription?.billingCycle ?? "-"}</p>
-                  )}
-                </div>
-                <div>
-                  <div className="flex items-center gap-1 pb-1">
-                    <Calendar className="size-3.5 text-muted-foreground" />
-                    <p className="text-xs text-muted-foreground">Upcoming</p>
-                  </div>
-                  {isLoading ? (
-                    <Skeleton className="mt-1 h-4 w-24" />
-                  ) : (
-                    <p className="text-sm font-medium">{formatDate(subscription?.nextBillingDate)}</p>
-                  )}
-                </div>
-                <div>
-                  <div className="flex items-center gap-1 pb-1">
-                    <Building2 className="size-3.5 text-muted-foreground" />
-                    <p className="text-xs text-muted-foreground">Provider</p>
-                  </div>
-                  <p className="text-sm font-medium">{activePlan.id === "STARTER" ? "-" : "Dodo Payments"}</p>
-                </div>
-              </div>
-            </CardContent>
-
-            {!isLoading && activePlan.id !== "STARTER" && (
-              <CardFooter
-                className={
-                  isCancellationScheduled
-                    ? "bg-amber-100/80 px-6 py-2.5 dark:bg-amber-950/30"
-                    : "border-t px-6 py-4 pt-4!"
-                }
-              >
-                {isCancellationScheduled ? (
-                  <div className="flex w-full items-center gap-2 text-sm text-amber-900 dark:text-amber-200">
-                    <Clock className="size-4 shrink-0" />
-                    <span className="font-medium">NOTE: </span>
-                    <span>Your current plan will remain active until the next billing date.</span>
-                  </div>
-                ) : (
-                  <Button
-                    variant="outline"
-                    className="ml-auto text-destructive hover:text-destructive"
-                    onClick={() => setCancelDialogOpen(true)}
-                    disabled={isBusy || subscription?.status === "cancelled"}
-                    aria-busy={isCancelling}
-                  >
-                    {isCancelling ? "Cancelling..." : "Cancel Subscription"}
-                  </Button>
-                )}
-              </CardFooter>
-            )}
-          </Card>
-
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {plans.map((plan) => {
-              const cta = getCta(plan);
-              const isCurrent = plan.id === activePlanId;
-
-              return (
-                <Card
-                  key={plan.id}
-                  className={cn(
-                    "relative flex h-full flex-col gap-3 overflow-hidden border-muted/60 shadow-sm transition-shadow hover:shadow-md",
-                    isCurrent && "border-primary ring-1 ring-primary/30"
-                  )}
-                >
-                  {isCurrent ? (
-                    <Badge
-                      variant="default"
-                      className="absolute top-6 right-0 z-10 rounded-none border-0 px-2 py-1 text-[0.6rem] font-bold tracking-[0.25em] shadow-sm"
-                      style={{
-                        writingMode: "vertical-rl",
-                        textOrientation: "mixed",
-                      }}
-                    >
-                      CURRENT
-                    </Badge>
-                  ) : null}
-
-                  <CardHeader>
-                    <div className="flex items-center gap-2 pr-8">
-                      <div className="flex size-8 items-center justify-center rounded-md bg-primary/5 text-primary">
-                        {plan.icon}
-                      </div>
-
-                      <CardTitle className="text-base font-semibold">{plan.name}</CardTitle>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent>
-                    <div className="space-y-1">
-                      <p className="text-2xl font-bold text-foreground">{plan.price}</p>
-
-                      <p className="text-sm text-muted-foreground">{plan.tagline}</p>
-                    </div>
-                  </CardContent>
-
-                  <CardFooter className="pt-0">
-                    <Button
-                      variant={cta.variant}
-                      className="w-full"
-                      disabled={cta.disabled || isBusy}
-                      onClick={() => handleSelectPlan(plan)}
-                      aria-busy={isCheckingOut}
-                    >
-                      {isBusy && pendingPlanId === plan.id ? "Updating..." : cta.label}
-                    </Button>
-                  </CardFooter>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-
-        <ConfirmDialog
-          open={cancelDialogOpen}
-          onOpenChange={setCancelDialogOpen}
-          title="Cancel Subscription?"
-          desc="Your paid plan will remain active until the end of the current billing period. After that, your account will automatically revert to STARTER."
-          cancelBtnText="Keep Subscription"
-          confirmText="Schedule Cancellation"
-          destructive
-          handleConfirm={handleConfirmCancel}
-          isLoading={isCancelling}
-        />
-
-        <ConfirmDialog
-          open={switchDialogOpen}
-          onOpenChange={(open) => {
-            setSwitchDialogOpen(open);
-            if (!open && !isConfirmingSwitch) {
-              setPendingPlanId(null);
-            }
-          }}
-          title="Confirm plan switch"
-          desc={
-            <div className="space-y-2">
-              <p>Your subscription will switch to the selected paid plan on confirmation.</p>
-              {targetSwitchPlan ? (
-                <p>
-                  Target plan: <span className="font-medium">{targetSwitchPlan.name}</span>
-                </p>
+              {isLoading ? (
+                <Skeleton className="h-5 w-24 rounded-full" />
+              ) : subscription ? (
+                <Badge variant={statusToBadgeVariant(subscription.status)}>{statusLabel(subscription.status)}</Badge>
               ) : null}
             </div>
+          </CardHeader>
+
+          <CardContent className={cn(activePlan.id === "STARTER" && "pb-6")}>
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              <div>
+                <div className="flex items-center gap-1 pb-1">
+                  <Package className="size-3.5 text-muted-foreground" />
+                  <p className="text-xs text-muted-foreground">Subscription</p>
+                </div>
+                <p className="text-sm font-medium">{activePlan.name}</p>
+              </div>
+              <div>
+                <div className="flex items-center gap-1 pb-1">
+                  <RefreshCw className="size-3.5 text-muted-foreground" />
+                  <p className="text-xs text-muted-foreground">Cycle</p>
+                </div>
+                {isLoading ? (
+                  <Skeleton className="mt-1 h-4 w-16" />
+                ) : (
+                  <p className="text-sm font-medium capitalize">{subscription?.billingCycle ?? "-"}</p>
+                )}
+              </div>
+              <div>
+                <div className="flex items-center gap-1 pb-1">
+                  <Calendar className="size-3.5 text-muted-foreground" />
+                  <p className="text-xs text-muted-foreground">Upcoming</p>
+                </div>
+                {isLoading ? (
+                  <Skeleton className="mt-1 h-4 w-24" />
+                ) : (
+                  <p className="text-sm font-medium">{formatDate(subscription?.nextBillingDate)}</p>
+                )}
+              </div>
+              <div>
+                <div className="flex items-center gap-1 pb-1">
+                  <Building2 className="size-3.5 text-muted-foreground" />
+                  <p className="text-xs text-muted-foreground">Provider</p>
+                </div>
+                <p className="text-sm font-medium">{activePlan.id === "STARTER" ? "-" : "Dodo Payments"}</p>
+              </div>
+            </div>
+          </CardContent>
+
+          {!isLoading && activePlan.id !== "STARTER" && (
+            <CardFooter
+              className={
+                isCancellationScheduled
+                  ? "bg-amber-100/80 px-6 py-2.5 dark:bg-amber-950/30"
+                  : "border-t px-6 py-4 pt-4!"
+              }
+            >
+              {isCancellationScheduled ? (
+                <div className="flex w-full items-center gap-2 text-sm text-amber-900 dark:text-amber-200">
+                  <Clock className="size-4 shrink-0" />
+                  <span className="font-medium">NOTE: </span>
+                  <span>Your current plan will remain active until the next billing date.</span>
+                </div>
+              ) : (
+                <Button
+                  variant="outline"
+                  className="ml-auto text-destructive hover:text-destructive"
+                  onClick={() => setCancelDialogOpen(true)}
+                  disabled={isBusy || subscription?.status === "cancelled"}
+                  aria-busy={isCancelling}
+                >
+                  {isCancelling ? "Cancelling..." : "Cancel Subscription"}
+                </Button>
+              )}
+            </CardFooter>
+          )}
+        </Card>
+
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {plans.map((plan) => {
+            const cta = getCta(plan);
+            const isCurrent = plan.id === activePlanId;
+
+            return (
+              <Card
+                key={plan.id}
+                className={cn(
+                  "relative flex h-full flex-col gap-3 overflow-hidden border-muted/60 shadow-sm transition-shadow hover:shadow-md",
+                  isCurrent && "border-primary ring-1 ring-primary/30"
+                )}
+              >
+                {isCurrent ? (
+                  <Badge
+                    variant="default"
+                    className="absolute top-6 right-0 z-10 rounded-none border-0 px-2 py-1 text-[0.6rem] font-bold tracking-[0.25em] shadow-sm"
+                    style={{
+                      writingMode: "vertical-rl",
+                      textOrientation: "mixed",
+                    }}
+                  >
+                    CURRENT
+                  </Badge>
+                ) : null}
+
+                <CardHeader>
+                  <div className="flex items-center gap-2 pr-8">
+                    <div className="flex size-8 items-center justify-center rounded-md bg-primary/5 text-primary">
+                      {plan.icon}
+                    </div>
+
+                    <CardTitle className="text-base font-semibold">{plan.name}</CardTitle>
+                  </div>
+                </CardHeader>
+
+                <CardContent>
+                  <div className="space-y-1">
+                    <p className="text-2xl font-bold text-foreground">{plan.price}</p>
+
+                    <p className="text-sm text-muted-foreground">{plan.tagline}</p>
+                  </div>
+                </CardContent>
+
+                <CardFooter className="pt-0">
+                  <Button
+                    variant={cta.variant}
+                    className="w-full"
+                    disabled={cta.disabled || isBusy}
+                    onClick={() => handleSelectPlan(plan)}
+                    aria-busy={isCheckingOut}
+                  >
+                    {isBusy && pendingPlanId === plan.id ? "Updating..." : cta.label}
+                  </Button>
+                </CardFooter>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+
+      <ConfirmDialog
+        open={cancelDialogOpen}
+        onOpenChange={setCancelDialogOpen}
+        title="Cancel Subscription?"
+        desc="Your paid plan will remain active until the end of the current billing period. After that, your account will automatically revert to STARTER."
+        cancelBtnText="Keep Subscription"
+        confirmText="Schedule Cancellation"
+        destructive
+        handleConfirm={handleConfirmCancel}
+        isLoading={isCancelling}
+      />
+
+      <ConfirmDialog
+        open={switchDialogOpen}
+        onOpenChange={(open) => {
+          setSwitchDialogOpen(open);
+          if (!open && !isConfirmingSwitch) {
+            setPendingPlanId(null);
           }
-          cancelBtnText="Keep Current Plan"
-          confirmText="Confirm Switch"
-          handleConfirm={handleConfirmSwitch}
-          isLoading={isConfirmingSwitch}
-        />
-      </>
-    </ContentSection>
+        }}
+        title="Confirm plan switch"
+        desc={
+          <div className="space-y-2">
+            <p>Your subscription will switch to the selected paid plan on confirmation.</p>
+            {targetSwitchPlan ? (
+              <p>
+                Target plan: <span className="font-medium">{targetSwitchPlan.name}</span>
+              </p>
+            ) : null}
+          </div>
+        }
+        cancelBtnText="Keep Current Plan"
+        confirmText="Confirm Switch"
+        handleConfirm={handleConfirmSwitch}
+        isLoading={isConfirmingSwitch}
+      />
+    </>
   );
 }
