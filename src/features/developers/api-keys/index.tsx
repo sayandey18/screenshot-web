@@ -12,7 +12,6 @@ import {
   useUpdateApiKey,
   type CreatedApiKeyResult,
 } from "@/features/developers/api-keys/hooks/use-api-keys";
-import { ContentSection } from "../components/content-section";
 import { ApiKeyCreateDialog } from "./components/api-key-create-dialog";
 import { ApiKeyDeleteDialog } from "./components/api-key-delete-dialog";
 import { ApiKeyManageDialog } from "./components/api-key-manage-dialog";
@@ -92,68 +91,66 @@ export function DevelopersApiKeys() {
   };
 
   return (
-    <ContentSection title="API Keys" desc="Create, manage, and delete API keys for your integrations." header={false}>
-      <>
-        <Card className="overflow-hidden border-muted/60 shadow-sm">
-          <CardContent className="px-6">
-            <div className="flex flex-1 flex-col gap-4">
-              <div className="flex justify-end">
-                <Button className="space-x-1" onClick={() => setOpenCreate(true)} aria-busy={createApiKey.isPending}>
-                  <span>Create</span>
-                  <Plus size={18} />
-                </Button>
-              </div>
-
-              <ApiKeysTable
-                data={apiKeys}
-                total={total}
-                isLoading={isLoading}
-                search={search}
-                navigate={navigate}
-                onManage={(row) => {
-                  setCurrentRow(row);
-                  setOpenManage(true);
-                }}
-                onToggleStatus={handleToggleStatus}
-                onDelete={(row) => {
-                  setCurrentRow(row);
-                  setOpenDelete(true);
-                }}
-                onBulkDelete={handleBulkDelete}
-              />
+    <>
+      <Card className="overflow-hidden border-muted/60 shadow-sm">
+        <CardContent className="px-6">
+          <div className="flex flex-1 flex-col gap-4">
+            <div className="flex justify-end">
+              <Button className="space-x-1" onClick={() => setOpenCreate(true)} aria-busy={createApiKey.isPending}>
+                <span>Create</span>
+                <Plus size={18} />
+              </Button>
             </div>
-          </CardContent>
-        </Card>
 
-        <ApiKeyCreateDialog
-          open={openCreate}
-          onOpenChange={setOpenCreate}
-          onCreate={handleCreate}
-          isLoading={createApiKey.isPending}
-        />
+            <ApiKeysTable
+              data={apiKeys}
+              total={total}
+              isLoading={isLoading}
+              search={search}
+              navigate={navigate}
+              onManage={(row) => {
+                setCurrentRow(row);
+                setOpenManage(true);
+              }}
+              onToggleStatus={handleToggleStatus}
+              onDelete={(row) => {
+                setCurrentRow(row);
+                setOpenDelete(true);
+              }}
+              onBulkDelete={handleBulkDelete}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
-        <ApiKeyManageDialog
-          currentRow={currentRow}
-          open={openManage}
-          onOpenChange={(open) => {
-            setOpenManage(open);
-            if (!open) setCurrentRow(null);
-          }}
-          onSave={handleManage}
-          isLoading={updateApiKey.isPending}
-        />
+      <ApiKeyCreateDialog
+        open={openCreate}
+        onOpenChange={setOpenCreate}
+        onCreate={handleCreate}
+        isLoading={createApiKey.isPending}
+      />
 
-        <ApiKeyDeleteDialog
-          currentRow={currentRow}
-          open={openDelete}
-          onOpenChange={(open) => {
-            setOpenDelete(open);
-            if (!open) setCurrentRow(null);
-          }}
-          onDelete={handleDelete}
-          isLoading={deleteApiKey.isPending}
-        />
-      </>
-    </ContentSection>
+      <ApiKeyManageDialog
+        currentRow={currentRow}
+        open={openManage}
+        onOpenChange={(open) => {
+          setOpenManage(open);
+          if (!open) setCurrentRow(null);
+        }}
+        onSave={handleManage}
+        isLoading={updateApiKey.isPending}
+      />
+
+      <ApiKeyDeleteDialog
+        currentRow={currentRow}
+        open={openDelete}
+        onOpenChange={(open) => {
+          setOpenDelete(open);
+          if (!open) setCurrentRow(null);
+        }}
+        onDelete={handleDelete}
+        isLoading={deleteApiKey.isPending}
+      />
+    </>
   );
 }
