@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { getRouteApi } from "@tanstack/react-router";
+import { Card, CardContent } from "@/components/ui/card";
 import { ConfigDrawer } from "@/components/config-drawer";
 import { Header } from "@/components/layout/header";
 import { Main } from "@/components/layout/main";
@@ -51,14 +52,18 @@ export function Usage() {
         {isError ? <div className="text-sm text-destructive">Failed to load usage logs.</div> : null}
 
         {data ? (
-          <div className="space-y-2">
-            {isFetching ? <p className="text-xs text-muted-foreground">Refreshing data...</p> : null}
-            <UsageTable
-              data={data.requests}
-              total={data.pagination.total}
-              totalPages={Math.max(1, data.pagination.totalPages)}
-            />
-          </div>
+          <Card className="overflow-hidden border-muted/60 shadow-sm">
+            <CardContent className="p-6">
+              <div className="space-y-2">
+                {isFetching ? <p className="text-xs text-muted-foreground">Refreshing data...</p> : null}
+                <UsageTable
+                  data={data.requests}
+                  total={data.pagination.total}
+                  totalPages={Math.max(1, data.pagination.totalPages)}
+                />
+              </div>
+            </CardContent>
+          </Card>
         ) : null}
       </Main>
 
