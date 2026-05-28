@@ -48,23 +48,19 @@ export function Usage() {
           </div>
         </div>
 
-        {isLoading ? <div className="text-sm text-muted-foreground">Loading usage logs...</div> : null}
         {isError ? <div className="text-sm text-destructive">Failed to load usage logs.</div> : null}
 
-        {data ? (
-          <Card className="overflow-hidden border-muted/60 shadow-sm">
-            <CardContent className="p-6">
-              <div className="space-y-2">
-                {isFetching ? <p className="text-xs text-muted-foreground">Refreshing data...</p> : null}
-                <UsageTable
-                  data={data.requests}
-                  total={data.pagination.total}
-                  totalPages={Math.max(1, data.pagination.totalPages)}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        ) : null}
+        <Card className="overflow-hidden border-muted/60 shadow-sm">
+          <CardContent className="p-6">
+            <UsageTable
+              data={data?.requests ?? []}
+              total={data?.pagination.total ?? 0}
+              totalPages={Math.max(1, data?.pagination.totalPages ?? 1)}
+              isLoading={isLoading}
+              isFetching={isFetching}
+            />
+          </CardContent>
+        </Card>
       </Main>
 
       <UsageDialogs />

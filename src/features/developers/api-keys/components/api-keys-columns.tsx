@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { type ColumnDef } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
+import { apiKeyStatusBadgeClass } from "@/lib/badge-styles";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/data-table";
@@ -67,7 +68,7 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
       id: "status",
       header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
       accessorFn: (row) => {
-        if (!row.enabled) return "disabled";
+        if (!row.enabled) return "inactive";
         if (!row.expiresAt) return "active";
         return row?.expiresAt.getTime() < Date.now() ? "expired" : "active";
       },
@@ -75,35 +76,41 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
         const raw = row.getValue("status");
         const status = typeof raw === "string" ? raw : "active";
 
-        if (status === "expired") {
-          return (
-            <Badge variant="outline" className="border-destructive/30 text-destructive">
-              Expired
-            </Badge>
-          );
-        }
-
-        if (status === "disabled") {
-          return (
-            <Badge variant="outline" className="border-neutral-300 bg-neutral-300/40">
-              Disabled
-            </Badge>
-          );
-        }
-
-        if (status === "no-expiry") {
-          return (
-            <Badge variant="outline" className="border-sky-300 bg-sky-200/40 text-sky-900 dark:text-sky-100">
-              No expiry
-            </Badge>
-          );
-        }
-
         return (
-          <Badge variant="outline" className="border-teal-200 bg-teal-100/30 text-teal-900 dark:text-teal-200">
-            Active
+          <Badge variant="outline" className={cn(apiKeyStatusBadgeClass(status))}>
+            {status.charAt(0).toUpperCase() + status.slice(1)}
           </Badge>
         );
+
+        // if (status === "expired") {
+        //   return (
+        //     <Badge variant="outline" className">
+        //       Expired
+        //     </Badge>
+        //   );
+        // }
+
+        // if (status === "inactive") {
+        //   return (
+        //     <Badge variant="outline" className="border-neutral-300 bg-neutral-300/40">
+        //       Disabled
+        //     </Badge>
+        //   );
+        // }
+
+        // if (status === "no-expiry") {
+        //   return (
+        //     <Badge variant="outline" className="border-sky-300 bg-sky-200/40 text-sky-900 dark:text-sky-100">
+        //       No expiry
+        //     </Badge>
+        //   );
+        // }
+
+        // return (
+        //   <Badge variant="outline" className="border-teal-200 bg-teal-100/30 text-teal-900 dark:text-teal-200">
+        //     Active
+        //   </Badge>
+        // );
       },
       enableSorting: false,
       enableHiding: false,

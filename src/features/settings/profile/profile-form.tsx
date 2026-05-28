@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useSession } from "@/hooks/api/use-session";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,7 +30,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 export function ProfileForm() {
   const avatarInputRef = useRef<HTMLInputElement>(null);
-  const { data: session } = useSession();
+  const { data: session, isLoading } = useSession();
   const updateProfile = useUpdateProfile();
   const uploadAvatar = useUploadAvatar();
   const deleteAvatarMutation = useDeleteAvatar();
@@ -89,6 +90,28 @@ export function ProfileForm() {
     await deleteAvatarMutation.mutateAsync();
     form.setValue("image", null, { shouldDirty: true });
   };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-8">
+        <div className="flex items-center gap-6">
+          <Skeleton className="h-25 w-25 rounded-full" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-3 w-48" />
+            <Skeleton className="mt-2 h-8 w-32" />
+          </div>
+        </div>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="space-y-2">
+            <Skeleton className="h-4 w-16" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+        ))}
+        <Skeleton className="h-10 w-32" />
+      </div>
+    );
+  }
 
   return (
     <Form {...form}>

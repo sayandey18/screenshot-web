@@ -43,7 +43,7 @@ const chartData = [
 
 const chartConfig = {
   total: {
-    label: "Total Requests",
+    label: "Requests",
     color: "var(--chart-1)",
   },
   success: {

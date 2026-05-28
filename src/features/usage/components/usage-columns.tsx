@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from "date-fns";
 import { type ColumnDef } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
+import { usageStatusBadgeClass } from "@/lib/badge-styles";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/data-table";
@@ -12,13 +13,6 @@ function formatDuration(durationMs: number | null) {
   if (durationMs == null) return "-";
   if (durationMs < 1000) return `${durationMs}ms`;
   return `${(durationMs / 1000).toFixed(1)}s`;
-}
-
-function statusBadgeClass(status: Usage["status"]) {
-  if (status === "success") return "border-green-600/30 bg-green-500/10 text-green-700 dark:text-green-400";
-  if (status === "error") return "border-red-600/30 bg-red-500/10 text-red-700 dark:text-red-400";
-  if (status === "limit_exceeded") return "border-orange-600/30 bg-orange-500/10 text-orange-700 dark:text-orange-400";
-  return "border-amber-600/30 bg-amber-500/10 text-amber-700 dark:text-amber-400";
 }
 
 type UsageColumnsOptions = {
@@ -70,7 +64,7 @@ export function getUsageColumns({ onView }: UsageColumnsOptions): ColumnDef<Usag
         }
 
         return (
-          <Badge variant="outline" className={cn(statusBadgeClass(row.original.status))}>
+          <Badge variant="outline" className={cn(usageStatusBadgeClass(row.original.status))}>
             {status.label}
           </Badge>
         );

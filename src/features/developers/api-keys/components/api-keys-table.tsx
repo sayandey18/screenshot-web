@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
 import { type NavigateFn, useTableUrlState } from "@/hooks/use-table-url-state";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DataTableCards, DataTablePagination } from "@/components/data-table";
 import { type ApiKeyItem } from "../data/schema";
@@ -106,7 +107,7 @@ export function ApiKeysTable({
         "flex flex-1 flex-col gap-4"
       )}
     >
-      <DataTableCards table={table} />
+      <DataTableCards table={table} excludeColumns={["select"]} />
       <div className="hidden overflow-hidden rounded-md border md:block">
         <Table>
           <TableHeader>
@@ -116,7 +117,11 @@ export function ApiKeysTable({
                   <TableHead
                     key={header.id}
                     colSpan={header.colSpan}
-                    className={cn(header.column.columnDef.meta?.className, header.column.columnDef.meta?.thClassName)}
+                    className={cn(
+                      "bg-muted/40 px-4 py-2.5 text-xs font-semibold tracking-wider text-muted-foreground uppercase",
+                      header.column.columnDef.meta?.className,
+                      header.column.columnDef.meta?.thClassName
+                    )}
                   >
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
@@ -127,18 +132,26 @@ export function ApiKeysTable({
 
           <TableBody>
             {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  Loading API keys...
-                </TableCell>
-              </TableRow>
+              Array.from({ length: 10 }).map((_, i) => (
+                <TableRow key={`skeleton-${i}`}>
+                  {columns.map((_, j) => (
+                    <TableCell key={`skeleton-cell-${j}`}>
+                      <Skeleton className="h-4 w-full" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={cn(cell.column.columnDef.meta?.className, cell.column.columnDef.meta?.tdClassName)}
+                      className={cn(
+                        "px-4 py-3",
+                        cell.column.columnDef.meta?.className,
+                        cell.column.columnDef.meta?.tdClassName
+                      )}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>

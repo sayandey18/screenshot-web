@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { type NavigateFn, useTableUrlState } from "@/hooks/use-table-url-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DataTablePagination } from "@/components/data-table";
+import { DataTableCards, DataTablePagination } from "@/components/data-table";
 import { type Invoice } from "../../data/schema";
 import { DataTableBulkActions } from "./data-table-bulk-actions";
 import { getInvoicesColumns } from "./invoices-columns";
@@ -99,7 +99,8 @@ export function InvoicesTable({
 
   return (
     <div className={cn("flex flex-1 flex-col gap-4", isFetching && "opacity-60 transition-opacity")}>
-      <div className="overflow-hidden rounded-md border">
+      <DataTableCards table={table} excludeColumns={["select"]} />
+      <div className="hidden overflow-hidden rounded-md border md:block">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

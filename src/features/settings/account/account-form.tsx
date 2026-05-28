@@ -7,6 +7,7 @@ import { useAccounts } from "@/hooks/api/use-accounts";
 import { useSession } from "@/hooks/api/use-session";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import { PasswordInput } from "@/components/password-input";
 import { useChangePassword, useRevokeOtherSessions } from "@/features/settings/hooks/use-auth-mutations";
@@ -28,8 +29,8 @@ const accountFormSchema = z
 type AccountFormValues = z.infer<typeof accountFormSchema>;
 
 export function AccountForm() {
-  const { data: session } = useSession();
-  const { data: accounts } = useAccounts();
+  const { data: session, isLoading: sessionLoading } = useSession();
+  const { data: accounts, isLoading: accountsLoading } = useAccounts();
   const changePassword = useChangePassword();
   const revokeOtherSessions = useRevokeOtherSessions();
 
@@ -86,6 +87,37 @@ export function AccountForm() {
   };
 
   const hasCredentialAccount = accounts?.some((account) => account.providerId === "credential");
+
+  if (sessionLoading || accountsLoading) {
+    return (
+      <div className="space-y-8">
+        <div className="space-y-4">
+          <Skeleton className="h-5 w-40" />
+          <Skeleton className="h-10 w-full" />
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+          <Skeleton className="h-10 w-36" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-44" />
+          {Array.from({ length: 2 }).map((_, i) => (
+            <Skeleton key={i} className="h-16 w-full rounded-lg" />
+          ))}
+        </div>
+        <div className="space-y-4">
+          <Skeleton className="h-5 w-52" />
+          <Skeleton className="h-20 w-full rounded-lg" />
+        </div>
+        <div className="space-y-4">
+          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-20 w-full rounded-lg" />
+          <Skeleton className="h-20 w-full rounded-lg" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Form {...form}>

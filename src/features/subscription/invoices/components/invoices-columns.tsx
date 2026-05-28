@@ -2,25 +2,18 @@ import { format } from "date-fns";
 import { type ColumnDef } from "@tanstack/react-table";
 import { Download } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { invoiceStatusBadgeClass } from "@/lib/badge-styles";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/data-table";
-import type { Invoice, InvoiceStatus } from "../../data/schema";
+import type { Invoice } from "../../data/schema";
 
 type InvoicesColumnsOptions = {
   onDownload: (row: Invoice) => void;
 };
 
-const statusBadgeClassMap: Record<InvoiceStatus, string> = {
-  succeeded: "border-green-600/30 bg-green-500/10 text-green-700 dark:text-green-400",
-  processing: "border-amber-600/30 bg-amber-500/10 text-amber-700 dark:text-amber-400",
-  failed: "border-red-600/30 bg-red-500/10 text-red-700 dark:text-red-400",
-  cancelled: "border-gray-600/30 bg-gray-500/10 text-gray-700 dark:text-gray-400",
-  refunded: "border-gray-600/30 bg-gray-500/10 text-gray-700 dark:text-gray-400",
-};
-
-const statusLabelMap: Record<InvoiceStatus, string> = {
+const statusLabelMap: Record<string, string> = {
   succeeded: "Succeeded",
   processing: "Processing",
   failed: "Failed",
@@ -107,7 +100,7 @@ export function getInvoicesColumns({ onDownload }: InvoicesColumnsOptions): Colu
       cell: ({ row }) => {
         const status = row.original.status;
         return (
-          <Badge variant="outline" className={cn("capitalize", statusBadgeClassMap[status])}>
+          <Badge variant="outline" className={cn("capitalize", invoiceStatusBadgeClass(status))}>
             {statusLabelMap[status]}
           </Badge>
         );

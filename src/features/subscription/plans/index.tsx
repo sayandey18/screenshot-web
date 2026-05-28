@@ -3,12 +3,12 @@ import { getRouteApi } from "@tanstack/react-router";
 import { Building2, Calendar, Clock, Crown, Package, RefreshCw, Sparkles, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { subscriptionStatusBadgeClass } from "@/lib/badge-styles";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ConfirmDialog } from "@/components/confirm-dialog";
-import type { SubscriptionStatus } from "../data/schema";
 import { useCancelSubscription, useConfirmSwitch, useStartCheckout, useSubscription } from "../hooks/use-subscription";
 
 const route = getRouteApi("/_authenticated/subscription/");
@@ -51,22 +51,7 @@ const plans: Plan[] = [
   },
 ];
 
-function statusToBadgeVariant(status: SubscriptionStatus): "default" | "secondary" | "outline" | "destructive" {
-  switch (status) {
-    case "active":
-      return "default";
-    case "trial":
-      return "secondary";
-    case "cancelled":
-      return "destructive";
-    case "cancellation_scheduled":
-      return "outline";
-    default:
-      return "outline";
-  }
-}
-
-function statusLabel(status: SubscriptionStatus) {
+function statusLabel(status: string) {
   switch (status) {
     case "active":
       return "Active";
@@ -187,7 +172,7 @@ export function SubscriptionPlans() {
               {isLoading ? (
                 <Skeleton className="h-5 w-24 rounded-full" />
               ) : subscription ? (
-                <Badge variant={statusToBadgeVariant(subscription.status)}>{statusLabel(subscription.status)}</Badge>
+                <Badge variant="outline" className={cn(subscriptionStatusBadgeClass(subscription.status))}>{statusLabel(subscription.status)}</Badge>
               ) : null}
             </div>
           </CardHeader>
