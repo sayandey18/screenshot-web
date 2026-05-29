@@ -7,8 +7,8 @@ export const statuses = [
     icon: CheckCircle2,
   },
   {
-    label: "Error",
-    value: "error" as const,
+    label: "Failed",
+    value: "failed" as const,
     icon: CircleX,
   },
   {

@@ -43,16 +43,16 @@ const chartData = [
 
 const chartConfig = {
   total: {
-    label: "Requests",
+    label: "Failed",
     color: "var(--chart-1)",
   },
   success: {
     label: "Success",
-    color: "var(--chart-2)",
+    color: "var(--chart-3)",
   },
   error: {
-    label: "Error",
-    color: "var(--chart-3)",
+    label: "Requests",
+    color: "var(--chart-2)",
   },
 } satisfies ChartConfig;
 
@@ -81,10 +81,7 @@ export function AnalyticsChart() {
           <CardDescription>Total requests, success, and error rates over time</CardDescription>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger
-            className="hidden w-40 rounded-lg sm:ml-auto sm:flex"
-            aria-label="Select a value"
-          >
+          <SelectTrigger className="hidden w-40 rounded-lg sm:ml-auto sm:flex" aria-label="Select a value">
             <SelectValue placeholder="Last 14 days" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
@@ -146,27 +143,9 @@ export function AnalyticsChart() {
                 />
               }
             />
-            <Area
-              dataKey="total"
-              type="natural"
-              fill="url(#fillTotal)"
-              stroke="var(--color-total)"
-              stackId="a"
-            />
-            <Area
-              dataKey="success"
-              type="natural"
-              fill="url(#fillSuccess)"
-              stroke="var(--color-success)"
-              stackId="a"
-            />
-            <Area
-              dataKey="error"
-              type="natural"
-              fill="url(#fillError)"
-              stroke="var(--color-error)"
-              stackId="a"
-            />
+            <Area dataKey="total" type="natural" fill="url(#fillTotal)" stroke="var(--color-total)" stackId="a" />
+            <Area dataKey="success" type="natural" fill="url(#fillSuccess)" stroke="var(--color-success)" stackId="a" />
+            <Area dataKey="error" type="natural" fill="url(#fillError)" stroke="var(--color-error)" stackId="a" />
             <ChartLegend content={<ChartLegendContent />} />
           </AreaChart>
         </ChartContainer>

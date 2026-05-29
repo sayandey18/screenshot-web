@@ -1,14 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getRouteApi } from "@tanstack/react-router";
 import {
-  type SortingState,
   type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
@@ -34,7 +32,6 @@ type DataTableProps = {
 
 export function UsageTable({ data, totalPages, total, isLoading, isFetching }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({});
-  const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const { setCurrentRow, setOpen } = useUsage();
 
@@ -75,7 +72,6 @@ export function UsageTable({ data, totalPages, total, isLoading, isFetching }: D
     manualPagination: true,
     state: {
       rowSelection,
-      sorting,
       columnVisibility,
       columnFilters,
       globalFilter,
@@ -83,7 +79,6 @@ export function UsageTable({ data, totalPages, total, isLoading, isFetching }: D
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
     globalFilterFn: (row, _columnId, filterValue) => {
       const url = String(row.getValue("url")).toLowerCase();
@@ -92,7 +87,6 @@ export function UsageTable({ data, totalPages, total, isLoading, isFetching }: D
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     onPaginationChange,

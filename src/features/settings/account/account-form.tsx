@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 import { PasswordInput } from "@/components/password-input";
 import { useChangePassword, useRevokeOtherSessions } from "@/features/settings/hooks/use-auth-mutations";
 import { AccountConnections } from "./components/account-connections";
@@ -36,6 +37,7 @@ export function AccountForm() {
 
   const [is2faDialogOpen, setIs2faDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isRevokeDialogOpen, setIsRevokeDialogOpen] = useState(false);
 
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
@@ -198,7 +200,8 @@ export function AccountForm() {
         </div>
 
         <div className="relative">
-          <h3 className="mb-4 text-lg font-medium text-destructive">Danger Zone</h3>
+          <h3 className="mb-1 text-lg font-medium text-destructive">Danger Zone</h3>
+          <p className="mb-4 text-sm text-muted-foreground">Irreversible and destructive actions for your account.</p>
           <div className="space-y-4">
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 font-normal">
               <div className="space-y-0.5">
@@ -210,7 +213,7 @@ export function AccountForm() {
                   type="button"
                   variant="destructive"
                   size="sm"
-                  onClick={handleRevokeOtherSessions}
+                  onClick={() => setIsRevokeDialogOpen(true)}
                   disabled={revokeOtherSessions.isPending}
                 >
                   {revokeOtherSessions.isPending ? "Revoking..." : "Log out everywhere"}
@@ -243,6 +246,17 @@ export function AccountForm() {
         />
 
         <ActionDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} type="delete-account" />
+
+        <ConfirmDialog
+          open={isRevokeDialogOpen}
+          onOpenChange={setIsRevokeDialogOpen}
+          title="Log out all devices"
+          desc="This will sign you out of all active sessions on other devices. Your current session will remain active. Are you sure you want to proceed?"
+          confirmText="Log out everywhere"
+          destructive
+          isLoading={revokeOtherSessions.isPending}
+          handleConfirm={handleRevokeOtherSessions}
+        />
       </form>
     </Form>
   );

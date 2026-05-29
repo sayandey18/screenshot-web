@@ -12,15 +12,15 @@ const pattern = {
 
 export function usageStatusBadgeClass(status: string) {
   if (status === "success") return pattern.green;
-  if (status === "error") return pattern.red;
+  if (status === "failed") return pattern.red;
   if (status === "limit_exceeded") return pattern.orange;
   return pattern.amber;
 }
 
 export function apiKeyStatusBadgeClass(status: string) {
   if (status === "active") return pattern.green;
-  if (status === "inactive") return pattern.red;
-  if (status === "expired") return pattern.orange;
+  if (status === "inactive") return pattern.gray;
+  if (status === "expired") return pattern.red;
   return pattern.amber;
 }
 
@@ -32,8 +32,8 @@ export function invoiceStatusBadgeClass(status: string) {
 }
 
 export function screenshotStatusBadgeClass(status: string) {
-  if (status === "Completed") return pattern.green;
-  if (status === "Failed") return pattern.red;
+  if (status === "success") return pattern.green;
+  if (status === "failed") return pattern.red;
   return pattern.amber;
 }
 

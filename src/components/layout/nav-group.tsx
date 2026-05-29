@@ -60,10 +60,7 @@ function SidebarMenuLink({ item, href }: { item: NavLink; href: string }) {
         asChild
         isActive={active}
         tooltip={item.title}
-        className={cn(
-          active &&
-            "border-s-2 border-sidebar-primary ps-3 data-[active=true]:bg-sidebar-accent/80"
-        )}
+        className={cn(active && "border-s-2 border-sidebar-primary ps-3 data-[active=true]:bg-sidebar-accent/80")}
       >
         <Link to={item.url} onClick={() => setOpenMobile(false)}>
           {item.icon && <item.icon />}
@@ -96,7 +93,8 @@ function SidebarMenuCollapsible({ item, href }: { item: NavCollapsible; href: st
                   asChild
                   isActive={checkIsActive(href, subItem)}
                   className={cn(
-                    checkIsActive(href, subItem) && "border-s-2 border-sidebar-primary ps-3 data-[active=true]:bg-sidebar-accent/80"
+                    checkIsActive(href, subItem) &&
+                      "border-s-2 border-sidebar-primary ps-3 data-[active=true]:bg-sidebar-accent/80"
                   )}
                 >
                   <Link to={subItem.url} onClick={() => setOpenMobile(false)}>

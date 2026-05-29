@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const usageStatusSchema = z.enum(["pending", "success", "error", "limit_exceeded"]);
+export const usageStatusSchema = z.enum(["pending", "success", "failed", "limit_exceeded"]);
 export const usageRangeSchema = z.enum(["all", "today", "7d", "14d"]);
 
 export const usageRequestSchema = z.object({

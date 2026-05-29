@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { type ColumnDef } from "@tanstack/react-table";
-import { cn } from "@/lib/utils";
 import { apiKeyStatusBadgeClass } from "@/lib/badge-styles";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/data-table";
@@ -50,7 +50,7 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
         return <LongText className="w-42">{name}</LongText>;
       },
       meta: {
-        className: "w-42 md:w-65 ps-0.5",
+        className: "w-2/5",
       },
       enableSorting: false,
       enableHiding: false,
@@ -62,6 +62,7 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
         const start = row.original.start ? row.original.start : "Not available";
         return <span className="text-sm">{start}</span>;
       },
+      meta: { className: "w-24" },
       enableSorting: false,
     },
     {
@@ -81,37 +82,8 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
             {status.charAt(0).toUpperCase() + status.slice(1)}
           </Badge>
         );
-
-        // if (status === "expired") {
-        //   return (
-        //     <Badge variant="outline" className">
-        //       Expired
-        //     </Badge>
-        //   );
-        // }
-
-        // if (status === "inactive") {
-        //   return (
-        //     <Badge variant="outline" className="border-neutral-300 bg-neutral-300/40">
-        //       Disabled
-        //     </Badge>
-        //   );
-        // }
-
-        // if (status === "no-expiry") {
-        //   return (
-        //     <Badge variant="outline" className="border-sky-300 bg-sky-200/40 text-sky-900 dark:text-sky-100">
-        //       No expiry
-        //     </Badge>
-        //   );
-        // }
-
-        // return (
-        //   <Badge variant="outline" className="border-teal-200 bg-teal-100/30 text-teal-900 dark:text-teal-200">
-        //     Active
-        //   </Badge>
-        // );
       },
+      meta: { className: "w-24" },
       enableSorting: false,
       enableHiding: false,
     },
@@ -121,6 +93,7 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
       cell: ({ row }) => {
         return <span className="text-muted-foreground">{format(row.original.createdAt, "MMM d, yyyy")}</span>;
       },
+      meta: { className: "w-34" },
       enableSorting: false,
       enableHiding: false,
     },
@@ -131,6 +104,7 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
         if (!row.original.expiresAt) return <span className="text-muted-foreground">Never</span>;
         return <span className="text-muted-foreground">{format(row.original.expiresAt, "MMM d, yyyy")}</span>;
       },
+      meta: { className: "w-34" },
       enableSorting: false,
       enableHiding: false,
     },
@@ -144,6 +118,7 @@ export function getApiKeysColumns(options: ApiKeysColumnsOptions): ColumnDef<Api
           onDelete={options.onDelete}
         />
       ),
+      meta: { className: "w-14" },
     },
   ];
 }

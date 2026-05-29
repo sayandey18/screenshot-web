@@ -1,10 +1,9 @@
 import { formatDistanceToNow } from "date-fns";
 import { type ColumnDef } from "@tanstack/react-table";
-import { cn } from "@/lib/utils";
 import { usageStatusBadgeClass } from "@/lib/badge-styles";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "@/components/data-table";
 import { browsers, statuses } from "../data/data";
 import { type Usage } from "../data/schema";
 import { UsageRowActions } from "./usage-row-actions";
@@ -47,7 +46,7 @@ export function getUsageColumns({ onView }: UsageColumnsOptions): ColumnDef<Usag
     },
     {
       accessorKey: "url",
-      header: ({ column }) => <DataTableColumnHeader column={column} title="URL" />,
+      header: "URL",
       cell: ({ row }) => <div className="max-w-[40ch] truncate">{row.original.url}</div>,
       enableSorting: false,
       enableHiding: false,
@@ -55,8 +54,8 @@ export function getUsageColumns({ onView }: UsageColumnsOptions): ColumnDef<Usag
     },
     {
       accessorKey: "status",
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
-      meta: { className: "ps-1 w-30", tdClassName: "ps-4" },
+      header: "Status",
+      meta: { className: "w-24" },
       cell: ({ row }) => {
         const status = statuses.find((item) => item.value === row.getValue("status"));
         if (!status) {
@@ -75,7 +74,7 @@ export function getUsageColumns({ onView }: UsageColumnsOptions): ColumnDef<Usag
     },
     {
       accessorKey: "browser",
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Browser" />,
+      header: "Browser",
       meta: { className: "w-24" },
       cell: ({ row }) => {
         const browser = browsers.find((item) => item.value === row.original.browser);
@@ -89,8 +88,8 @@ export function getUsageColumns({ onView }: UsageColumnsOptions): ColumnDef<Usag
     },
     {
       accessorKey: "format",
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Format" />,
-      meta: { className: "ps-1 w-24", tdClassName: "ps-3" },
+      header: "Format",
+      meta: { className: "w-24" },
       cell: ({ row }) => {
         return (
           <Badge variant="outline" className="uppercase">
@@ -102,14 +101,14 @@ export function getUsageColumns({ onView }: UsageColumnsOptions): ColumnDef<Usag
     },
     {
       accessorKey: "durationMs",
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Duration" />,
+      header: "Duration",
       meta: { className: "w-24" },
       cell: ({ row }) => <span>{formatDuration(row.original.durationMs)}</span>,
       enableHiding: false,
     },
     {
       accessorKey: "createdAt",
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Created" />,
+      header: "Created",
       meta: { className: "w-34" },
       cell: ({ row }) => (
         <span className="text-muted-foreground">

@@ -8,31 +8,31 @@ const recentScreenshots = [
   {
     url: "https://example.com",
     format: "PNG" as const,
-    status: "Completed" as const,
+    status: "success" as const,
     time: "2 minutes ago",
   },
   {
     url: "https://dashboard.example.com",
     format: "WebP" as const,
-    status: "Completed" as const,
+    status: "success" as const,
     time: "10 minutes ago",
   },
   {
     url: "https://pricing.example.com",
     format: "JPEG" as const,
-    status: "Failed" as const,
+    status: "failed" as const,
     time: "1 hour ago",
   },
   {
     url: "https://blog.example.com",
     format: "PNG" as const,
-    status: "Completed" as const,
+    status: "success" as const,
     time: "3 hours ago",
   },
   {
     url: "https://settings.example.com",
     format: "PDF" as const,
-    status: "Completed" as const,
+    status: "success" as const,
     time: "Yesterday",
   },
 ];
@@ -67,10 +67,13 @@ export function LastScreenshots() {
                   </div>
                   <span className="truncate text-sm font-medium">{s.url}</span>
                 </div>
-                <Badge variant="outline" className={cn("px-2.5 font-medium", formatBadgeClass[s.format])}>
+                <Badge variant="outline" className={cn("px-2.5 font-medium uppercase", formatBadgeClass[s.format])}>
                   {s.format}
                 </Badge>
-                <Badge variant="outline" className={cn("px-2.5 font-medium", screenshotStatusBadgeClass(s.status))}>
+                <Badge
+                  variant="outline"
+                  className={cn("px-2.5 font-medium capitalize", screenshotStatusBadgeClass(s.status))}
+                >
                   {s.status}
                 </Badge>
                 <span className="text-right text-sm whitespace-nowrap text-muted-foreground">{s.time}</span>

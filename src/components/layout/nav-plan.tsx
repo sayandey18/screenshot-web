@@ -22,7 +22,7 @@ export function NavPlan({ quota }: NavPlanProps) {
       <SidebarMenuItem>
         <div
           className={cn(
-            "flex flex-col gap-2 rounded-md border border-sidebar-border/50 bg-gradient-to-b from-primary/10 to-primary/5 p-3 transition-all dark:from-primary/15 dark:to-primary/5",
+            "flex flex-col gap-2 rounded-md border border-sidebar-border/50 bg-linear-to-b from-primary/10 to-primary/5 p-3 transition-all dark:from-primary/15 dark:to-primary/5",
             isCollapsed && "hidden"
           )}
         >
@@ -51,7 +51,7 @@ export function NavPlan({ quota }: NavPlanProps) {
             </div>
             <div className="relative h-1 w-full overflow-hidden rounded-full bg-sidebar-border/70">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-primary/70 to-primary transition-all duration-500 ease-in-out"
+                className="h-full rounded-full bg-linear-to-r from-primary/70 to-primary transition-all duration-500 ease-in-out"
                 style={{ width: `${Math.min(percentUsed, 100)}%` }}
               />
             </div>

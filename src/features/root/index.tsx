@@ -5,7 +5,6 @@ import { Loader2 } from "lucide-react";
 import { useSession } from "@/hooks/api/use-session";
 import { Toaster } from "@/components/ui/sonner";
 import { NavigationProgress } from "@/components/navigation-progress";
-import { RouteFocus } from "@/components/route-focus";
 
 export function RootComponent() {
   const { isLoading } = useSession();
@@ -20,7 +19,6 @@ export function RootComponent() {
       ) : (
         <>
           <HeadContent />
-          <RouteFocus />
           <Outlet />
         </>
       )}
