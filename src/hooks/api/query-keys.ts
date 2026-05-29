@@ -36,4 +36,5 @@ export const usageKeys = {
   all: ["usage"] as const,
   logs: () => [...usageKeys.all, "logs"] as const,
   log: (params: Record<string, unknown>) => [...usageKeys.logs(), params] as const,
+  chart: (range: string) => [...usageKeys.all, "chart", range] as const,
 };

@@ -50,7 +50,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
     otpContext.set("otp:signup", {
       intent: "sign_up_verify",
       email,
-      redirect: redirectTo ?? "/",
+      redirect: redirectTo ?? "/dashboard",
     });
     navigate({ to: "/sign-up/verify" });
   }
@@ -75,7 +75,7 @@ export function SignInForm({ className, redirectTo, onTwoFactorRequired, ...prop
               },
             });
           } else {
-            navigate({ to: redirectTo ?? "/", replace: true });
+            navigate({ to: redirectTo ?? "/dashboard", replace: true });
           }
         },
         onError: (error) => {

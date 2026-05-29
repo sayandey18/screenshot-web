@@ -1,5 +1,7 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import { authClient } from "@/lib/auth-client";
+import { sessionQueryOptions } from "@/hooks/api/use-session";
 import { AuthLayout } from "@/features/auth/components/auth-layout";
 import { VerifyForm } from "@/features/auth/components/verify-form";
 import { useOtpFlow } from "@/features/auth/hooks/use-otp-flow";
@@ -7,6 +9,7 @@ import { otpContext } from "@/features/auth/utils/otp-context";
 
 export function VerifyEmail() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const ctx = otpContext.get("otp:signup");
   const email = ctx?.email || "";
 
@@ -17,7 +20,9 @@ export function VerifyEmail() {
         otp: code,
       });
       if (!error) {
-        const destination = otpContext.handleSuccess("otp:signup", "/");
+        await queryClient.invalidateQueries({ queryKey: sessionQueryOptions().queryKey });
+        await queryClient.refetchQueries({ queryKey: sessionQueryOptions().queryKey });
+        const destination = otpContext.handleSuccess("otp:signup", "/dashboard");
         router.navigate({ to: destination, replace: true });
       }
       return { error };

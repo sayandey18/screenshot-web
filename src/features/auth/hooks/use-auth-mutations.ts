@@ -10,8 +10,9 @@ export const useSignInEmail = () => {
       if (result.error) throw new Error(result.error.message);
       return result;
     },
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: sessionKeys.current });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: sessionKeys.current });
+      await queryClient.refetchQueries({ queryKey: sessionKeys.current });
     },
   });
 };
