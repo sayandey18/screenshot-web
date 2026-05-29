@@ -8,6 +8,10 @@ const tabs = [
 
 export function Developers() {
   return (
-    <PageShell title="Developers" description="Manage API keys and developer integrations for your account." tabs={tabs} />
+    <PageShell
+      title="Developers"
+      description="Manage API keys and developer integrations for your account."
+      tabs={tabs}
+    />
   );
 }

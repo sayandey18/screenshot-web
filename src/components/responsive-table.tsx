@@ -1,13 +1,6 @@
 import { type ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 type Column<T> = {
   key: string;
@@ -34,10 +27,7 @@ export function ResponsiveTable<T>({ columns, data, keyExtractor }: ResponsiveTa
     <>
       <div className="space-y-3 md:hidden">
         {data.map((row) => (
-          <div
-            key={keyExtractor(row)}
-            className="rounded-lg border bg-card p-4 text-sm shadow-sm"
-          >
+          <div key={keyExtractor(row)} className="rounded-lg border bg-card p-4 text-sm shadow-sm">
             {visibleColumns.map((col) => (
               <div
                 key={col.key}

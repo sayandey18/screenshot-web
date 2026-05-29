@@ -207,9 +207,7 @@ export function SubscriptionBilling() {
           ) : addressData ? (
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1">
-                <Label className="text-[10px] tracking-wider text-muted-foreground/70 uppercase">
-                  Name & Address
-                </Label>
+                <Label className="text-[10px] tracking-wider text-muted-foreground/70 uppercase">Name & Address</Label>
                 <p className="text-sm font-medium">{addressData.fullName}</p>
                 <p className="text-sm text-muted-foreground">{addressData.addressLine1}</p>
               </div>
@@ -322,11 +320,7 @@ export function SubscriptionBilling() {
             <Button variant="outline" onClick={() => setAddressDialogOpen(false)} disabled={updateAddress.isPending}>
               Cancel
             </Button>
-            <Button
-              onClick={handleSaveAddress}
-              disabled={updateAddress.isPending}
-              aria-busy={updateAddress.isPending}
-            >
+            <Button onClick={handleSaveAddress} disabled={updateAddress.isPending} aria-busy={updateAddress.isPending}>
               {updateAddress.isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
               Save Address
             </Button>

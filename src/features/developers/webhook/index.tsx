@@ -9,9 +9,7 @@ export function DevelopersWebhook() {
           <CardTitle>Webhook Integrations</CardTitle>
           <Badge>Coming Soon</Badge>
         </div>
-        <CardDescription>
-          You will be able to register webhook endpoints to inspect delivery activity.
-        </CardDescription>
+        <CardDescription>You will be able to register webhook endpoints to inspect delivery activity.</CardDescription>
       </CardHeader>
     </Card>
   );

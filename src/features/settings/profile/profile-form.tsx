@@ -1,15 +1,16 @@
-﻿import { useEffect, useRef } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera, Loader, Trash2 } from "lucide-react";
+import { getDisplayNameInitials } from "@/lib/utils";
 import { toast } from "sonner";
 import { useSession } from "@/hooks/api/use-session";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { PhoneInput } from "@/components/phone-input";
 import { useDeleteAvatar, useUpdateProfile, useUploadAvatar } from "@/features/settings/hooks/use-auth-mutations";
@@ -30,6 +31,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 export function ProfileForm() {
   const avatarInputRef = useRef<HTMLInputElement>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const { data: session, isLoading } = useSession();
   const updateProfile = useUpdateProfile();
   const uploadAvatar = useUploadAvatar();
@@ -63,6 +65,22 @@ export function ProfileForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user]);
 
+  useEffect(() => {
+    if (previewUrl && session?.user?.image) {
+      URL.revokeObjectURL(previewUrl);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPreviewUrl(null);
+    }
+  }, [session?.user?.image, previewUrl]);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
   async function onSubmit(data: ProfileFormValues) {
     await updateProfile.mutateAsync({
       name: data.name,
@@ -77,8 +95,14 @@ export function ProfileForm() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const objectUrl = URL.createObjectURL(file);
+    setPreviewUrl(objectUrl);
+
     try {
       await uploadAvatar.mutateAsync(file);
+    } catch {
+      URL.revokeObjectURL(objectUrl);
+      setPreviewUrl(null);
     } finally {
       if (avatarInputRef.current) {
         avatarInputRef.current.value = "";
@@ -125,8 +149,8 @@ export function ProfileForm() {
                 <div className="flex items-center gap-6">
                   <div className="group relative">
                     <Avatar className="h-25 w-25">
-                      {field.value && <AvatarImage src={field.value} />}
-                      <AvatarFallback className="text-xl">{field.value?.substring(0, 2).toUpperCase()}</AvatarFallback>
+                      <AvatarImage src={previewUrl ?? field.value ?? undefined} />
+                      <AvatarFallback className="text-xl">{getDisplayNameInitials(session?.user?.name ?? "")}</AvatarFallback>
                     </Avatar>
                     <FormLabel
                       htmlFor="image"
@@ -155,28 +179,26 @@ export function ProfileForm() {
                     <FormDescription>Click on the avatar to upload a new profile picture.</FormDescription>
 
                     <div className="flex items-center gap-2">
-                      <FormLabel htmlFor="image">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          className="mt-2"
-                          disabled={isUploading}
-                          onClick={() => avatarInputRef.current?.click()}
-                        >
-                          <span>Change avatar</span>
-                        </Button>
-                      </FormLabel>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="mt-2"
+                        disabled={isUploading}
+                        onClick={() => avatarInputRef.current?.click()}
+                      >
+                        {field.value ? "Change avatar" : "Upload avatar"}
+                      </Button>
 
                       {field.value && (
                         <Button
                           type="button"
                           variant="ghost"
                           size="sm"
-                          className="text-destructive hover:text-destructive"
+                          className="mt-2 text-destructive hover:text-destructive"
                           onClick={deleteAvatar}
                         >
-                          <Trash2 className="mr-2 h-4 w-4" />
+                          <Trash2 className="h-4 w-4" />
                           Remove
                         </Button>
                       )}
@@ -223,7 +245,11 @@ export function ProfileForm() {
             <FormItem>
               <FormLabel>Phone</FormLabel>
               <FormControl>
-                <PhoneInput value={field.value ?? ""} onChange={field.onChange} disabled={form.formState.isSubmitting} />
+                <PhoneInput
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  disabled={form.formState.isSubmitting}
+                />
               </FormControl>
               <FormDescription>Enter your phone number with country code.</FormDescription>
               <FormMessage />

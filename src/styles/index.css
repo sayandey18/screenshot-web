@@ -73,18 +73,6 @@
   html.font-inter {
     --font-sans: var(--font-inter);
   }
-
-  html.font-dm-sans {
-    --font-sans: var(--font-dm-sans);
-  }
-
-  html.font-google {
-    --font-sans: var(--font-google);
-  }
-
-  html.font-geist {
-    --font-sans: var(--font-geist);
-  }
 }
 
 .CollapsibleContent {

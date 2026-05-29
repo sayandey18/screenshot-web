@@ -92,9 +92,6 @@
 
 @theme inline {
   --font-inter: "Inter", sans-serif;
-  --font-dm-sans: "DM Sans", sans-serif;
-  --font-google: "Google Sans", sans-serif;
-  --font-geist: "Geist", sans-serif;
   --font-mono: "Space Mono", monospace;
 
   --radius-sm: calc(var(--radius) - 4px);

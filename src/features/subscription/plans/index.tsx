@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { getRouteApi } from "@tanstack/react-router";
 import { Building2, Calendar, Clock, Crown, Package, RefreshCw, Sparkles, Zap } from "lucide-react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 import { subscriptionStatusBadgeClass } from "@/lib/badge-styles";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -172,7 +172,9 @@ export function SubscriptionPlans() {
               {isLoading ? (
                 <Skeleton className="h-5 w-24 rounded-full" />
               ) : subscription ? (
-                <Badge variant="outline" className={cn(subscriptionStatusBadgeClass(subscription.status))}>{statusLabel(subscription.status)}</Badge>
+                <Badge variant="outline" className={cn(subscriptionStatusBadgeClass(subscription.status))}>
+                  {statusLabel(subscription.status)}
+                </Badge>
               ) : null}
             </div>
           </CardHeader>

@@ -46,7 +46,7 @@ export const useUploadAvatar = () => {
       return response.data;
     },
     onSuccess: async () => {
-      await invalidateSession(queryClient);
+      await queryClient.refetchQueries({ queryKey: sessionKeys.current });
     },
   });
 };
@@ -60,7 +60,7 @@ export const useDeleteAvatar = () => {
       return response.data;
     },
     onSuccess: async () => {
-      await invalidateSession(queryClient);
+      await queryClient.refetchQueries({ queryKey: sessionKeys.current });
     },
   });
 };
@@ -138,13 +138,7 @@ export const useDeleteAccount = () => {
 export const useLinkSocial = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({
-      provider,
-      callbackURL,
-    }: {
-      provider: "google" | "github";
-      callbackURL: string;
-    }) => {
+    mutationFn: async ({ provider, callbackURL }: { provider: "google" | "github"; callbackURL: string }) => {
       const result = await authClient.linkSocial({ provider, callbackURL });
       return unwrapAuthResult(result as { data: typeof result.data; error: unknown });
     },

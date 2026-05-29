@@ -32,7 +32,6 @@ import { Route as authResetPasswordIndexRouteImport } from './routes/(auth)/rese
 import { Route as authForgotIndexRouteImport } from './routes/(auth)/forgot/index'
 import { Route as AuthenticatedSubscriptionInvoicesRouteImport } from './routes/_authenticated/subscription/invoices'
 import { Route as AuthenticatedSubscriptionBillingRouteImport } from './routes/_authenticated/subscription/billing'
-import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings/notifications'
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
@@ -164,12 +163,6 @@ const AuthenticatedSubscriptionBillingRoute =
     path: '/billing',
     getParentRoute: () => AuthenticatedSubscriptionRouteRoute,
   } as any)
-const AuthenticatedSettingsNotificationsRoute =
-  AuthenticatedSettingsNotificationsRouteImport.update({
-    id: '/notifications',
-    path: '/notifications',
-    getParentRoute: () => AuthenticatedSettingsRouteRoute,
-  } as any)
 const AuthenticatedSettingsAppearanceRoute =
   AuthenticatedSettingsAppearanceRouteImport.update({
     id: '/appearance',
@@ -227,7 +220,6 @@ export interface FileRoutesByFullPath {
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
-  '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/subscription/billing': typeof AuthenticatedSubscriptionBillingRoute
   '/subscription/invoices': typeof AuthenticatedSubscriptionInvoicesRoute
   '/forgot/': typeof authForgotIndexRoute
@@ -255,7 +247,6 @@ export interface FileRoutesByTo {
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
-  '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/subscription/billing': typeof AuthenticatedSubscriptionBillingRoute
   '/subscription/invoices': typeof AuthenticatedSubscriptionInvoicesRoute
   '/forgot': typeof authForgotIndexRoute
@@ -289,7 +280,6 @@ export interface FileRoutesById {
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
-  '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/_authenticated/subscription/billing': typeof AuthenticatedSubscriptionBillingRoute
   '/_authenticated/subscription/invoices': typeof AuthenticatedSubscriptionInvoicesRoute
   '/(auth)/forgot/': typeof authForgotIndexRoute
@@ -322,7 +312,6 @@ export interface FileRouteTypes {
     | '/errors/$error'
     | '/settings/account'
     | '/settings/appearance'
-    | '/settings/notifications'
     | '/subscription/billing'
     | '/subscription/invoices'
     | '/forgot/'
@@ -350,7 +339,6 @@ export interface FileRouteTypes {
     | '/errors/$error'
     | '/settings/account'
     | '/settings/appearance'
-    | '/settings/notifications'
     | '/subscription/billing'
     | '/subscription/invoices'
     | '/forgot'
@@ -383,7 +371,6 @@ export interface FileRouteTypes {
     | '/_authenticated/errors/$error'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
-    | '/_authenticated/settings/notifications'
     | '/_authenticated/subscription/billing'
     | '/_authenticated/subscription/invoices'
     | '/(auth)/forgot/'
@@ -572,13 +559,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSubscriptionBillingRouteImport
       parentRoute: typeof AuthenticatedSubscriptionRouteRoute
     }
-    '/_authenticated/settings/notifications': {
-      id: '/_authenticated/settings/notifications'
-      path: '/notifications'
-      fullPath: '/settings/notifications'
-      preLoaderRoute: typeof AuthenticatedSettingsNotificationsRouteImport
-      parentRoute: typeof AuthenticatedSettingsRouteRoute
-    }
     '/_authenticated/settings/appearance': {
       id: '/_authenticated/settings/appearance'
       path: '/appearance'
@@ -674,7 +654,6 @@ const AuthenticatedDevelopersRouteRouteWithChildren =
 interface AuthenticatedSettingsRouteRouteChildren {
   AuthenticatedSettingsAccountRoute: typeof AuthenticatedSettingsAccountRoute
   AuthenticatedSettingsAppearanceRoute: typeof AuthenticatedSettingsAppearanceRoute
-  AuthenticatedSettingsNotificationsRoute: typeof AuthenticatedSettingsNotificationsRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
 }
 
@@ -682,8 +661,6 @@ const AuthenticatedSettingsRouteRouteChildren: AuthenticatedSettingsRouteRouteCh
   {
     AuthenticatedSettingsAccountRoute: AuthenticatedSettingsAccountRoute,
     AuthenticatedSettingsAppearanceRoute: AuthenticatedSettingsAppearanceRoute,
-    AuthenticatedSettingsNotificationsRoute:
-      AuthenticatedSettingsNotificationsRoute,
     AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   }
 

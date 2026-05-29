@@ -124,9 +124,7 @@ export function AccountConnections() {
                 size="sm"
                 className={cn(
                   "shrink-0 gap-1.5 shadow-xs",
-                  connected
-                    ? "text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                    : "shadow-sm"
+                  connected ? "text-muted-foreground hover:bg-destructive/10 hover:text-destructive" : "shadow-sm"
                 )}
                 disabled={isPending}
                 aria-busy={isPending}

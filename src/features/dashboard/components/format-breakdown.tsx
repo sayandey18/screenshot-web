@@ -16,7 +16,7 @@ export function FormatBreakdown() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <Card className="h-full flex flex-col">
+    <Card className="flex h-full flex-col">
       <CardHeader>
         <CardTitle>Format Breakdown</CardTitle>
         <CardDescription>Export output format volume across captured screenshot documents.</CardDescription>
@@ -29,22 +29,15 @@ export function FormatBreakdown() {
             margin={{ top: 0, right: 16, left: -16, bottom: 0 }}
             barCategoryGap="60%"
           >
-            <XAxis
-              dataKey="name"
-              stroke="#888888"
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-            />
+            <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickMargin={8} />
             <Tooltip
               cursor={false}
               content={({ active, payload, label }) => {
                 if (!active || !payload?.length) return null;
                 return (
-                  <div className="rounded-lg border bg-background px-3 py-2 shadow-md flex items-center gap-2">
+                  <div className="flex items-center gap-2 rounded-lg border bg-background px-3 py-2 shadow-md">
                     <span
-                      className="h-2.5 w-2.5 rounded-full shrink-0"
+                      className="h-2.5 w-2.5 shrink-0 rounded-full"
                       style={{ backgroundColor: colors[data.findIndex((d) => d.name === label)] }}
                     />
                     <span className="text-sm font-bold">{payload[0].value?.toLocaleString()}</span>
@@ -52,12 +45,7 @@ export function FormatBreakdown() {
                 );
               }}
             />
-            <Bar
-              dataKey="count"
-              radius={[4, 4, 0, 0]}
-              maxBarSize={48}
-              className="cursor-pointer"
-            >
+            <Bar dataKey="count" radius={[4, 4, 0, 0]} maxBarSize={48} className="cursor-pointer">
               {data.map((_, index) => (
                 <Cell
                   key={`cell-${index}`}
