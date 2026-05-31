@@ -60,7 +60,7 @@ function SidebarMenuLink({ item, href }: { item: NavLink; href: string }) {
         asChild
         isActive={active}
         tooltip={item.title}
-        className={cn(active && "border-s-2 border-sidebar-primary ps-3 data-[active=true]:bg-sidebar-accent/80")}
+        className={cn(active && "ps-3 data-[active=true]:bg-sidebar-accent/80")}
       >
         <Link to={item.url} onClick={() => setOpenMobile(false)}>
           {item.icon && <item.icon />}

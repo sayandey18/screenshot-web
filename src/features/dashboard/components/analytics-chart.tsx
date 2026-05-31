@@ -3,7 +3,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import {
   ChartContainer,
   ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
@@ -14,8 +13,8 @@ import { useUsageChart } from "../hooks/use-dashboard";
 
 const chartConfig = {
   total: {
-    label: "Requests",
-    color: "var(--chart-1)",
+    label: "Total",
+    color: "var(--chart-2)",
   },
   success: {
     label: "Success",
@@ -23,7 +22,7 @@ const chartConfig = {
   },
   failed: {
     label: "Failed",
-    color: "var(--chart-2)",
+    color: "var(--chart-1)",
   },
 } satisfies ChartConfig;
 
@@ -87,10 +86,6 @@ export function AnalyticsChart({ range, onRangeChange }: AnalyticsChartProps) {
           <ChartContainer config={chartConfig} className="aspect-auto h-62.5 w-full">
             <AreaChart data={chartData}>
               <defs>
-                <linearGradient id="fillTotal" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--color-total)" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="var(--color-total)" stopOpacity={0.1} />
-                </linearGradient>
                 <linearGradient id="fillSuccess" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="var(--color-success)" stopOpacity={0.8} />
                   <stop offset="95%" stopColor="var(--color-success)" stopOpacity={0.1} />
@@ -129,16 +124,29 @@ export function AnalyticsChart({ range, onRangeChange }: AnalyticsChartProps) {
                   />
                 }
               />
-              <Area dataKey="total" type="natural" fill="url(#fillTotal)" stroke="var(--color-total)" stackId="a" />
-              <Area
-                dataKey="success"
-                type="natural"
-                fill="url(#fillSuccess)"
-                stroke="var(--color-success)"
-                stackId="a"
+              <Area dataKey="total" type="natural" fill="none" stroke="var(--color-total)" strokeWidth={1.5} />
+              <Area dataKey="success" type="natural" fill="none" stroke="var(--color-success)" strokeWidth={1.5} />
+              <Area dataKey="failed" type="natural" fill="none" stroke="var(--color-failed)" strokeWidth={1.5} />
+              <ChartLegend
+                content={({ payload }) => (
+                  <div className="mt-2 flex justify-center gap-4 text-sm">
+                    {[...(payload ?? [])].reverse().map((entry) => (
+                      <div
+                        key={entry.dataKey as string}
+                        className="flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
+                      >
+                        <div
+                          className="h-2 w-2 shrink-0 rounded-[2px]"
+                          style={{
+                            background: entry.color,
+                          }}
+                        />
+                        <span className="text-xs">{chartConfig[entry.dataKey as keyof typeof chartConfig]?.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               />
-              <Area dataKey="failed" type="natural" fill="url(#fillFailed)" stroke="var(--color-failed)" stackId="a" />
-              <ChartLegend content={<ChartLegendContent />} />
             </AreaChart>
           </ChartContainer>
         )}

@@ -70,8 +70,8 @@
     }
   }
 
-  html.font-inter {
-    --font-sans: var(--font-inter);
+  html.font-sans {
+    --font-sans: var(--font-sans);
   }
 }
 
